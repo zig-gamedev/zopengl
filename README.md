@@ -1,4 +1,4 @@
-# [zopengl(https://github.com/zig-gamedev/zopengl)
+# [zopengl](https://github.com/zig-gamedev/zopengl)
 
 OpenGL loader, bindings and optional wrapper for Zig.
 
