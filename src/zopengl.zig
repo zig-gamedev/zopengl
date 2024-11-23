@@ -624,20 +624,50 @@ pub fn loadCoreProfile(loader: LoaderFn, major: u32, minor: u32) !void {
 
     // OpenGL 4.3
     if (ver >= 43) {
+        try load("glClearBufferData", .{&bindings.clearBufferData});
+        try load("glClearBufferSubData", .{&bindings.clearBufferSubData});
+        try load("glDispatchCompute", .{&bindings.dispatchCompute});
+        try load("glDispatchComputeIndirect", .{&bindings.dispatchComputeIndirect});
+        try load("glCopyImageSubData", .{&bindings.copyImageSubData});
+        try load("glFramebufferParameteri", .{&bindings.framebufferParameteri});
+        try load("glGetFramebufferParameteriv", .{&bindings.getFramebufferParameteriv});
+        try load("glGetInternalformati64v", .{&bindings.getInternalformati64v});
+        try load("glInvalidateTexSubImage", .{&bindings.invalidateTexSubImage});
+        try load("glInvalidateTexImage", .{&bindings.invalidateTexImage});
+        try load("glInvalidateBufferSubData", .{&bindings.invalidateBufferSubData});
+        try load("glInvalidateBufferData", .{&bindings.invalidateBufferData});
+        try load("glInvalidateFramebuffer", .{&bindings.invalidateFramebuffer});
+        try load("glInvalidateSubFramebuffer", .{&bindings.invalidateSubFramebuffer});
+        try load("glMultiDrawArraysIndirect", .{&bindings.multiDrawArraysIndirect});
+        try load("glMultiDrawElementsIndirect", .{&bindings.multiDrawElementsIndirect});
+        try load("glGetProgramInterfaceiv", .{&bindings.getProgramInterfaceiv});
+        try load("glGetProgramResourceIndex", .{&bindings.getProgramResourceIndex});
+        try load("glGetPrtgramResourceName", .{&bindings.getProgramResourceName});
+        try load("glGetProgramResourceiv", .{&bindings.getProgramResourceiv});
+        try load("glGetProgramResourceLocation", .{&bindings.getProgramResourceLocation});
+        try load("glGetProgramResourceLocationIndex", .{&bindings.getProgramResourceLocationIndex});
+        try load("glShaderStorageBlockBinding", .{&bindings.shaderStorageBlockBinding});
+        try load("glTexBufferRange", .{&bindings.texBufferRange});
+        try load("glTexStorage2DMultisample", .{&bindings.texStorage2DMultisample});
+        try load("glTexStorage3DMultisample", .{&bindings.texStorage3DMultisample});
+        try load("glTextureView", .{&bindings.textureView});
+        try load("glBindVertexBuffer", .{&bindings.bindVertexBuffer});
+        try load("glVertexAttribFormat", .{&bindings.vertexAttribFormat});
+        try load("glVertexAttribIFormat", .{&bindings.vertexAttribIFormat});
+        try load("glVertexAttribLFormat", .{&bindings.vertexAttribLFormat});
+        try load("glVertexAttribBinding", .{&bindings.vertexAttribBinding});
+        try load("glVertexBindingDivisor", .{&bindings.vertexBindingDivisor});
         try load("glDebugMessageControl", .{&bindings.debugMessageControl});
         try load("glDebugMessageInsert", .{&bindings.debugMessageInsert});
         try load("glDebugMessageCallback", .{&bindings.debugMessageCallback});
         try load("glGetDebugMessageLog", .{&bindings.getDebugMessageLog});
-        try load("glGetPointerv", .{&bindings.getPointerv});
         try load("glPushDebugGroup", .{&bindings.pushDebugGroup});
         try load("glPopDebugGroup", .{&bindings.popDebugGroup});
         try load("glObjectLabel", .{&bindings.objectLabel});
         try load("glGetObjectLabel", .{&bindings.getObjectLabel});
         try load("glObjectPtrLabel", .{&bindings.objectPtrLabel});
         try load("glGetObjectPtrLabel", .{&bindings.getObjectPtrLabel});
-        try load("glGetProgramResourceIndex", .{&bindings.getProgramResourceIndex});
-        try load("glShaderStorageBlockBinding", .{&bindings.shaderStorageBlockBinding});
-        // TODO
+        try load("glGetPointerv", .{&bindings.getPointerv});
     }
 
     // OpenGL 4.4
@@ -1797,4 +1827,51 @@ comptime {
     @export(&bindings.texStorage3D, .{ .name = "glTexStorage3D", .linkage = linkage });
     @export(&bindings.drawTransformFeedbackInstanced, .{ .name = "glDrawTransformFeedbackInstanced", .linkage = linkage });
     @export(&bindings.drawTransformFeedbackStreamInstanced, .{ .name = "glDrawTransformFeedbackStreamInstanced", .linkage = linkage });
+    //----------------------------------------------------------------------------------------------
+    // OpenGL 4.3 (Core Profile)
+    //----------------------------------------------------------------------------------------------
+    @export(&bindings.clearBufferData, .{ .name = "glClearBufferData", .linkage = linkage });
+    @export(&bindings.clearBufferSubData, .{ .name = "glClearBufferSubData", .linkage = linkage });
+    @export(&bindings.dispatchCompute, .{ .name = "glDispatchCompute", .linkage = linkage });
+    @export(&bindings.dispatchComputeIndirect, .{ .name = "glDispatchComputeIndirect", .linkage = linkage });
+    @export(&bindings.copyImageSubData, .{ .name = "glCompyImageSubData", .linkage = linkage });
+    @export(&bindings.framebufferParameteri, .{ .name = "glFramebufferParameteri", .linkage = linkage });
+    @export(&bindings.getFramebufferParameteriv, .{ .name = "glGetFramebufferParameteriv", .linkage = linkage });
+    @export(&bindings.getInternalformati64v, .{ .name = "glGetInternalformati64v", .linkage = linkage });
+    @export(&bindings.invalidateTexSubImage, .{ .name = "glInvalidateTexSubImage", .linkage = linkage });
+    @export(&bindings.invalidateTexImage, .{ .name = "glInvalidateTexImage", .linkage = linkage });
+    @export(&bindings.invalidateBufferSubData, .{ .name = "glInvalidateBufferSubData", .linkage = linkage });
+    @export(&bindings.invalidateBufferData, .{ .name = "glInvalidateBufferData", .linkage = linkage });
+    @export(&bindings.invalidateFramebuffer, .{ .name = "glInvalidateFramebuffer", .linkage = linkage });
+    @export(&bindings.invalidateSubFramebuffer, .{ .name = "glInvalidateSubFramebuffer", .linkage = linkage });
+    @export(&bindings.multiDrawArraysIndirect, .{ .name = "glMultiDrawArraysIndirect", .linkage = linkage });
+    @export(&bindings.multiDrawElementsIndirect, .{ .name = "glMultiDrawElementsIndirect", .linkage = linkage });
+    @export(&bindings.getProgramInterfaceiv, .{ .name = "glGetProgramInterfaceiv", .linkage = linkage });
+    @export(&bindings.getProgramResourceIndex, .{ .name = "glGetProgramResourceIndex", .linkage = linkage });
+    @export(&bindings.getProgramResourceName, .{ .name = "glGetProgramResourceName", .linkage = linkage });
+    @export(&bindings.getProgramResourceiv, .{ .name = "glGetProgramResourceiv", .linkage = linkage });
+    @export(&bindings.getProgramResourceLocation, .{ .name = "glGetProgramResourceLocation", .linkage = linkage });
+    @export(&bindings.getProgramResourceLocationIndex, .{ .name = "glGetProgramResourceLocationIndex", .linkage = linkage });
+    @export(&bindings.shaderStorageBlockBinding, .{ .name = "glShaderStorageBlockBinding", .linkage = linkage });
+    @export(&bindings.texBufferRange, .{ .name = "glTexBufferRange", .linkage = linkage });
+    @export(&bindings.texStorage2DMultisample, .{ .name = "glTexStorage2DMultisample", .linkage = linkage });
+    @export(&bindings.texStorage3DMultisample, .{ .name = "glTexStorage3DMultisample", .linkage = linkage });
+    @export(&bindings.textureView, .{ .name = "glTextureView", .linkage = linkage });
+    @export(&bindings.bindVertexBuffer, .{ .name = "glBindVertexBuffer", .linkage = linkage });
+    @export(&bindings.vertexAttribFormat, .{ .name = "glVertexAttribFormat", .linkage = linkage });
+    @export(&bindings.vertexAttribIFormat, .{ .name = "glVertexAttribIFormat", .linkage = linkage });
+    @export(&bindings.vertexAttribLFormat, .{ .name = "glVertexAttribLFormat", .linkage = linkage });
+    @export(&bindings.vertexAttribBinding, .{ .name = "glVertexAttribBinding", .linkage = linkage });
+    @export(&bindings.vertexBindingDivisor, .{ .name = "glVertexBindingDivisor", .linkage = linkage });
+    @export(&bindings.debugMessageControl, .{ .name = "glDebugMessageControl", .linkage = linkage });
+    @export(&bindings.debugMessageInsert, .{ .name = "glDebugMessageInsert", .linkage = linkage });
+    @export(&bindings.debugMessageCallback, .{ .name = "glDebugMessageCallback", .linkage = linkage });
+    @export(&bindings.getDebugMessageLog, .{ .name = "glGetDebugMessageLog", .linkage = linkage });
+    @export(&bindings.pushDebugGroup, .{ .name = "glPushDebugGroup", .linkage = linkage });
+    @export(&bindings.popDebugGroup, .{ .name = "glPopDebugGroup", .linkage = linkage });
+    @export(&bindings.objectLabel, .{ .name = "glObjectLabel", .linkage = linkage });
+    @export(&bindings.getObjectLabel, .{ .name = "glGetObjectLabel", .linkage = linkage });
+    @export(&bindings.objectPtrLabel, .{ .name = "glObjectPtrLabel", .linkage = linkage });
+    @export(&bindings.getObjectPtrLabel, .{ .name = "glGetObjectPtrLabel", .linkage = linkage });
+    @export(&bindings.getPointerv, .{ .name = "glGetPointerv", .linkage = linkage });
 }
