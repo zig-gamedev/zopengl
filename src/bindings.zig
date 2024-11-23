@@ -2812,6 +2812,47 @@ pub var drawTransformFeedbackStreamInstanced: *const fn (
 // OpenGL 4.3 (Core Profile)
 //
 //--------------------------------------------------------------------------------------------------
+pub const NUM_SHADING_LANGUAGE_VERSIONS = 0x82E9;
+pub const VERTEX_ATTRIB_ARRAY_LONG = 0x874E;
+// ARB_arrays_of_arrays (none)
+// ARB_fragment_layer_viewport (none, GLSL only)
+// ARB_shader_image_size (none, GLSL only)
+// ARB_ES3_compatibility
+pub const COMPRESSED_RGB8_ETC2 = 0x9274;
+pub const COMPRESSED_SRGB8_ETC2 = 0x9275;
+pub const COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2 = 0x9276;
+pub const COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2 = 0x9277;
+pub const COMPRESSED_RGBA8_ETC2_EAC = 0x9278;
+pub const COMPRESSED_SRGB8_ALPHA8_ETC2_EAC = 0x9279;
+pub const COMPRESSED_R11_EAC = 0x9270;
+pub const COMPRESSED_SIGNED_R11_EAC = 0x9271;
+pub const COMPRESSED_RG11_EAC = 0x9272;
+pub const COMPRESSED_SIGNED_RG11_EAC = 0x9273;
+pub const PRIMITIVE_RESTART_FIXED_INDEX = 0x8D69;
+pub const ANY_SAMPLES_PASSED_CONSERVATIVE = 0x8D6A;
+pub const MAX_ELEMENT_INDEX = 0x8D6B;
+// ARB_clear_buffer_object (none)
+// ARB_compute_shader
+pub const COMPUTE_SHADER = 0x91B9;
+pub const MAX_COMPUTE_UNIFORM_BLOCKS = 0x91BB;
+pub const MAX_COMPUTE_TEXTURE_IMAGE_UNITS = 0x91BC;
+pub const MAX_COMPUTE_IMAGE_UNIFORMS = 0x91BD;
+pub const MAX_COMPUTE_SHARED_MEMORY_SIZE = 0x8262;
+pub const MAX_COMPUTE_UNIFORM_COMPONENTS = 0x8263;
+pub const MAX_COMPUTE_ATOMIC_COUNTER_BUFFERS = 0x8264;
+pub const MAX_COMPUTE_ATOMIC_COUNTERS = 0x8265;
+pub const MAX_COMBINED_COMPUTE_UNIFORM_COMPONENTS = 0x8266;
+pub const MAX_COMPUTE_WORK_GROUP_INVOCATIONS = 0x90EB;
+pub const MAX_COMPUTE_WORK_GROUP_COUNT = 0x91BE;
+pub const MAX_COMPUTE_WORK_GROUP_SIZE = 0x91BF;
+pub const COMPUTE_WORK_GROUP_SIZE = 0x8267;
+pub const UNIFORM_BLOCK_REFERENCED_BY_COMPUTE_SHADER = 0x90EC;
+pub const ATOMIC_COUNTER_BUFFER_REFERENCED_BY_COMPUTE_SHADER = 0x90ED;
+pub const DISPATCH_INDIRECT_BUFFER = 0x90EE;
+pub const DISPATCH_INDIRECT_BUFFER_BINDING = 0x90EF;
+pub const COMPUTE_SHADER_BIT = 0x00000020;
+// ARB_copy_image (none)
+// KHR_debug
 pub const DEBUGPROC = *const fn (
     source: Enum,
     type: Enum,
@@ -2821,7 +2862,10 @@ pub const DEBUGPROC = *const fn (
     message: [*c]const Char,
     userParam: *const anyopaque,
 ) callconv(.C) void;
-pub const DEBUG_OUTPUT = 0x92E0;
+pub const DEBUG_OUTPUT_SYNCHRONOUS = 0x8242;
+pub const DEBUG_NEXT_LOGGED_MESSAGE_LENGTH = 0x8243;
+pub const DEBUG_CALLBACK_FUNCTION = 0x8244;
+pub const DEBUG_CALLBACK_USER_PARAM = 0x8245;
 pub const DEBUG_SOURCE_API = 0x8246;
 pub const DEBUG_SOURCE_WINDOW_SYSTEM = 0x8247;
 pub const DEBUG_SOURCE_SHADER_COMPILER = 0x8248;
@@ -2833,17 +2877,471 @@ pub const DEBUG_TYPE_DEPRECATED_BEHAVIOR = 0x824D;
 pub const DEBUG_TYPE_UNDEFINED_BEHAVIOR = 0x824E;
 pub const DEBUG_TYPE_PORTABILITY = 0x824F;
 pub const DEBUG_TYPE_PERFORMANCE = 0x8250;
-pub const DEBUG_TYPE_MARKER = 0x8268;
-pub const DEBUG_TYPE_PUSH_GROUP = 0x8269;
-pub const DEBUG_TYPE_POP_GROUP = 0x826A;
 pub const DEBUG_TYPE_OTHER = 0x8251;
+pub const MAX_DEBUG_MESSAGE_LENGTH = 0x9143;
+pub const MAX_DEBUG_LOGGED_MESSAGES = 0x9144;
+pub const DEBUG_LOGGED_MESSAGES = 0x9145;
 pub const DEBUG_SEVERITY_HIGH = 0x9146;
 pub const DEBUG_SEVERITY_MEDIUM = 0x9147;
 pub const DEBUG_SEVERITY_LOW = 0x9148;
+pub const DEBUG_TYPE_MARKER = 0x8268;
+pub const DEBUG_TYPE_PUSH_GROUP = 0x8269;
+pub const DEBUG_TYPE_POP_GROUP = 0x826A;
 pub const DEBUG_SEVERITY_NOTIFICATION = 0x826B;
+pub const MAX_DEBUG_GROUP_STACK_DEPTH = 0x826C;
+pub const DEBUG_GROUP_STACK_DEPTH = 0x826D;
+pub const BUFFER = 0x82E0;
+pub const SHADER = 0x82E1;
+pub const PROGRAM = 0x82E2;
+// pub const VERTEX_ARRAY = 0x8074; // already defined?
+pub const QUERY = 0x82E3;
+pub const PROGRAM_PIPELINE = 0x82E4;
+pub const SAMPLER = 0x82E6;
+pub const MAX_LABEL_LENGTH = 0x82E8;
+pub const DEBUG_OUTPUT = 0x92E0;
+pub const CONTEXT_FLAG_DEBUG_BIT = 0x00000002;
+// ARB_explicit_uniform_location
+pub const MAX_UNIFORM_LOCATIONS = 0x826E;
+// ARB_framebuffer_no_attachments
+pub const FRAMEBUFFER_DEFAULT_WIDTH = 0x9310;
+pub const FRAMEBUFFER_DEFAULT_HEIGHT = 0x9311;
+pub const FRAMEBUFFER_DEFAULT_LAYERS = 0x9312;
+pub const FRAMEBUFFER_DEFAULT_SAMPLES = 0x9313;
+pub const FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS = 0x9314;
+pub const MAX_FRAMEBUFFER_WIDTH = 0x9315;
+pub const MAX_FRAMEBUFFER_HEIGHT = 0x9316;
+pub const MAX_FRAMEBUFFER_LAYERS = 0x9317;
+pub const MAX_FRAMEBUFFER_SAMPLES = 0x9318;
+// ARB_internalformat_query2
+pub const INTERNALFORMAT_SUPPORTED = 0x826F;
+pub const INTERNALFORMAT_PREFERRED = 0x8270;
+pub const INTERNALFORMAT_RED_SIZE = 0x8271;
+pub const INTERNALFORMAT_GREEN_SIZE = 0x8272;
+pub const INTERNALFORMAT_BLUE_SIZE = 0x8273;
+pub const INTERNALFORMAT_ALPHA_SIZE = 0x8274;
+pub const INTERNALFORMAT_DEPTH_SIZE = 0x8275;
+pub const INTERNALFORMAT_STENCIL_SIZE = 0x8276;
+pub const INTERNALFORMAT_SHARED_SIZE = 0x8277;
+pub const INTERNALFORMAT_RED_TYPE = 0x8278;
+pub const INTERNALFORMAT_GREEN_TYPE = 0x8279;
+pub const INTERNALFORMAT_BLUE_TYPE = 0x827A;
+pub const INTERNALFORMAT_ALPHA_TYPE = 0x827B;
+pub const INTERNALFORMAT_DEPTH_TYPE = 0x827C;
+pub const INTERNALFORMAT_STENCIL_TYPE = 0x827D;
+pub const MAX_WIDTH = 0x827E;
+pub const MAX_HEIGHT = 0x827F;
+pub const MAX_DEPTH = 0x8280;
+pub const MAX_LAYERS = 0x8281;
+pub const MAX_COMBINED_DIMENSIONS = 0x8282;
+pub const COLOR_COMPONENTS = 0x8283;
+pub const DEPTH_COMPONENTS = 0x8284;
+pub const STENCIL_COMPONENTS = 0x8285;
+pub const COLOR_RENDERABLE = 0x8286;
+pub const DEPTH_RENDERABLE = 0x8287;
+pub const STENCIL_RENDERABLE = 0x8288;
+pub const FRAMEBUFFER_RENDERABLE = 0x8289;
+pub const FRAMEBUFFER_RENDERABLE_LAYERED = 0x828A;
+pub const FRAMEBUFFER_BLEND = 0x828B;
+pub const READ_PIXELS = 0x828C;
+pub const READ_PIXELS_FORMAT = 0x828D;
+pub const READ_PIXELS_TYPE = 0x828E;
+pub const TEXTURE_IMAGE_FORMAT = 0x828F;
+pub const TEXTURE_IMAGE_TYPE = 0x8290;
+pub const GET_TEXTURE_IMAGE_FORMAT = 0x8291;
+pub const GET_TEXTURE_IMAGE_TYPE = 0x8292;
+pub const MIPMAP = 0x8293;
+pub const MANUAL_GENERATE_MIPMAP = 0x8294;
+pub const AUTO_GENERATE_MIPMAP = 0x8295;
+pub const COLOR_ENCODING = 0x8296;
+pub const SRGB_READ = 0x8297;
+pub const SRGB_WRITE = 0x8298;
+pub const FILTER = 0x829A;
+pub const VERTEX_TEXTURE = 0x829B;
+pub const TESS_CONTROL_TEXTURE = 0x829C;
+pub const TESS_EVALUATION_TEXTURE = 0x829D;
+pub const GEOMETRY_TEXTURE = 0x829E;
+pub const FRAGMENT_TEXTURE = 0x829F;
+pub const COMPUTE_TEXTURE = 0x82A0;
+pub const TEXTURE_SHADOW = 0x82A1;
+pub const TEXTURE_GATHER = 0x82A2;
+pub const TEXTURE_GATHER_SHADOW = 0x82A3;
+pub const SHADER_IMAGE_LOAD = 0x82A4;
+pub const SHADER_IMAGE_STORE = 0x82A5;
+pub const SHADER_IMAGE_ATOMIC = 0x82A6;
+pub const IMAGE_TEXEL_SIZE = 0x82A7;
+pub const IMAGE_COMPATIBILITY_CLASS = 0x82A8;
+pub const IMAGE_PIXEL_FORMAT = 0x82A9;
+pub const IMAGE_PIXEL_TYPE = 0x82AA;
+pub const SIMULTANEOUS_TEXTURE_AND_DEPTH_TEST = 0x82AC;
+pub const SIMULTANEOUS_TEXTURE_AND_STENCIL_TEST = 0x82AD;
+pub const SIMULTANEOUS_TEXTURE_AND_DEPTH_WRITE = 0x82AE;
+pub const SIMULTANEOUS_TEXTURE_AND_STENCIL_WRITE = 0x82AF;
+pub const TEXTURE_COMPRESSED_BLOCK_WIDTH = 0x82B1;
+pub const TEXTURE_COMPRESSED_BLOCK_HEIGHT = 0x82B2;
+pub const TEXTURE_COMPRESSED_BLOCK_SIZE = 0x82B3;
+pub const CLEAR_BUFFER = 0x82B4;
+pub const TEXTURE_VIEW = 0x82B5;
+pub const VIEW_COMPATIBILITY_CLASS = 0x82B6;
+pub const FULL_SUPPORT = 0x82B7;
+pub const CAVEAT_SUPPORT = 0x82B8;
+pub const IMAGE_CLASS_4_X_32 = 0x82B9;
+pub const IMAGE_CLASS_2_X_32 = 0x82BA;
+pub const IMAGE_CLASS_1_X_32 = 0x82BB;
+pub const IMAGE_CLASS_4_X_16 = 0x82BC;
+pub const IMAGE_CLASS_2_X_16 = 0x82BD;
+pub const IMAGE_CLASS_1_X_16 = 0x82BE;
+pub const IMAGE_CLASS_4_X_8 = 0x82BF;
+pub const IMAGE_CLASS_2_X_8 = 0x82C0;
+pub const IMAGE_CLASS_1_X_8 = 0x82C1;
+pub const IMAGE_CLASS_11_11_10 = 0x82C2;
+pub const IMAGE_CLASS_10_10_10_2 = 0x82C3;
+pub const VIEW_CLASS_128_BITS = 0x82C4;
+pub const VIEW_CLASS_96_BITS = 0x82C5;
+pub const VIEW_CLASS_64_BITS = 0x82C6;
+pub const VIEW_CLASS_48_BITS = 0x82C7;
+pub const VIEW_CLASS_32_BITS = 0x82C8;
+pub const VIEW_CLASS_24_BITS = 0x82C9;
+pub const VIEW_CLASS_16_BITS = 0x82CA;
+pub const VIEW_CLASS_8_BITS = 0x82CB;
+pub const VIEW_CLASS_S3TC_DXT1_RGB = 0x82CC;
+pub const VIEW_CLASS_S3TC_DXT1_RGBA = 0x82CD;
+pub const VIEW_CLASS_S3TC_DXT3_RGBA = 0x82CE;
+pub const VIEW_CLASS_S3TC_DXT5_RGBA = 0x82CF;
+pub const VIEW_CLASS_RGTC1_RED = 0x82D0;
+pub const VIEW_CLASS_RGTC1_RG = 0x82D1;
+pub const VIEW_CLASS_BPTC_UNORM = 0x82D2;
+pub const VIEW_CLASS_BPTC_FLOAT = 0x82D3;
+// ARB_invalidate_subdata (none)
+// ARB_multi_draw_indirect (nonw)
+// ARB_program_interface_query
+pub const UNIFORM = 0x92E1;
+pub const UNIFORM_BLOCK = 0x92E2;
+pub const PROGRAM_INPUT = 0x92E3;
+pub const PROGRAM_OUTPUT = 0x92E4;
+pub const BUFFER_VARIABLE = 0x92E5;
+pub const SHADER_STORAGE_BLOCK = 0x92E6;
+pub const VERTEX_SUBROUTINE = 0x92E8;
+pub const TESS_CONTROL_SUBROUTINE = 0x92E9;
+pub const TESS_EVALUATION_SUBROUTINE = 0x92EA;
+pub const GEOMETRY_SUBROUTINE = 0x92EB;
+pub const FRAGMENT_SUBROUTINE = 0x92EC;
+pub const COMPUTE_SUBROUTINE = 0x92ED;
+pub const VERTEX_SUBROUTINE_UNIFORM = 0x92EE;
+pub const TESS_CONTROL_SUBROUTINE_UNIFORM = 0x92EF;
+pub const TESS_EVALUATION_SUBROUTINE_UNIFORM = 0x92F0;
+pub const GEOMETRY_SUBROUTINE_UNIFORM = 0x92F1;
+pub const FRAGMENT_SUBROUTINE_UNIFORM = 0x92F2;
+pub const COMPUTE_SUBROUTINE_UNIFORM = 0x92F3;
+pub const TRANSFORM_FEEDBACK_VARYING = 0x92F4;
+pub const ACTIVE_RESOURCES = 0x92F5;
+pub const MAX_NAME_LENGTH = 0x92F6;
+pub const MAX_NUM_ACTIVE_VARIABLES = 0x92F7;
+pub const MAX_NUM_COMPATIBLE_SUBROUTINES = 0x92F8;
+pub const NAME_LENGTH = 0x92F9;
+pub const TYPE = 0x92FA;
+pub const ARRAY_SIZE = 0x92FB;
+pub const OFFSET = 0x92FC;
+pub const BLOCK_INDEX = 0x92FD;
+pub const ARRAY_STRIDE = 0x92FE;
+pub const MATRIX_STRIDE = 0x92FF;
+pub const IS_ROW_MAJOR = 0x9300;
+pub const ATOMIC_COUNTER_BUFFER_INDEX = 0x9301;
+pub const BUFFER_BINDING = 0x9302;
+pub const BUFFER_DATA_SIZE = 0x9303;
+pub const NUM_ACTIVE_VARIABLES = 0x9304;
+pub const ACTIVE_VARIABLES = 0x9305;
+pub const REFERENCED_BY_VERTEX_SHADER = 0x9306;
+pub const REFERENCED_BY_TESS_CONTROL_SHADER = 0x9307;
+pub const REFERENCED_BY_TESS_EVALUATION_SHADER = 0x9308;
+pub const REFERENCED_BY_GEOMETRY_SHADER = 0x9309;
+pub const REFERENCED_BY_FRAGMENT_SHADER = 0x930A;
+pub const REFERENCED_BY_COMPUTE_SHADER = 0x930B;
+pub const TOP_LEVEL_ARRAY_SIZE = 0x930C;
+pub const TOP_LEVEL_ARRAY_STRIDE = 0x930D;
+pub const LOCATION = 0x930E;
+pub const LOCATION_INDEX = 0x930F;
+pub const IS_PER_PATCH = 0x92E7;
+// ARB_robust_buffer_access_bahavior (none)
+// ARB_shader_storage_buffer_object
 pub const SHADER_STORAGE_BUFFER = 0x90D2;
-pub const SHADER_STORAGE_BLOCK = 0x92e6;
-
+pub const SHADER_STORAGE_BUFFER_BINDING = 0x90D3;
+pub const SHADER_STORAGE_BUFFER_START = 0x90D4;
+pub const SHADER_STORAGE_BUFFER_SIZE = 0x90D5;
+pub const MAX_VERTEX_SHADER_STORAGE_BLOCKS = 0x90D6;
+pub const MAX_GEOMETRY_SHADER_STORAGE_BLOCKS = 0x90D7;
+pub const MAX_TESS_CONTROL_SHADER_STORAGE_BLOCKS = 0x90D8;
+pub const MAX_TESS_EVALUATIONS_SHADER_STORAGE_BLOCKS = 0x90D9;
+pub const MAX_FRAGMENT_SHADER_STORAGE_BLOCKS = 0x90DA;
+pub const MAX_COMPUTE_SHADER_STORAGE_BLOCKS = 0x90DB;
+pub const MAX_COMBINED_SHADER_STORAGE_BLOCKS = 0x90DC;
+pub const MAX_SHADER_STORAGE_BUFFER_BINDINGS = 0x90DD;
+pub const MAX_SHADER_STORAGE_BLOCK_SIZE = 0x90DE;
+pub const SHADER_STORAGE_BUFFER_OFFSET_ALIGNMENT = 0x90DF;
+pub const SHADER_STORAGE_BARRIER_BIT = 0x00002000;
+pub const MAX_COMBINED_SHADER_OUTPUT_RESOURCES = 0x8F39;
+// ARB_stencil_texturing
+pub const DEPTH_STENCIL_TEXTURE_MODE = 0x90EA;
+// ARB_texture_buffer_range
+pub const TEXTURE_BUFFER_OFFSET = 0x919D;
+pub const TEXTURE_BUFFER_SIZE = 0x919E;
+pub const TEXTURE_BUFFER_OFFSET_ALIGNMENT = 0x919F;
+// ARB_texture_query_levels (none)
+// ARB_texture_storage_multisample (none)
+// ARB_texture_view
+pub const TEXTURE_VIEW_MIN_LEVEL = 0x82DB;
+pub const TEXTURE_VIEW_NUM_LEVELS = 0x82DC;
+pub const TEXTURE_VIEW_MIN_LAYER = 0x82DD;
+pub const TEXTURE_VIEW_NUM_LAYERS = 0x82DE;
+pub const TEXTURE_IMMUTABLE_LEVELS = 0x82DF;
+// ARB_vertex_attrib_binding
+pub const VERTEX_ATTRIB_BINDING = 0x82D4;
+pub const VERTEX_ATTRIB_RELATIVE_OFFSET = 0x82D5;
+pub const VERTEX_BINDING_DIVISOR = 0x82D6;
+pub const VERTEX_BINDING_OFFSET = 0x82D7;
+pub const VERTEX_BINDING_STRIDE = 0x82D8;
+pub const MAX_VERTEX_ATTRIB_RELATIVE_OFFSET = 0x82D9;
+pub const MAX_VERTEX_ATTRIB_BINDINGS = 0x82DA;
+pub const VERTEX_BINDING_BUFFER = 0x8F4F;
+// ARB_arrays_of_arrays (none, GLSL only)
+// ARB_clear_boffer_object
+pub var clearBufferData: *const fn (
+    target: Enum,
+    internalformat: Enum,
+    format: Enum,
+    @"type": Enum,
+    data: [*c]const u8,
+) callconv(.C) void = undefined;
+pub var clearBufferSubData: *const fn (
+    target: Enum,
+    internalformat: Enum,
+    offset: Intptr,
+    size: Sizeiptr,
+    format: Enum,
+    @"type": Enum,
+    data: [*c]const u8,
+) callconv(.C) void = undefined;
+// ARB_compute_shader
+pub var dispatchCompute: *const fn (
+    num_groups_x: Uint,
+    num_groups_y: Uint,
+    num_groups_z: Uint,
+) callconv(.C) void = undefined;
+pub var dispatchComputeIndirect: *const fn (
+    indirect: Intptr,
+) callconv(.C) void = undefined;
+// ARB_copy_image
+pub var copyImageSubData: *const fn (
+    srcName: Uint,
+    srcTarget: Enum,
+    srcLevel: Int,
+    srcX: Int,
+    srcY: Int,
+    srcZ: Int,
+    dstName: Uint,
+    dstTarget: Enum,
+    dstLevel: Int,
+    dstX: Int,
+    dstY: Int,
+    dstZ: Int,
+    srcWidth: Sizei,
+    srcHeight: Sizei,
+    srcDepth: Sizei,
+) callconv(.C) void = undefined;
+// ARB_ES3_compatibility (none)
+// ARB_explicit_uniform_location (none)
+// ARB_fragment_layer_viewport (none, GLSL only)
+// ARB_framebuffer_no_attachments
+pub var framebufferParameteri: *const fn (
+    target: Enum,
+    pname: Enum,
+    param: Int,
+) callconv(.C) void = undefined;
+pub var getFramebufferParameteriv: *const fn (
+    target: Enum,
+    pname: Enum,
+    params: [*c]Int,
+) callconv(.C) void = undefined;
+// ARB_internalformat_query2
+pub var getInternalformati64v: *const fn (
+    target: Enum,
+    internalformat: Enum,
+    pname: Enum,
+    count: Sizei,
+    params: [*c]Int64,
+) callconv(.C) void = undefined;
+// ARB_invalidate_subdata
+pub var invalidateTexSubImage: *const fn (
+    texture: Uint,
+    level: Int,
+    xoffset: Int,
+    yoffset: Int,
+    zoffset: Int,
+    width: Sizei,
+    height: Sizei,
+    depth: Sizei,
+) callconv(.C) void = undefined;
+pub var invalidateTexImage: *const fn (
+    texture: Uint,
+    level: Int,
+) callconv(.C) void = undefined;
+pub var invalidateBufferSubData: *const fn (
+    buffer: Uint,
+    offset: Intptr,
+    length: Sizeiptr,
+) callconv(.C) void = undefined;
+pub var invalidateBufferData: *const fn (
+    buffer: Uint,
+) callconv(.C) void = undefined;
+pub var invalidateFramebuffer: *const fn (
+    target: Enum,
+    numAttachments: Sizei,
+    attachments: [*c]const Enum,
+) callconv(.C) void = undefined;
+pub var invalidateSubFramebuffer: *const fn (
+    target: Enum,
+    numAttachments: Sizei,
+    attachments: [*c]const Enum,
+    x: Int,
+    y: Int,
+    width: Sizei,
+    height: Sizei,
+) callconv(.C) void = undefined;
+// ARB_multi_draw_indirect
+pub var multiDrawArraysIndirect: *const fn (
+    mode: Enum,
+    indirect: [*c]const u8,
+    drawcount: Sizei,
+    stride: Sizei,
+) callconv(.C) void = undefined;
+pub var multiDrawElementsIndirect: *const fn (
+    mode: Enum,
+    @"type": Enum,
+    indirect: [*c]const u8,
+    drawcount: Sizei,
+    stride: Sizei,
+) callconv(.C) void = undefined;
+// ARB_program_interface_query
+pub var getProgramInterfaceiv: *const fn (
+    program: Uint,
+    programInterface: Enum,
+    pname: Enum,
+    params: [*c]Int,
+) callconv(.C) void = undefined;
+pub var getProgramResourceIndex: *const fn (
+    program: Uint,
+    programInterface: Enum,
+    name: [*c]const Char,
+) callconv(.C) Uint = undefined;
+pub var getProgramResourceName: *const fn (
+    program: Uint,
+    programInterface: Enum,
+    index: Uint,
+    bufSize: Sizei,
+    length: *Sizei,
+    name: [*c]Char,
+) callconv(.C) void = undefined;
+pub var getProgramResourceiv: *const fn (
+    program: Uint,
+    programInterface: Enum,
+    index: Uint,
+    propCount: Sizei,
+    props: [*c]const Enum,
+    count: Sizei,
+    length: *Sizei,
+    params: [*c]Int,
+) callconv(.C) void = undefined;
+pub var getProgramResourceLocation: *const fn (
+    program: Uint,
+    programInterface: Enum,
+    name: [*c]const Char,
+) callconv(.C) Int = undefined;
+pub var getProgramResourceLocationIndex: *const fn (
+    program: Uint,
+    programInterface: Enum,
+    name: [*c]const Char,
+) callconv(.C) Int = undefined;
+// ARB_robust_buffer_access_behavior (none)
+// ARB_shader_image_size (none, GLSL only)
+// ARB_shader_storage_buffer_object
+pub var shaderStorageBlockBinding: *const fn (
+    program: Uint,
+    storageBlockIndex: Uint,
+    storageBlockBinding: Uint,
+) callconv(.C) void = undefined;
+// ARB_stencil_texturing (none)
+// ARB_texture_buffer_range
+pub var texBufferRange: *const fn (
+    target: Enum,
+    internalformat: Enum,
+    buffer: Uint,
+    offset: Intptr,
+    size: Sizeiptr,
+) callconv(.C) void = undefined;
+// ARB_texture_query_levels (none)
+// ARB_texture_storage_multisample
+pub var texStorage2DMultisample: *const fn (
+    target: Enum,
+    samples: Sizei,
+    internalformat: Enum,
+    width: Sizei,
+    height: Sizei,
+    fixedsamplelocations: Boolean,
+) callconv(.C) void = undefined;
+pub var texStorage3DMultisample: *const fn (
+    target: Enum,
+    samples: Sizei,
+    internalformat: Enum,
+    width: Sizei,
+    height: Sizei,
+    depth: Sizei,
+    fixedsamplelocations: Boolean,
+) callconv(.C) void = undefined;
+// ARB_texture_view
+pub var textureView: *const fn (
+    texture: Uint,
+    target: Enum,
+    origtexture: Uint,
+    internalformat: Enum,
+    minlevel: Uint,
+    numlevels: Uint,
+    minlayer: Uint,
+    numlayers: Uint,
+) callconv(.C) void = undefined;
+// ARB_vertex_attrib_binding
+pub var bindVertexBuffer: *const fn (
+    bindingindex: Uint,
+    buffer: Uint,
+    offset: Intptr,
+    stride: Sizei,
+) callconv(.C) void = undefined;
+pub var vertexAttribFormat: *const fn (
+    attribindex: Uint,
+    size: Int,
+    @"type": Enum,
+    normalized: Boolean,
+    relativeoffset: Uint,
+) callconv(.C) void = undefined;
+pub var vertexAttribIFormat: *const fn (
+    attribindex: Uint,
+    size: Int,
+    @"type": Enum,
+    relativeoffset: Uint,
+) callconv(.C) void = undefined;
+pub var vertexAttribLFormat: *const fn (
+    attribindex: Uint,
+    size: Int,
+    @"type": Enum,
+    relativeoffset: Uint,
+) callconv(.C) void = undefined;
+pub var vertexAttribBinding: *const fn (
+    attribindex: Uint,
+    bindingindex: Uint,
+) callconv(.C) void = undefined;
+pub var vertexBindingDivisor: *const fn (
+    bindingindex: Uint,
+    divisor: Uint,
+) callconv(.C) void = undefined;
+// KHR_debug
 pub var debugMessageControl: *const fn (
     source: Enum,
     type: Enum,
@@ -2874,10 +3372,6 @@ pub var getDebugMessageLog: *const fn (
     lengths: [*c]Sizei,
     messageLog: [*c]Char,
 ) callconv(.C) Uint = undefined;
-pub var getPointerv: *const fn (
-    pname: Enum,
-    params: *anyopaque,
-) callconv(.C) void = undefined;
 pub var pushDebugGroup: *const fn (
     source: Enum,
     id: Uint,
@@ -2909,15 +3403,9 @@ pub var getObjectPtrLabel: *const fn (
     length: *Sizei,
     label: [*c]Char,
 ) callconv(.C) void = undefined;
-pub var getProgramResourceIndex: *const fn (
-    program: Uint,
-    programInterface: Enum,
-    name: [*c]const Char,
-) callconv(.C) Uint = undefined;
-pub var shaderStorageBlockBinding: *const fn (
-    program: Uint,
-    storageBlockIndex: Uint,
-    storageBlockBinding: Uint,
+pub var getPointerv: *const fn (
+    pname: Enum,
+    params: *anyopaque,
 ) callconv(.C) void = undefined;
 //--------------------------------------------------------------------------------------------------
 //
