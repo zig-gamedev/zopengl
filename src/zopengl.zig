@@ -642,7 +642,7 @@ pub fn loadCoreProfile(loader: LoaderFn, major: u32, minor: u32) !void {
         try load("glMultiDrawElementsIndirect", .{&bindings.multiDrawElementsIndirect});
         try load("glGetProgramInterfaceiv", .{&bindings.getProgramInterfaceiv});
         try load("glGetProgramResourceIndex", .{&bindings.getProgramResourceIndex});
-        try load("glGetPrtgramResourceName", .{&bindings.getProgramResourceName});
+        try load("glGetProgramResourceName", .{&bindings.getProgramResourceName});
         try load("glGetProgramResourceiv", .{&bindings.getProgramResourceiv});
         try load("glGetProgramResourceLocation", .{&bindings.getProgramResourceLocation});
         try load("glGetProgramResourceLocationIndex", .{&bindings.getProgramResourceLocationIndex});
