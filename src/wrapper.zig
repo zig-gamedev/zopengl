@@ -6,7 +6,7 @@ const assert = std.debug.assert;
 
 const meta = struct {
     pub fn mergeEnums(comptime Enums: anytype) type {
-        const tag_type = @typeInfo(Enums[0]).Enum.tag_type;
+        const tag_type = @typeInfo(Enums[0]).@"enum".tag_type;
         const num_fields = countFields: {
             var count: comptime_int = 0;
             for (Enums) |Subset| {
@@ -17,7 +17,7 @@ const meta = struct {
         comptime var fields: [num_fields]std.builtin.Type.EnumField = .{undefined} ** num_fields;
         comptime var i = 0;
         for (Enums) |Subset| {
-            const subset_info = @typeInfo(Subset).Enum;
+            const subset_info = @typeInfo(Subset).@"enum";
             assert(subset_info.tag_type == tag_type);
             for (subset_info.fields) |field| {
                 assert(i < fields.len);
@@ -25,7 +25,7 @@ const meta = struct {
                 i += 1;
             }
         }
-        return @Type(.{ .Enum = .{
+        return @Type(.{ .@"enum" = .{
             .tag_type = tag_type,
             .fields = &fields,
             .decls = &.{},
