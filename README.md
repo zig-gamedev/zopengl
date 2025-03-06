@@ -3,7 +3,7 @@
 OpenGL loader, bindings and optional wrapper for Zig.
 
 Supports:
-  * OpenGL Core Profile up to version 4.2
+  * OpenGL Core Profile up to version 4.3
   * OpenGL ES up to version 2.0
 
 ## Getting started
