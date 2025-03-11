@@ -677,6 +677,41 @@ pub fn Wrap(comptime bindings: anytype) type {
             texture_cube_map_array = TEXTURE_CUBE_MAP_ARRAY,
         };
 
+        pub const TexUnit = enum(Enum) {
+            texture_0 = TEXTURE0,
+            texture_1 = TEXTURE1,
+            texture_2 = TEXTURE2,
+            texture_3 = TEXTURE3,
+            texture_4 = TEXTURE4,
+            texture_5 = TEXTURE5,
+            texture_6 = TEXTURE6,
+            texture_7 = TEXTURE7,
+            texture_8 = TEXTURE8,
+            texture_9 = TEXTURE9,
+            texture_10 = TEXTURE10,
+            texture_11 = TEXTURE11,
+            texture_12 = TEXTURE12,
+            texture_13 = TEXTURE13,
+            texture_14 = TEXTURE14,
+            texture_15 = TEXTURE15,
+            texture_16 = TEXTURE16,
+            texture_17 = TEXTURE17,
+            texture_18 = TEXTURE18,
+            texture_19 = TEXTURE19,
+            texture_20 = TEXTURE20,
+            texture_21 = TEXTURE21,
+            texture_22 = TEXTURE22,
+            texture_23 = TEXTURE23,
+            texture_24 = TEXTURE24,
+            texture_25 = TEXTURE25,
+            texture_26 = TEXTURE26,
+            texture_27 = TEXTURE27,
+            texture_28 = TEXTURE28,
+            texture_29 = TEXTURE29,
+            texture_30 = TEXTURE30,
+            texture_31 = TEXTURE31,
+        };
+
         pub const TexImageTarget = enum(Enum) {
             //--------------------------------------------------------------------------------------
             // OpenGL 1.0 (Core Profile)
@@ -2156,6 +2191,9 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const CLAMP_TO_BORDER = bindings.CLAMP_TO_BORDER;
 
         // pub var activeTexture: *const fn (texture: Enum) callconv(.C) void = undefined;
+        pub fn activeTexture(texture_unit: TexUnit) void {
+            bindings.activeTexture(@intFromEnum(texture_unit));
+        }
         // pub var sampleCoverage: *const fn (value: Float, invert: Boolean) callconv(.C) void = undefined;
         // pub var compressedTexImage3D: *const fn (
         //     target: Enum,
