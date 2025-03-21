@@ -1,6 +1,7 @@
 .{
     .name = .zopengl,
-    .version = "0.7.0-dev",
+    .version = "0.6.0-dev",
+    .fingerprint = 0xf50d3c53cf67ebe7,
     .paths = .{
         "build.zig",
         "build.zig.zon",
