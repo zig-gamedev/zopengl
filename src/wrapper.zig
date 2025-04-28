@@ -598,6 +598,15 @@ pub fn Wrap(comptime bindings: anytype) type {
             // OpenGL 3.2 (Core Profile)
             //--------------------------------------------------------------------------------------
             geometry = GEOMETRY_SHADER,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            tess_control = TESS_CONTROL_SHADER,
+            tess_evaluation = TESS_EVALUATION_SHADER,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            compute = COMPUTE_SHADER,
         };
 
         pub const ShaderParameter = enum(Enum) {
