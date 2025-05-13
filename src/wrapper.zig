@@ -2807,12 +2807,18 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         // pub var uniform1i: *const fn (location: Int, v0: Int) callconv(.C) void = undefined;
-        pub fn uniform1i(location: UniformLocation, value: Int) void {
-            bindings.uniform1i(@as(Int, @bitCast(location)), value);
+        pub fn uniform1i(location: UniformLocation, v0: Int) void {
+            bindings.uniform1i(@as(Int, @bitCast(location)), v0);
         }
 
         // pub var uniform2i: *const fn (location: Int, v0: Int, v1: Int) callconv(.C) void = undefined;
+        pub fn uniform2i (location: UniformLocation, v0: i32, v1: i32) void{
+            bindings.uniform2i(@as(Int, @bitCast(location)), v0, v1);
+        }
         // pub var uniform3i: *const fn (location: Int, v0: Int, v1: Int, v2: Int) callconv(.C) void = undefined;
+        pub fn uniform3i (location: UniformLocation, v0: i32, v1: i32, v2: i32) void{
+            bindings.uniform3i(@as(Int, @bitCast(location)), v0, v1, v2);
+        }
         // pub var uniform4i: *const fn (
         //     location: Int,
         //     v0: Int,
@@ -2820,6 +2826,9 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     v2: Int,
         //     v3: Int,
         // ) callconv(.C) void = undefined;
+        pub fn uniform4i (location: UniformLocation, v0: i32, v1: i32, v2: i32, v3: i32) void{
+            bindings.uniform4i(@as(Int, @bitCast(location)), v0, v1, v2, v3);
+        }
         // pub var uniform1fv: *const fn (
         //     location: Int,
         //     count: Sizei,
