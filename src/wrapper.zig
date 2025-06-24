@@ -2762,16 +2762,22 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     string: [*c]const [*c]const Char,
         //     length: [*c]const Int,
         // ) callconv(.C) void = undefined;
-        pub fn shaderSource(shader: Shader, src_ptrs: []const [*:0]const u8, src_lengths: []const u32) void {
+        pub fn shaderSource(
+            shader: Shader,
+            src_ptrs: []const [*:0]const u8,
+            maybe_src_lengths: ?[]const u32,
+        ) void {
             assert(shader != Shader.invalid);
             assert(src_ptrs.len > 0);
             assert(src_ptrs.len <= std.math.maxInt(u32));
-            assert(src_ptrs.len == src_lengths.len);
+            if (maybe_src_lengths) |src_lengths| {
+                assert(src_ptrs.len == src_lengths.len);
+            }
             bindings.shaderSource(
                 @intFromEnum(shader),
                 @as(Sizei, @bitCast(@as(u32, @intCast(src_ptrs.len)))),
                 @as([*c]const [*c]const Char, @ptrCast(src_ptrs)),
-                @as([*c]const Int, @ptrCast(src_lengths.ptr)),
+                if (maybe_src_lengths) |src_lengths| @as([*c]const Int, @ptrCast(src_lengths.ptr)) else null,
             );
         }
 
