@@ -1,6 +1,6 @@
 # [zopengl](https://github.com/zig-gamedev/zopengl)
 
-OpenGL loader, bindings and optional wrapper for Zig.
+OpenGL loader interface, bindings and optional wrapper for Zig.
 
 Supports:
   * OpenGL Core Profile up to version 4.3
