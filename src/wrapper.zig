@@ -1572,6 +1572,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             level: u32,
             internal_format: InternalFormat,
             width: u32,
+            /// Deprecated since OpenGL 3.0
             border: bool = false,
             format: PixelFormat,
             pixel_type: PixelType,
@@ -1606,6 +1607,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             internal_format: InternalFormat,
             width: u32,
             height: u32,
+            /// Deprecated since OpenGL 3.0
             border: bool = false,
             format: PixelFormat,
             pixel_type: PixelType,
