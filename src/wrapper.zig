@@ -36,16 +36,17 @@ const meta = struct {
 
 pub fn Wrap(comptime bindings: anytype) type {
     return struct {
-        pub const Framebuffer = extern struct { name: Uint = 0 };
-        pub const Renderbuffer = extern struct { name: Uint = 0 };
-        pub const Shader = extern struct { name: Uint = 0 };
-        pub const Program = extern struct { name: Uint = 0 };
-        pub const Texture = extern struct { name: Uint = 0 };
-        pub const Buffer = extern struct { name: Uint = 0 };
-        pub const VertexArrayObject = extern struct { name: Uint = 0 };
+        pub const Framebuffer = enum(Uint) { invalid = 0, _ };
+        pub const Renderbuffer = enum(Uint) { invalid = 0, _ };
+        pub const Shader = enum(Uint) { invalid = 0, _ };
+        pub const Program = enum(Uint) { invalid = 0, _ };
+        pub const Texture = enum(Uint) { invalid = 0, _ };
+        pub const Buffer = enum(Uint) { invalid = 0, _ };
+        pub const VertexArrayObject = enum(Uint) { invalid = 0, _ };
 
-        pub const UniformLocation = extern struct { location: Uint };
-        pub const VertexAttribLocation = extern struct { location: Uint };
+        pub const UniformLocation = enum(Int) { invalid = -1, _ };
+
+        pub const VertexAttribLocation = enum(Uint) { _ };
 
         pub const Error = enum(Enum) {
             //--------------------------------------------------------------------------------------
@@ -2028,7 +2029,7 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var bindTexture: *const fn (target: Enum, texture: Uint) callconv(.C) void = undefined;
         pub fn bindTexture(target: TextureTarget, texture: Texture) void {
-            bindings.bindTexture(@intFromEnum(target), @as(Uint, @bitCast(texture)));
+            bindings.bindTexture(@intFromEnum(target), @intFromEnum(texture));
         }
 
         // pub var deleteTextures: *const fn (n: Sizei, textures: [*c]const Uint) callconv(.C) void = undefined;
@@ -2049,7 +2050,7 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var isTexture: *const fn (texture: Uint) callconv(.C) Boolean = undefined;
         pub fn isTexture(texture: Texture) bool {
-            return bindings.isTexture(@as(Uint, @bitCast(texture))) == TRUE;
+            return bindings.isTexture(@intFromEnum(texture)) == TRUE;
         }
 
         //------------------------------------------------------------------------------------------
@@ -2378,7 +2379,7 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var bindBuffer: *const fn (target: Enum, buffer: Uint) callconv(.C) void = undefined;
         pub fn bindBuffer(target: BufferTarget, buffer: Buffer) void {
-            bindings.bindBuffer(@intFromEnum(target), @as(Uint, @bitCast(buffer)));
+            bindings.bindBuffer(@intFromEnum(target), @intFromEnum(buffer));
         }
 
         // pub var deleteBuffers: *const fn (n: Sizei, buffers: [*c]const Uint) callconv(.C) void = undefined;
@@ -2552,9 +2553,9 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var attachShader: *const fn (program: Uint, shader: Uint) callconv(.C) void = undefined;
         pub fn attachShader(program: Program, shader: Shader) void {
-            assert(@as(Uint, @bitCast(program)) > 0);
-            assert(@as(Uint, @bitCast(shader)) > 0);
-            bindings.attachShader(@as(Uint, @bitCast(program)), @as(Uint, @bitCast(shader)));
+            assert(program != Program.invalid);
+            assert(shader != Shader.invalid);
+            bindings.attachShader(@intFromEnum(program), @intFromEnum(shader));
         }
 
         // pub var bindAttribLocation: *const fn (
@@ -2565,30 +2566,30 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var compileShader: *const fn (shader: Uint) callconv(.C) void = undefined;
         pub fn compileShader(shader: Shader) void {
-            assert(@as(Uint, @bitCast(shader)) > 0);
-            bindings.compileShader(@as(Uint, @bitCast(shader)));
+            assert(shader != Shader.invalid);
+            bindings.compileShader(@intFromEnum(shader));
         }
 
         // pub var createProgram: *const fn () callconv(.C) Uint = undefined;
         pub fn createProgram() Program {
-            return @as(Program, @bitCast(bindings.createProgram()));
+            return @enumFromInt(bindings.createProgram());
         }
 
         // pub var createShader: *const fn (type: Enum) callconv(.C) Uint = undefined;
         pub fn createShader(@"type": ShaderType) Shader {
-            return @as(Shader, @bitCast(bindings.createShader(@intFromEnum(@"type"))));
+            return @enumFromInt(bindings.createShader(@intFromEnum(@"type")));
         }
 
         // pub var deleteProgram: *const fn (program: Uint) callconv(.C) void = undefined;
         pub fn deleteProgram(program: Program) void {
-            assert(@as(Uint, @bitCast(program)) > 0);
-            bindings.deleteProgram(@as(Uint, @bitCast(program)));
+            assert(program != Program.invalid);
+            bindings.deleteProgram(@intFromEnum(program));
         }
 
         // pub var deleteShader: *const fn (shader: Uint) callconv(.C) void = undefined;
         pub fn deleteShader(shader: Shader) void {
-            assert(@as(Uint, @bitCast(shader)) > 0);
-            bindings.deleteShader(@as(Uint, @bitCast(shader)));
+            assert(shader != Shader.invalid);
+            bindings.deleteShader(@intFromEnum(shader));
         }
 
         // pub var detachShader: *const fn (program: Uint, shader: Uint) callconv(.C) void = undefined;
@@ -2596,7 +2597,7 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var enableVertexAttribArray: *const fn (index: Uint) callconv(.C) void = undefined;
         pub fn enableVertexAttribArray(location: VertexAttribLocation) void {
-            bindings.enableVertexAttribArray(@as(Uint, @bitCast(location)));
+            bindings.enableVertexAttribArray(@intFromEnum(location));
         }
 
         // pub var getActiveAttrib: *const fn (
@@ -2626,12 +2627,9 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var getAttribLocation: *const fn (program: Uint, name: [*c]const Char) callconv(.C) Int = undefined;
         pub fn getAttribLocation(program: Program, name: [:0]const u8) ?VertexAttribLocation {
-            assert(@as(Uint, @bitCast(program)) > 0);
-            const location = bindings.getAttribLocation(
-                @as(Uint, @bitCast(program)),
-                @as([*c]const Char, @ptrCast(name.ptr)),
-            );
-            return if (location >= 0) @as(VertexAttribLocation, @bitCast(location)) else null;
+            assert(program != Program.invalid);
+            const location = bindings.getAttribLocation(@intFromEnum(program), @ptrCast(name.ptr));
+            return if (location < 0) null else @enumFromInt(location);
         }
 
         // pub var getProgramiv: *const fn (program: Uint, pname: Enum, params: [*c]Int) callconv(.C) void = undefined;
@@ -2670,9 +2668,9 @@ pub fn Wrap(comptime bindings: anytype) type {
                 program_binary_length = PROGRAM_BINARY_LENGTH,
             },
         ) Int {
-            assert(@as(Uint, @bitCast(program)) > 0);
+            assert(program != Program.invalid);
             var value: Int = undefined;
-            bindings.getProgramiv(@as(Uint, @bitCast(program)), @intFromEnum(parameter), &value);
+            bindings.getProgramiv(@intFromEnum(program), @intFromEnum(parameter), &value);
             return value;
         }
 
@@ -2683,24 +2681,24 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     infoLog: [*c]Char,
         // ) callconv(.C) void = undefined;
         pub fn getProgramInfoLog(program: Program, buffer: []u8) ?[]const u8 {
-            assert(@as(Uint, @bitCast(program)) > 0);
+            assert(program != Program.invalid);
             assert(buffer.len > 0);
             assert(buffer.len <= std.math.maxInt(u32));
             var log_len: Sizei = 0;
             bindings.getProgramInfoLog(
-                @as(Uint, @bitCast(program)),
-                @as(Sizei, @bitCast(@as(u32, @intCast(buffer.len)))),
+                @intFromEnum(program),
+                @as(Sizei, @intCast(buffer.len)),
                 &log_len,
-                @as([*c]Char, @ptrCast(buffer.ptr)),
+                @ptrCast(buffer.ptr),
             );
             return if (log_len > 0) buffer[0..@as(usize, @intCast(log_len))] else null;
         }
 
         // pub var getShaderiv: *const fn (shader: Uint, pname: Enum, params: [*c]Int) callconv(.C) void = undefined;
         pub fn getShaderiv(shader: Shader, parameter: ShaderParameter) Int {
-            assert(@as(Uint, @bitCast(shader)) > 0);
+            assert(shader != Shader.invalid);
             var value: Int = undefined;
-            bindings.getShaderiv(@as(Uint, @bitCast(shader)), @intFromEnum(parameter), &value);
+            bindings.getShaderiv(@intFromEnum(shader), @intFromEnum(parameter), &value);
             return value;
         }
 
@@ -2711,15 +2709,15 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     infoLog: [*c]Char,
         // ) callconv(.C) void = undefined;
         pub fn getShaderInfoLog(shader: Shader, buffer: []u8) ?[]const u8 {
-            assert(@as(Uint, @bitCast(shader)) > 0);
+            assert(shader != Shader.invalid);
             assert(buffer.len > 0);
             assert(buffer.len <= std.math.maxInt(u32));
             var log_len: Sizei = 0;
             bindings.getShaderInfoLog(
-                @as(Uint, @bitCast(shader)),
-                @as(Sizei, @bitCast(@as(u32, @intCast(buffer.len)))),
+                @intFromEnum(shader),
+                @as(Sizei, @intCast(buffer.len)),
                 &log_len,
-                @as([*c]Char, @ptrCast(buffer.ptr)),
+                @ptrCast(buffer.ptr),
             );
             return if (log_len > 0) buffer[0..@as(usize, @intCast(log_len))] else null;
         }
@@ -2733,12 +2731,10 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var getUniformLocation: *const fn (program: Uint, name: [*c]const Char) callconv(.C) Int = undefined;
         pub fn getUniformLocation(program: Program, name: [:0]const u8) ?UniformLocation {
-            assert(@as(Uint, @bitCast(program)) > 0);
-            const location = bindings.getUniformLocation(
-                @as(Uint, @bitCast(program)),
-                @as([*c]const Char, @ptrCast(name.ptr)),
-            );
-            return if (location >= 0) @as(UniformLocation, @bitCast(location)) else null;
+            assert(program != Program.invalid);
+            assert(name.len > 0);
+            const location = bindings.getUniformLocation(@intFromEnum(program), @ptrCast(name.ptr));
+            return if (location < 0) null else @enumFromInt(location);
         }
 
         // pub var getUniformfv: *const fn (program: Uint, location: Int, params: [*c]Float) callconv(.C) void = undefined;
@@ -2756,8 +2752,8 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var linkProgram: *const fn (program: Uint) callconv(.C) void = undefined;
         pub fn linkProgram(program: Program) void {
-            assert(@as(Uint, @bitCast(program)) > 0);
-            bindings.linkProgram(@as(Uint, @bitCast(program)));
+            assert(program != Program.invalid);
+            bindings.linkProgram(@intFromEnum(program));
         }
 
         // pub var shaderSource: *const fn (
@@ -2767,12 +2763,12 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     length: [*c]const Int,
         // ) callconv(.C) void = undefined;
         pub fn shaderSource(shader: Shader, src_ptrs: []const [*:0]const u8, src_lengths: []const u32) void {
-            assert(@as(Uint, @bitCast(shader)) > 0);
+            assert(shader != Shader.invalid);
             assert(src_ptrs.len > 0);
             assert(src_ptrs.len <= std.math.maxInt(u32));
             assert(src_ptrs.len == src_lengths.len);
             bindings.shaderSource(
-                @as(Uint, @bitCast(shader)),
+                @intFromEnum(shader),
                 @as(Sizei, @bitCast(@as(u32, @intCast(src_ptrs.len)))),
                 @as([*c]const [*c]const Char, @ptrCast(src_ptrs)),
                 @as([*c]const Int, @ptrCast(src_lengths.ptr)),
@@ -2781,22 +2777,25 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var useProgram: *const fn (program: Uint) callconv(.C) void = undefined;
         pub fn useProgram(program: Program) void {
-            bindings.useProgram(@as(Uint, @bitCast(program)));
+            bindings.useProgram(@intFromEnum(program));
         }
 
         // pub var uniform1f: *const fn (location: Int, v0: Float) callconv(.C) void = undefined;
         pub fn uniform1f(location: UniformLocation, v0: f32) void {
-            bindings.uniform1f(@as(Int, @bitCast(location)), v0);
+            assert(location != UniformLocation.invalid);
+            bindings.uniform1f(@intFromEnum(location), v0);
         }
 
         // pub var uniform2f: *const fn (location: Int, v0: Float, v1: Float) callconv(.C) void = undefined;
         pub fn uniform2f(location: UniformLocation, v0: f32, v1: f32) void {
-            bindings.uniform2f(@as(Int, @bitCast(location)), v0, v1);
+            assert(location != UniformLocation.invalid);
+            bindings.uniform2f(@intFromEnum(location), v0, v1);
         }
 
         // pub var uniform3f: *const fn (location: Int, v0: Float, v1: Float, v2: Float) callconv(.C) void = undefined;
         pub fn uniform3f(location: UniformLocation, v0: f32, v1: f32, v2: f32) void {
-            bindings.uniform3f(@as(Int, @bitCast(location)), v0, v1, v2);
+            assert(location != UniformLocation.invalid);
+            bindings.uniform3f(@intFromEnum(location), v0, v1, v2);
         }
 
         // pub var uniform4f: *const fn (
@@ -2807,21 +2806,25 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     v3: Float,
         // ) callconv(.C) void = undefined;
         pub fn uniform4f(location: UniformLocation, v0: f32, v1: f32, v2: f32, v3: f32) void {
-            bindings.uniform4f(@as(Int, @bitCast(location)), v0, v1, v2, v3);
+            assert(location != UniformLocation.invalid);
+            bindings.uniform4f(@intFromEnum(location), v0, v1, v2, v3);
         }
 
         // pub var uniform1i: *const fn (location: Int, v0: Int) callconv(.C) void = undefined;
         pub fn uniform1i(location: UniformLocation, v0: Int) void {
-            bindings.uniform1i(@as(Int, @bitCast(location)), v0);
+            assert(location != UniformLocation.invalid);
+            bindings.uniform1i(@intFromEnum(location), v0);
         }
 
         // pub var uniform2i: *const fn (location: Int, v0: Int, v1: Int) callconv(.C) void = undefined;
         pub fn uniform2i(location: UniformLocation, v0: i32, v1: i32) void {
-            bindings.uniform2i(@as(Int, @bitCast(location)), v0, v1);
+            assert(location != UniformLocation.invalid);
+            bindings.uniform2i(@intFromEnum(location), v0, v1);
         }
         // pub var uniform3i: *const fn (location: Int, v0: Int, v1: Int, v2: Int) callconv(.C) void = undefined;
         pub fn uniform3i(location: UniformLocation, v0: i32, v1: i32, v2: i32) void {
-            bindings.uniform3i(@as(Int, @bitCast(location)), v0, v1, v2);
+            assert(location != UniformLocation.invalid);
+            bindings.uniform3i(@intFromEnum(location), v0, v1, v2);
         }
         // pub var uniform4i: *const fn (
         //     location: Int,
@@ -2831,7 +2834,8 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     v3: Int,
         // ) callconv(.C) void = undefined;
         pub fn uniform4i(location: UniformLocation, v0: i32, v1: i32, v2: i32, v3: i32) void {
-            bindings.uniform4i(@as(Int, @bitCast(location)), v0, v1, v2, v3);
+            assert(location != UniformLocation.invalid);
+            bindings.uniform4i(@intFromEnum(location), v0, v1, v2, v3);
         }
         // pub var uniform1fv: *const fn (
         //     location: Int,
@@ -2882,8 +2886,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             transpose: Boolean,
             value: [*]const f32,
         ) void {
+            assert(location != UniformLocation.invalid);
             bindings.uniformMatrix4fv(
-                @as(Int, @bitCast(location)),
+                @intFromEnum(location),
                 @as(Sizei, @bitCast(count)),
                 transpose,
                 value,
@@ -2969,7 +2974,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             offset: usize,
         ) void {
             bindings.vertexAttribPointer(
-                @as(Uint, @bitCast(location)),
+                @intFromEnum(location),
                 @as(Int, @bitCast(size)),
                 @intFromEnum(attrib_type),
                 normalised,
@@ -3304,12 +3309,12 @@ pub fn Wrap(comptime bindings: anytype) type {
             offset: Intptr,
             size: Sizeiptr,
         ) void {
-            bindings.bindBufferRange(@intFromEnum(target), index, buffer.name, offset, size);
+            bindings.bindBufferRange(@intFromEnum(target), index, @intFromEnum(buffer), offset, size);
         }
 
         // pub var bindBufferBase: *const fn (target: Enum, index: Uint, buffer: Uint) callconv(.C) void = undefined;
         pub fn bindBufferBase(target: IndexedBufferTarget, index: Uint, buffer: Buffer) void {
-            bindings.bindBufferBase(@intFromEnum(target), index, buffer.name);
+            bindings.bindBufferBase(@intFromEnum(target), index, @intFromEnum(buffer));
         }
 
         // pub var transformFeedbackVaryings: *const fn (
@@ -3407,12 +3412,12 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var isRenderbuffer: *const fn (renderbuffer: Uint) callconv(.C) Boolean = undefined;
         pub fn isRenderbuffer(renderbuffer: Renderbuffer) bool {
-            return bindings.isRenderbuffer(@as(Uint, @bitCast(renderbuffer))) == TRUE;
+            return bindings.isRenderbuffer(@intFromEnum(renderbuffer)) == TRUE;
         }
 
         // pub var bindRenderbuffer: *const fn (target: Enum, renderbuffer: Uint) callconv(.C) void = undefined;
         pub fn bindRenderbuffer(target: RenderbufferTarget, renderbuffer: Renderbuffer) void {
-            bindings.bindRenderbuffer(@intFromEnum(target), @as(Uint, @bitCast(renderbuffer)));
+            bindings.bindRenderbuffer(@intFromEnum(target), @intFromEnum(renderbuffer));
         }
 
         // pub var deleteRenderbuffers: *const fn (n: Sizei, renderbuffers: [*c]const Uint) callconv(.C) void = undefined;
@@ -3459,12 +3464,12 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var isFramebuffer: *const fn (framebuffer: Uint) callconv(.C) Boolean = undefined;
         pub fn isFramebuffer(framebuffer: Framebuffer) bool {
-            return bindings.isFramebuffer(@as(Uint, @bitCast(framebuffer))) == TRUE;
+            return bindings.isFramebuffer(@intFromEnum(framebuffer)) == TRUE;
         }
 
         // pub var bindFramebuffer: *const fn (target: Enum, framebuffer: Uint) callconv(.C) void = undefined;
         pub fn bindFramebuffer(target: FramebufferTarget, framebuffer: Framebuffer) void {
-            bindings.bindFramebuffer(@intFromEnum(target), @as(Uint, @bitCast(framebuffer)));
+            bindings.bindFramebuffer(@intFromEnum(target), @intFromEnum(framebuffer));
         }
 
         // pub var deleteFramebuffers: *const fn (n: Sizei, framebuffers: [*c]const Uint) callconv(.C) void = undefined;
@@ -3518,7 +3523,7 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @intFromEnum(target),
                 @intFromEnum(attachment),
                 @intFromEnum(textarget),
-                @as(Uint, @bitCast(texture)),
+                @intFromEnum(texture),
                 level,
             );
         }
@@ -3548,7 +3553,7 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @intFromEnum(target),
                 @intFromEnum(attachment),
                 @intFromEnum(renderbuffertarget),
-                @as(Uint, @bitCast(renderbuffer)),
+                @intFromEnum(renderbuffer),
             );
         }
 
@@ -3618,7 +3623,7 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var bindVertexArray: *const fn (array: Uint) callconv(.C) void = undefined;
         pub fn bindVertexArray(array: VertexArrayObject) void {
-            bindings.bindVertexArray(@as(Uint, @bitCast(array)));
+            bindings.bindVertexArray(@intFromEnum(array));
         }
 
         // pub var deleteVertexArrays: *const fn (n: Sizei, arrays: [*c]const Uint) callconv(.C) void = undefined;
@@ -3639,7 +3644,7 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var isVertexArray: *const fn (array: Uint) callconv(.C) Boolean = undefined;
         pub fn isVertexArray(array: VertexArrayObject) bool {
-            return bindings.isVertexArray(@as(Uint, @bitCast(array))) == TRUE;
+            return bindings.isVertexArray(@intFromEnum(array)) == TRUE;
         }
 
         //------------------------------------------------------------------------------------------
@@ -4861,7 +4866,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []Int,
         ) void {
             bindings.getActiveAtomicCounterBufferiv(
-                program.name,
+                @intFromEnum(program),
                 bufferIndex,
                 @intFromEnum(pname),
                 @ptrCast(params.ptr),
