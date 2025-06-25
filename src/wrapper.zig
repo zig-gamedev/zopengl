@@ -2571,13 +2571,21 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         // pub var createProgram: *const fn () callconv(.C) Uint = undefined;
-        pub fn createProgram() Program {
-            return @enumFromInt(bindings.createProgram());
+        pub fn createProgram() !Program {
+            const maybe_program = bindings.createProgram();
+            if (maybe_program <= @intFromEnum(Program.invalid)) {
+                return error.glCreateProgramFailed;
+            }
+            return @enumFromInt(maybe_program);
         }
 
         // pub var createShader: *const fn (type: Enum) callconv(.C) Uint = undefined;
-        pub fn createShader(@"type": ShaderType) Shader {
-            return @enumFromInt(bindings.createShader(@intFromEnum(@"type")));
+        pub fn createShader(@"type": ShaderType) !Shader {
+            const maybe_shader = bindings.createShader(@intFromEnum(@"type"));
+            if (maybe_shader <= @intFromEnum(Shader.invalid)) {
+                return error.glCreateShaderFailed;
+            }
+            return @enumFromInt(maybe_shader);
         }
 
         // pub var deleteProgram: *const fn (program: Uint) callconv(.C) void = undefined;
