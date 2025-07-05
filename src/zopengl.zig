@@ -432,38 +432,6 @@ pub fn loadCoreProfile(loader: LoaderFn, major: u32, minor: u32) !void {
         try load("glVertexAttribP3uiv", .{&bindings.vertexAttribP3uiv});
         try load("glVertexAttribP4ui", .{&bindings.vertexAttribP4ui});
         try load("glVertexAttribP4uiv", .{&bindings.vertexAttribP4uiv});
-
-        // TODO: where do these belong?
-        // try load("glVertexP2ui", .{&bindings.vertexP2ui});
-        // try load("glVertexP2uiv", .{&bindings.vertexP2uiv});
-        // try load("glVertexP3ui", .{&bindings.vertexP3ui});
-        // try load("glVertexP3uiv", .{&bindings.vertexP3uiv});
-        // try load("glVertexP4ui", .{&bindings.vertexP4ui});
-        // try load("glVertexP4uiv", .{&bindings.vertexP4uiv});
-        // try load("glTexCoordP1ui", .{&bindings.texCoordP1ui});
-        // try load("glTexCoordP1uiv", .{&bindings.texCoordP1uiv});
-        // try load("glTexCoordP2ui", .{&bindings.texCoordP2ui});
-        // try load("glTexCoordP2uiv", .{&bindings.texCoordP2uiv});
-        // try load("glTexCoordP3ui", .{&bindings.texCoordP3ui});
-        // try load("glTexCoordP3uiv", .{&bindings.texCoordP3uiv});
-        // try load("glTexCoordP4ui", .{&bindings.texCoordP4ui});
-        // try load("glTexCoordP4uiv", .{&bindings.texCoordP4uiv});
-        // try load("glMultiTexCoordP1ui", .{&bindings.multiTexCoordP1ui});
-        // try load("glMultiTexCoordP1uiv", .{&bindings.multiTexCoordP1uiv});
-        // try load("glMultiTexCoordP2ui", .{&bindings.multiTexCoordP2ui});
-        // try load("glMultiTexCoordP2uiv", .{&bindings.multiTexCoordP2uiv});
-        // try load("glMultiTexCoordP3ui", .{&bindings.multiTexCoordP3ui});
-        // try load("glMultiTexCoordP3uiv", .{&bindings.multiTexCoordP3uiv});
-        // try load("glMultiTexCoordP4ui", .{&bindings.multiTexCoordP4ui});
-        // try load("glMultiTexCoordP4uiv", .{&bindings.multiTexCoordP4uiv});
-        // try load("glNormalP3ui", .{&bindings.normalP3ui});
-        // try load("glNormalP3uiv", .{&bindings.normalP3uiv});
-        // try load("glColorP3ui", .{&bindings.colorP3ui});
-        // try load("glColorP3uiv", .{&bindings.colorP3uiv});
-        // try load("glColorP4ui", .{&bindings.colorP4ui});
-        // try load("glColorP4uiv", .{&bindings.colorP4uiv});
-        // try load("glSecondaryColorP3ui", .{&bindings.secondaryColorP3ui});
-        // try load("glSecondaryColorP3uiv", .{&bindings.secondaryColorP3uiv});
     }
 
     // OpenGL 4.0
@@ -513,7 +481,7 @@ pub fn loadCoreProfile(loader: LoaderFn, major: u32, minor: u32) !void {
         try load("glDrawTransformFeedbackStream", .{&bindings.drawTransformFeedbackStream});
         try load("glBeginQueryIndexed", .{&bindings.beginQueryIndexed});
         try load("glEndQueryIndexed", .{&bindings.endQueryIndexed});
-        try load("glGetQueryIndexediv", .{&bindings.glGetQueryIndexediv});
+        try load("glGetQueryIndexediv", .{&bindings.getQueryIndexediv});
     }
 
     // OpenGL 4.1
@@ -672,32 +640,141 @@ pub fn loadCoreProfile(loader: LoaderFn, major: u32, minor: u32) !void {
 
     // OpenGL 4.4
     if (ver >= 44) {
+        try load("glBufferStorage", .{&bindings.bufferStorage});
         try load("glClearTexImage", .{&bindings.clearTexImage});
-        // TODO
+        try load("glClearTexSubImage", .{&bindings.clearTexSubImage});
+        try load("glBindBuffersBase", .{&bindings.bindBuffersBase});
+        try load("glBindBuffersRange", .{&bindings.bindBuffersRange});
+        try load("glBindTextures", .{&bindings.bindTextures});
+        try load("glBindSamplers", .{&bindings.bindSamplers});
+        try load("glBindImageTextures", .{&bindings.bindImageTextures});
+        try load("glBindVertexBuffers", .{&bindings.bindVertexBuffers});
     }
 
     // OpenGL 4.5
     if (ver >= 45) {
-        try load("glTextureStorage2D", .{&bindings.textureStorage2D});
-        try load("glTextureStorage2DMultisample", .{&bindings.textureStorage2DMultisample});
-        try load("glCreateTextures", .{&bindings.createTextures});
-        try load("glCreateFramebuffers", .{&bindings.createFramebuffers});
-        try load("glNamedFramebufferTexture", .{&bindings.namedFramebufferTexture});
-        try load("glBlitNamedFramebuffer", .{&bindings.blitNamedFramebuffer});
+        try load("glClipControl", .{&bindings.clipControl});
+        try load("glCreateTransformFeedbacks", .{&bindings.createTransformFeedbacks});
+        try load("glTransformFeedbackBufferBase", .{&bindings.transformFeedbackBufferBase});
+        try load("glTransformFeedbackBufferRange", .{&bindings.transformFeedbackBufferRange});
+        try load("glGetTransformFeedbackiv", .{&bindings.getTransformFeedbackiv});
+        try load("glGetTransformFeedbacki_v", .{&bindings.getTransformFeedbacki_v});
+        try load("glGetTransformFeedbacki64_v", .{&bindings.getTransformFeedbacki64_v});
         try load("glCreateBuffers", .{&bindings.createBuffers});
-        try load("glClearNamedFramebufferfv", .{&bindings.clearNamedFramebufferfv});
         try load("glNamedBufferStorage", .{&bindings.namedBufferStorage});
+        try load("glNamedBufferData", .{&bindings.namedBufferData});
+        try load("glNamedBufferSubData", .{&bindings.namedBufferSubData});
+        try load("glCopyNamedBufferSubData", .{&bindings.copyNamedBufferSubData});
+        try load("glClearNamedBufferData", .{&bindings.clearNamedBufferData});
+        try load("glClearNamedBufferSubData", .{&bindings.clearNamedBufferSubData});
+        try load("glMapNamedBuffer", .{&bindings.mapNamedBuffer});
+        try load("glMapNamedBufferRange", .{&bindings.mapNamedBufferRange});
+        try load("glUnmapNamedBuffer", .{&bindings.unmapNamedBuffer});
+        try load("glFlushMappedNamedBufferRange", .{&bindings.flushMappedNamedBufferRange});
+        try load("glGetNamedBufferParameteriv", .{&bindings.getNamedBufferParameteriv});
+        try load("glGetNamedBufferParameteri64v", .{&bindings.getNamedBufferParameteri64v});
+        try load("glGetNamedBufferPointerv", .{&bindings.getNamedBufferPointerv});
+        try load("glGetNamedBufferSubData", .{&bindings.getNamedBufferSubData});
+        try load("glCreateFramebuffers", .{&bindings.createFramebuffers});
+        try load("glNamedFramebufferRenderbuffer", .{&bindings.namedFramebufferRenderbuffer});
+        try load("glNamedFramebufferParameteri", .{&bindings.namedFramebufferParameteri});
+        try load("glNamedFramebufferTexture", .{&bindings.namedFramebufferTexture});
+        try load("glNamedFramebufferTextureLayer", .{&bindings.namedFramebufferTextureLayer});
+        try load("glNamedFramebufferDrawBuffer", .{&bindings.namedFramebufferDrawBuffer});
+        try load("glNamedFramebufferDrawBuffers", .{&bindings.namedFramebufferDrawBuffers});
+        try load("glNamedFramebufferReadBuffer", .{&bindings.namedFramebufferReadBuffer});
+        try load("glInvalidateNamedFramebufferData", .{&bindings.invalidateNamedFramebufferData});
+        try load("glInvalidateNamedFramebufferSubData", .{&bindings.invalidateNamedFramebufferSubData});
+        try load("glClearNamedFramebufferiv", .{&bindings.clearNamedFramebufferiv});
+        try load("glClearNamedFramebufferuiv", .{&bindings.clearNamedFramebufferuiv});
+        try load("glClearNamedFramebufferfv", .{&bindings.clearNamedFramebufferfv});
+        try load("glClearNamedFramebufferfi", .{&bindings.clearNamedFramebufferfi});
+        try load("glBlitNamedFramebuffer", .{&bindings.blitNamedFramebuffer});
+        try load("glCheckNamedFramebufferStatus", .{&bindings.checkNamedFramebufferStatus});
+        try load("glGetNamedFramebufferParameteriv", .{&bindings.getNamedFramebufferParameteriv});
+        try load("glGetNamedFramebufferAttachmentParameteriv", .{&bindings.getNamedFramebufferAttachmentParameteriv});
+        try load("glCreateRenderbuffers", .{&bindings.createRenderbuffers});
+        try load("glNamedRenderbufferStorage", .{&bindings.namedRenderbufferStorage});
+        try load("glNamedRenderbufferStorageMultisample", .{&bindings.namedRenderbufferStorageMultisample});
+        try load("glGetNamedRenderbufferParameteriv", .{&bindings.getNamedRenderbufferParameteriv});
+        try load("glCreateTextures", .{&bindings.createTextures});
+        try load("glTextureBuffer", .{&bindings.textureBuffer});
+        try load("glTextureBufferRange", .{&bindings.textureBufferRange});
+        try load("glTextureStorage1D", .{&bindings.textureStorage1D});
+        try load("glTextureStorage2D", .{&bindings.textureStorage2D});
+        try load("glTextureStorage3D", .{&bindings.textureStorage3D});
+        try load("glTextureStorage2DMultisample", .{&bindings.textureStorage2DMultisample});
+        try load("glTextureStorage3DMultisample", .{&bindings.textureStorage3DMultisample});
+        try load("glTextureSubImage1D", .{&bindings.textureSubImage1D});
+        try load("glTextureSubImage2D", .{&bindings.textureSubImage2D});
+        try load("glTextureSubImage3D", .{&bindings.textureSubImage3D});
+        try load("glCompressedTextureSubImage1D", .{&bindings.compressedTextureSubImage1D});
+        try load("glCompressedTextureSubImage2D", .{&bindings.compressedTextureSubImage2D});
+        try load("glCompressedTextureSubImage3D", .{&bindings.compressedTextureSubImage3D});
+        try load("glCopyTextureSubImage1D", .{&bindings.copyTextureSubImage1D});
+        try load("glCopyTextureSubImage2D", .{&bindings.copyTextureSubImage2D});
+        try load("glCopyTextureSubImage3D", .{&bindings.copyTextureSubImage3D});
+        try load("glTextureParameterf", .{&bindings.textureParameterf});
+        try load("glTextureParameterfv", .{&bindings.textureParameterfv});
+        try load("glTextureParameteri", .{&bindings.textureParameteri});
+        try load("glTextureParameterIiv", .{&bindings.textureParameterIiv});
+        try load("glTextureParameterIuiv", .{&bindings.textureParameterIuiv});
+        try load("glTextureParameteriv", .{&bindings.textureParameteriv});
+        try load("glGenerateTextureMipmap", .{&bindings.generateTextureMipmap});
         try load("glBindTextureUnit", .{&bindings.bindTextureUnit});
+        try load("glGetTextureImage", .{&bindings.getTextureImage});
+        try load("glGetCompressedTextureImage", .{&bindings.getCompressedTextureImage});
+        try load("glGetTextureLevelParameterfv", .{&bindings.getTextureLevelParameterfv});
+        try load("glGetTextureLevelParameteriv", .{&bindings.getTextureLevelParameteriv});
+        try load("glGetTextureParameterfv", .{&bindings.getTextureParameterfv});
+        try load("glGetTextureParameterIiv", .{&bindings.getTextureParameterIiv});
+        try load("glGetTextureParameterIuiv", .{&bindings.getTextureParameterIuiv});
+        try load("glGetTextureParameteriv", .{&bindings.getTextureParameteriv});
+        try load("glCreateVertexArrays", .{&bindings.createVertexArrays});
+        try load("glDisableVertexArrayAttrib", .{&bindings.disableVertexArrayAttrib});
+        try load("glEnableVertexArrayAttrib", .{&bindings.enableVertexArrayAttrib});
+        try load("glVertexArrayElementBuffer", .{&bindings.vertexArrayElementBuffer});
+        try load("glVertexArrayVertexBuffer", .{&bindings.vertexArrayVertexBuffer});
+        try load("glVertexArrayVertexBuffers", .{&bindings.vertexArrayVertexBuffers});
+        try load("glVertexArrayAttribBinding", .{&bindings.vertexArrayAttribBinding});
+        try load("glVertexArrayAttribFormat", .{&bindings.vertexArrayAttribFormat});
+        try load("glVertexArrayAttribIFormat", .{&bindings.vertexArrayAttribIFormat});
+        try load("glVertexArrayAttribLFormat", .{&bindings.vertexArrayAttribLFormat});
+        try load("glVertexArrayBindingDivisor", .{&bindings.vertexArrayBindingDivisor});
+        try load("glGetVertexArrayiv", .{&bindings.getVertexArrayiv});
+        try load("glGetVertexArrayIndexediv", .{&bindings.getVertexArrayIndexediv});
+        try load("glGetVertexArrayIndexed64iv", .{&bindings.getVertexArrayIndexed64iv});
+        try load("glCreateSamplers", .{&bindings.createSamplers});
+        try load("glCreateProgramPipelines", .{&bindings.createProgramPipelines});
+        try load("glCreateQueries", .{&bindings.createQueries});
+        try load("glGetQueryBufferObjecti64v", .{&bindings.getQueryBufferObjecti64v});
+        try load("glGetQueryBufferObjectiv", .{&bindings.getQueryBufferObjectiv});
+        try load("glGetQueryBufferObjectui64v", .{&bindings.getQueryBufferObjectui64v});
+        try load("glGetQueryBufferObjectuiv", .{&bindings.getQueryBufferObjectuiv});
+        try load("glMemoryBarrierByRegion", .{&bindings.memoryBarrierByRegion});
+        try load("glGetTextureSubImage", .{&bindings.getTextureSubImage});
+        try load("glGetCompressedTextureSubImage", .{&bindings.getCompressedTextureSubImage});
+        try load("glGetGraphicsResetStatus", .{&bindings.getGraphicsResetStatus});
+        try load("glGetnCompressedTexImage", .{&bindings.getnCompressedTexImage});
+        try load("glGetnTexImage", .{&bindings.getnTexImage});
+        try load("glGetnUniformdv", .{&bindings.getnUniformdv});
+        try load("glGetnUniformfv", .{&bindings.getnUniformfv});
+        try load("glGetnUniformiv", .{&bindings.getnUniformiv});
+        try load("glGetnUniformuiv", .{&bindings.getnUniformuiv});
+        try load("glReadnPixels", .{&bindings.readnPixels});
         try load("glTextureBarrier", .{&bindings.textureBarrier});
-        // TODO
     }
 
     // OpenGL 4.6
     if (ver >= 46) {
-        // TODO
+        try load("glMultiDrawArraysIndirectCount", .{&bindings.multiDrawArraysIndirectCount});
+        try load("glMultiDrawElementsIndirectCount", .{&bindings.multiDrawElementsIndirectCount});
+        try load("glPolygonOffsetClamp", .{&bindings.polygonOffsetClamp});
+        try load("glSpecializeShader", .{&bindings.specializeShader});
     }
 }
 
+/// DEPRECATED
 /// Loads a subset of OpenGL 4.6 (Compatibility Profile) + some useful, multivendor (NVIDIA, AMD) extensions.
 pub fn loadCompatProfileExt(loader: LoaderFn) !void {
     try loadCoreProfile(loader, 4, 6);
@@ -728,6 +805,36 @@ pub fn loadCompatProfileExt(loader: LoaderFn) !void {
     try load("glTranslatef", .{&bindings.translatef});
     try load("glMatrixLoadIdentityEXT", .{&bindings.matrixLoadIdentityEXT});
     try load("glMatrixOrthoEXT", .{&bindings.matrixOrthoEXT});
+    // try load("glVertexP2ui", .{&bindings.vertexP2ui});
+    // try load("glVertexP2uiv", .{&bindings.vertexP2uiv});
+    // try load("glVertexP3ui", .{&bindings.vertexP3ui});
+    // try load("glVertexP3uiv", .{&bindings.vertexP3uiv});
+    // try load("glVertexP4ui", .{&bindings.vertexP4ui});
+    // try load("glVertexP4uiv", .{&bindings.vertexP4uiv});
+    // try load("glTexCoordP1ui", .{&bindings.texCoordP1ui});
+    // try load("glTexCoordP1uiv", .{&bindings.texCoordP1uiv});
+    // try load("glTexCoordP2ui", .{&bindings.texCoordP2ui});
+    // try load("glTexCoordP2uiv", .{&bindings.texCoordP2uiv});
+    // try load("glTexCoordP3ui", .{&bindings.texCoordP3ui});
+    // try load("glTexCoordP3uiv", .{&bindings.texCoordP3uiv});
+    // try load("glTexCoordP4ui", .{&bindings.texCoordP4ui});
+    // try load("glTexCoordP4uiv", .{&bindings.texCoordP4uiv});
+    // try load("glMultiTexCoordP1ui", .{&bindings.multiTexCoordP1ui});
+    // try load("glMultiTexCoordP1uiv", .{&bindings.multiTexCoordP1uiv});
+    // try load("glMultiTexCoordP2ui", .{&bindings.multiTexCoordP2ui});
+    // try load("glMultiTexCoordP2uiv", .{&bindings.multiTexCoordP2uiv});
+    // try load("glMultiTexCoordP3ui", .{&bindings.multiTexCoordP3ui});
+    // try load("glMultiTexCoordP3uiv", .{&bindings.multiTexCoordP3uiv});
+    // try load("glMultiTexCoordP4ui", .{&bindings.multiTexCoordP4ui});
+    // try load("glMultiTexCoordP4uiv", .{&bindings.multiTexCoordP4uiv});
+    // try load("glNormalP3ui", .{&bindings.normalP3ui});
+    // try load("glNormalP3uiv", .{&bindings.normalP3uiv});
+    // try load("glColorP3ui", .{&bindings.colorP3ui});
+    // try load("glColorP3uiv", .{&bindings.colorP3uiv});
+    // try load("glColorP4ui", .{&bindings.colorP4ui});
+    // try load("glColorP4uiv", .{&bindings.colorP4uiv});
+    // try load("glSecondaryColorP3ui", .{&bindings.secondaryColorP3ui});
+    // try load("glSecondaryColorP3uiv", .{&bindings.secondaryColorP3uiv});
 }
 
 pub fn loadEsProfile(loader: LoaderFn, major: u32, minor: u32) !void {
@@ -754,7 +861,7 @@ pub fn loadEsProfile(loader: LoaderFn, major: u32, minor: u32) !void {
         try load("glClear", .{&bindings.clear});
         try load("glClearColor", .{&bindings.clearColor});
         try load("glClearStencil", .{&bindings.clearStencil});
-        try load("glClearDepthf", .{&bindings.clearDepthf});
+        try load("glClearDepth", .{&bindings.clearDepth});
         try load("glStencilMask", .{&bindings.stencilMask});
         try load("glColorMask", .{&bindings.colorMask});
         try load("glDepthMask", .{&bindings.depthMask});
@@ -955,7 +1062,6 @@ pub fn loadEsProfile(loader: LoaderFn, major: u32, minor: u32) !void {
         try load("glGetSamplerParameterIiv", .{&bindings.getSamplerParameterIiv});
         try load("glGetSamplerParameterfv", .{&bindings.getSamplerParameterfv});
         try load("glVertexAttribDivisor", .{&bindings.vertexAttribDivisor});
-        // TODO: from opengl 4.0 to 4.3 *subset*
     }
 }
 
@@ -1504,6 +1610,7 @@ comptime {
     @export(&bindings.bindBufferBase, .{ .name = "glBindBufferBase", .linkage = linkage });
     @export(&bindings.transformFeedbackVaryings, .{ .name = "glTransformFeedbackVaryings", .linkage = linkage });
     @export(&bindings.getTransformFeedbackVarying, .{ .name = "glGetTransformFeedbackVarying", .linkage = linkage });
+    @export(&bindings.clampColor, .{ .name = "glClampColor", .linkage = linkage });
     @export(&bindings.beginConditionalRender, .{ .name = "glBeginConditionalRender", .linkage = linkage });
     @export(&bindings.endConditionalRender, .{ .name = "glEndConditionalRender", .linkage = linkage });
     @export(&bindings.vertexAttribIPointer, .{ .name = "glVertexAttribIPointer", .linkage = linkage });
@@ -1643,37 +1750,6 @@ comptime {
     @export(&bindings.vertexAttribP3uiv, .{ .name = "glVertexAttribP3uiv", .linkage = linkage });
     @export(&bindings.vertexAttribP4ui, .{ .name = "glVertexAttribP4ui", .linkage = linkage });
     @export(&bindings.vertexAttribP4uiv, .{ .name = "glVertexAttribP4uiv", .linkage = linkage });
-    // TODO: where do these belong?
-    // @export(&bindings.vertexP2ui, .{ .name = "glVertexP2ui", .linkage = linkage });
-    // @export(&bindings.vertexP2uiv, .{ .name = "glVertexP2uiv", .linkage = linkage });
-    // @export(&bindings.vertexP3ui, .{ .name = "glVertexP3ui", .linkage = linkage });
-    // @export(&bindings.vertexP3uiv, .{ .name = "glVertexP3uiv", .linkage = linkage });
-    // @export(&bindings.vertexP4ui, .{ .name = "glVertexP4ui", .linkage = linkage });
-    // @export(&bindings.vertexP4uiv, .{ .name = "glVertexP4uiv", .linkage = linkage });
-    // @export(&bindings.texCoordP1ui, .{ .name = "glTexCoordP1ui", .linkage = linkage });
-    // @export(&bindings.texCoordP1uiv, .{ .name = "glTexCoordP1uiv", .linkage = linkage });
-    // @export(&bindings.texCoordP2ui, .{ .name = "glTexCoordP2ui", .linkage = linkage });
-    // @export(&bindings.texCoordP2uiv, .{ .name = "glTexCoordP2uiv", .linkage = linkage });
-    // @export(&bindings.texCoordP3ui, .{ .name = "glTexCoordP3ui", .linkage = linkage });
-    // @export(&bindings.texCoordP3uiv, .{ .name = "glTexCoordP3uiv", .linkage = linkage });
-    // @export(&bindings.texCoordP4ui, .{ .name = "glTexCoordP4ui", .linkage = linkage });
-    // @export(&bindings.texCoordP4uiv, .{ .name = "glTexCoordP4uiv", .linkage = linkage });
-    // @export(&bindings.multiTexCoordP1ui, .{ .name = "glMultiTexCoordP1ui", .linkage = linkage });
-    // @export(&bindings.multiTexCoordP1uiv, .{ .name = "glMultiTexCoordP1uiv", .linkage = linkage });
-    // @export(&bindings.multiTexCoordP2ui, .{ .name = "glMultiTexCoordP2ui", .linkage = linkage });
-    // @export(&bindings.multiTexCoordP2uiv, .{ .name = "glMultiTexCoordP2uiv", .linkage = linkage });
-    // @export(&bindings.multiTexCoordP3ui, .{ .name = "glMultiTexCoordP3ui", .linkage = linkage });
-    // @export(&bindings.multiTexCoordP3uiv, .{ .name = "glMultiTexCoordP3uiv", .linkage = linkage });
-    // @export(&bindings.multiTexCoordP4ui, .{ .name = "glMultiTexCoordP4ui", .linkage = linkage });
-    // @export(&bindings.multiTexCoordP4uiv, .{ .name = "glMultiTexCoordP4uiv", .linkage = linkage });
-    // @export(&bindings.normalP3ui, .{ .name = "glNormalP3ui", .linkage = linkage });
-    // @export(&bindings.normalP3uiv, .{ .name = "glNormalP3uiv", .linkage = linkage });
-    // @export(&bindings.colorP3ui, .{ .name = "glColorP3ui", .linkage = linkage });
-    // @export(&bindings.colorP3uiv, .{ .name = "glColorP3uiv", .linkage = linkage });
-    // @export(&bindings.colorP4ui, .{ .name = "glColorP4ui", .linkage = linkage });
-    // @export(&bindings.colorP4uiv, .{ .name = "glColorP4uiv", .linkage = linkage });
-    // @export(&bindings.secondaryColorP3ui, .{ .name = "glSecondaryColorP3ui", .linkage = linkage });
-    // @export(&bindings.secondaryColorP3uiv, .{ .name = "glSecondaryColorP3uiv", .linkage = linkage });
     //----------------------------------------------------------------------------------------------
     // OpenGL 4.0 (Core Profile)
     //----------------------------------------------------------------------------------------------
@@ -1722,7 +1798,7 @@ comptime {
     @export(&bindings.drawTransformFeedbackStream, .{ .name = "glDrawTransformFeedbackStream", .linkage = linkage });
     @export(&bindings.beginQueryIndexed, .{ .name = "glBeginQueryIndexed", .linkage = linkage });
     @export(&bindings.endQueryIndexed, .{ .name = "glEndQueryIndexed", .linkage = linkage });
-    @export(&bindings.glGetQueryIndexediv, .{ .name = "glGetQueryIndexediv", .linkage = linkage });
+    @export(&bindings.getQueryIndexediv, .{ .name = "glGetQueryIndexediv", .linkage = linkage });
     //----------------------------------------------------------------------------------------------
     // OpenGL 4.1 (Core Profile)
     //----------------------------------------------------------------------------------------------
@@ -1834,7 +1910,7 @@ comptime {
     @export(&bindings.clearBufferSubData, .{ .name = "glClearBufferSubData", .linkage = linkage });
     @export(&bindings.dispatchCompute, .{ .name = "glDispatchCompute", .linkage = linkage });
     @export(&bindings.dispatchComputeIndirect, .{ .name = "glDispatchComputeIndirect", .linkage = linkage });
-    @export(&bindings.copyImageSubData, .{ .name = "glCompyImageSubData", .linkage = linkage });
+    @export(&bindings.copyImageSubData, .{ .name = "glCopyImageSubData", .linkage = linkage });
     @export(&bindings.framebufferParameteri, .{ .name = "glFramebufferParameteri", .linkage = linkage });
     @export(&bindings.getFramebufferParameteriv, .{ .name = "glGetFramebufferParameteriv", .linkage = linkage });
     @export(&bindings.getInternalformati64v, .{ .name = "glGetInternalformati64v", .linkage = linkage });
@@ -1874,4 +1950,136 @@ comptime {
     @export(&bindings.objectPtrLabel, .{ .name = "glObjectPtrLabel", .linkage = linkage });
     @export(&bindings.getObjectPtrLabel, .{ .name = "glGetObjectPtrLabel", .linkage = linkage });
     @export(&bindings.getPointerv, .{ .name = "glGetPointerv", .linkage = linkage });
+    //----------------------------------------------------------------------------------------------
+    // OpenGL 4.4 (Core Profile)
+    //----------------------------------------------------------------------------------------------
+    @export(&bindings.bufferStorage, .{ .name = "glBufferStorage", .linkage = linkage });
+    @export(&bindings.clearTexImage, .{ .name = "glClearTexImage", .linkage = linkage });
+    @export(&bindings.clearTexSubImage, .{ .name = "glClearTexSubImage", .linkage = linkage });
+    @export(&bindings.bindBuffersBase, .{ .name = "glBindBuffersBase", .linkage = linkage });
+    @export(&bindings.bindBuffersRange, .{ .name = "glBindBuffersRange", .linkage = linkage });
+    @export(&bindings.bindTextures, .{ .name = "glBindTextures", .linkage = linkage });
+    @export(&bindings.bindSamplers, .{ .name = "glBindSamplers", .linkage = linkage });
+    @export(&bindings.bindImageTextures, .{ .name = "glBindImageTextures", .linkage = linkage });
+    @export(&bindings.bindVertexBuffers, .{ .name = "glBindVertexBuffers", .linkage = linkage });
+    //----------------------------------------------------------------------------------------------
+    // OpenGL 4.5 (Core Profile)
+    //----------------------------------------------------------------------------------------------
+    @export(&bindings.clipControl, .{ .name = "glClipControl", .linkage = linkage });
+    @export(&bindings.createTransformFeedbacks, .{ .name = "glCreateTransformFeedbacks", .linkage = linkage });
+    @export(&bindings.transformFeedbackBufferBase, .{ .name = "glTransformFeedbackBufferBase", .linkage = linkage });
+    @export(&bindings.transformFeedbackBufferRange, .{ .name = "glTransformFeedbackBufferRange", .linkage = linkage });
+    @export(&bindings.getTransformFeedbackiv, .{ .name = "glGetTransformFeedbackiv", .linkage = linkage });
+    @export(&bindings.getTransformFeedbacki_v, .{ .name = "glGetTransformFeedbacki_v", .linkage = linkage });
+    @export(&bindings.getTransformFeedbacki64_v, .{ .name = "glGetTransformFeedbacki64_v", .linkage = linkage });
+    @export(&bindings.createBuffers, .{ .name = "glCreateBuffers", .linkage = linkage });
+    @export(&bindings.namedBufferStorage, .{ .name = "glNamedBufferStorage", .linkage = linkage });
+    @export(&bindings.namedBufferData, .{ .name = "glNamedBufferData", .linkage = linkage });
+    @export(&bindings.namedBufferSubData, .{ .name = "glNamedBufferSubData", .linkage = linkage });
+    @export(&bindings.copyNamedBufferSubData, .{ .name = "glCopyNamedBufferSubData", .linkage = linkage });
+    @export(&bindings.clearNamedBufferData, .{ .name = "glClearNamedBufferData", .linkage = linkage });
+    @export(&bindings.clearNamedBufferSubData, .{ .name = "glClearNamedBufferSubData", .linkage = linkage });
+    @export(&bindings.mapNamedBuffer, .{ .name = "glMapNamedBuffer", .linkage = linkage });
+    @export(&bindings.mapNamedBufferRange, .{ .name = "glMapNamedBufferRange", .linkage = linkage });
+    @export(&bindings.unmapNamedBuffer, .{ .name = "glUnmapNamedBuffer", .linkage = linkage });
+    @export(&bindings.flushMappedNamedBufferRange, .{ .name = "glFlushMappedNamedBufferRange", .linkage = linkage });
+    @export(&bindings.getNamedBufferParameteriv, .{ .name = "glGetNamedBufferParameteriv", .linkage = linkage });
+    @export(&bindings.getNamedBufferParameteri64v, .{ .name = "glGetNamedBufferParameteri64v", .linkage = linkage });
+    @export(&bindings.getNamedBufferPointerv, .{ .name = "glGetNamedBufferPointerv", .linkage = linkage });
+    @export(&bindings.getNamedBufferSubData, .{ .name = "glGetNamedBufferSubData", .linkage = linkage });
+    @export(&bindings.createFramebuffers, .{ .name = "glCreateFramebuffers", .linkage = linkage });
+    @export(&bindings.namedFramebufferRenderbuffer, .{ .name = "glNamedFramebufferRenderbuffer", .linkage = linkage });
+    @export(&bindings.namedFramebufferParameteri, .{ .name = "glNamedFramebufferParameteri", .linkage = linkage });
+    @export(&bindings.namedFramebufferTexture, .{ .name = "glNamedFramebufferTexture", .linkage = linkage });
+    @export(&bindings.namedFramebufferTextureLayer, .{ .name = "glNamedFramebufferTextureLayer", .linkage = linkage });
+    @export(&bindings.namedFramebufferDrawBuffer, .{ .name = "glNamedFramebufferDrawBuffer", .linkage = linkage });
+    @export(&bindings.namedFramebufferDrawBuffers, .{ .name = "glNamedFramebufferDrawBuffers", .linkage = linkage });
+    @export(&bindings.namedFramebufferReadBuffer, .{ .name = "glNamedFramebufferReadBuffer", .linkage = linkage });
+    @export(&bindings.invalidateNamedFramebufferData, .{ .name = "glInvalidateNamedFramebufferData", .linkage = linkage });
+    @export(&bindings.invalidateNamedFramebufferSubData, .{ .name = "glInvalidateNamedFramebufferSubData", .linkage = linkage });
+    @export(&bindings.clearNamedFramebufferiv, .{ .name = "glClearNamedFramebufferiv", .linkage = linkage });
+    @export(&bindings.clearNamedFramebufferuiv, .{ .name = "glClearNamedFramebufferuiv", .linkage = linkage });
+    @export(&bindings.clearNamedFramebufferfv, .{ .name = "glClearNamedFramebufferfv", .linkage = linkage });
+    @export(&bindings.clearNamedFramebufferfi, .{ .name = "glClearNamedFramebufferfi", .linkage = linkage });
+    @export(&bindings.blitNamedFramebuffer, .{ .name = "glBlitNamedFramebuffer", .linkage = linkage });
+    @export(&bindings.checkNamedFramebufferStatus, .{ .name = "glCheckNamedFramebufferStatus", .linkage = linkage });
+    @export(&bindings.getNamedFramebufferParameteriv, .{ .name = "glGetNamedFramebufferParameteriv", .linkage = linkage });
+    @export(&bindings.getNamedFramebufferAttachmentParameteriv, .{ .name = "glGetNamedFramebufferAttachmentParameteriv", .linkage = linkage });
+    @export(&bindings.createRenderbuffers, .{ .name = "glCreateRenderbuffers", .linkage = linkage });
+    @export(&bindings.namedRenderbufferStorage, .{ .name = "glNamedRenderbufferStorage", .linkage = linkage });
+    @export(&bindings.namedRenderbufferStorageMultisample, .{ .name = "glNamedRenderbufferStorageMultisample", .linkage = linkage });
+    @export(&bindings.getNamedRenderbufferParameteriv, .{ .name = "glGetNamedRenderbufferParameteriv", .linkage = linkage });
+    @export(&bindings.createTextures, .{ .name = "glCreateTextures", .linkage = linkage });
+    @export(&bindings.textureBuffer, .{ .name = "glTextureBuffer", .linkage = linkage });
+    @export(&bindings.textureBufferRange, .{ .name = "glTextureBufferRange", .linkage = linkage });
+    @export(&bindings.textureStorage1D, .{ .name = "glTextureStorage1D", .linkage = linkage });
+    @export(&bindings.textureStorage2D, .{ .name = "glTextureStorage2D", .linkage = linkage });
+    @export(&bindings.textureStorage3D, .{ .name = "glTextureStorage3D", .linkage = linkage });
+    @export(&bindings.textureStorage2DMultisample, .{ .name = "glTextureStorage2DMultisample", .linkage = linkage });
+    @export(&bindings.textureStorage3DMultisample, .{ .name = "glTextureStorage3DMultisample", .linkage = linkage });
+    @export(&bindings.textureSubImage1D, .{ .name = "glTextureSubImage1D", .linkage = linkage });
+    @export(&bindings.textureSubImage2D, .{ .name = "glTextureSubImage2D", .linkage = linkage });
+    @export(&bindings.textureSubImage3D, .{ .name = "glTextureSubImage3D", .linkage = linkage });
+    @export(&bindings.compressedTextureSubImage1D, .{ .name = "glCompressedTextureSubImage1D", .linkage = linkage });
+    @export(&bindings.compressedTextureSubImage2D, .{ .name = "glCompressedTextureSubImage2D", .linkage = linkage });
+    @export(&bindings.compressedTextureSubImage3D, .{ .name = "glCompressedTextureSubImage3D", .linkage = linkage });
+    @export(&bindings.copyTextureSubImage1D, .{ .name = "glCopyTextureSubImage1D", .linkage = linkage });
+    @export(&bindings.copyTextureSubImage2D, .{ .name = "glCopyTextureSubImage2D", .linkage = linkage });
+    @export(&bindings.copyTextureSubImage3D, .{ .name = "glCopyTextureSubImage3D", .linkage = linkage });
+    @export(&bindings.textureParameterf, .{ .name = "glTextureParameterf", .linkage = linkage });
+    @export(&bindings.textureParameterfv, .{ .name = "glTextureParameterfv", .linkage = linkage });
+    @export(&bindings.textureParameteri, .{ .name = "glTextureParameteri", .linkage = linkage });
+    @export(&bindings.textureParameterIiv, .{ .name = "glTextureParameterIiv", .linkage = linkage });
+    @export(&bindings.textureParameterIuiv, .{ .name = "glTextureParameterIuiv", .linkage = linkage });
+    @export(&bindings.textureParameteriv, .{ .name = "glTextureParameteriv", .linkage = linkage });
+    @export(&bindings.generateTextureMipmap, .{ .name = "glGenerateTextureMipmap", .linkage = linkage });
+    @export(&bindings.bindTextureUnit, .{ .name = "glBindTextureUnit", .linkage = linkage });
+    @export(&bindings.getTextureImage, .{ .name = "glGetTextureImage", .linkage = linkage });
+    @export(&bindings.getCompressedTextureImage, .{ .name = "glGetCompressedTextureImage", .linkage = linkage });
+    @export(&bindings.getTextureLevelParameterfv, .{ .name = "glGetTextureLevelParameterfv", .linkage = linkage });
+    @export(&bindings.getTextureLevelParameteriv, .{ .name = "glGetTextureLevelParameteriv", .linkage = linkage });
+    @export(&bindings.getTextureParameterfv, .{ .name = "glGetTextureParameterfv", .linkage = linkage });
+    @export(&bindings.getTextureParameterIiv, .{ .name = "glGetTextureParameterIiv", .linkage = linkage });
+    @export(&bindings.getTextureParameterIuiv, .{ .name = "glGetTextureParameterIuiv", .linkage = linkage });
+    @export(&bindings.getTextureParameteriv, .{ .name = "glGetTextureParameteriv", .linkage = linkage });
+    @export(&bindings.createVertexArrays, .{ .name = "glCreateVertexArrays", .linkage = linkage });
+    @export(&bindings.disableVertexArrayAttrib, .{ .name = "glDisableVertexArrayAttrib", .linkage = linkage });
+    @export(&bindings.enableVertexArrayAttrib, .{ .name = "glEnableVertexArrayAttrib", .linkage = linkage });
+    @export(&bindings.vertexArrayElementBuffer, .{ .name = "glVertexArrayElementBuffer", .linkage = linkage });
+    @export(&bindings.vertexArrayVertexBuffer, .{ .name = "glVertexArrayVertexBuffer", .linkage = linkage });
+    @export(&bindings.vertexArrayVertexBuffers, .{ .name = "glVertexArrayVertexBuffers", .linkage = linkage });
+    @export(&bindings.vertexArrayAttribBinding, .{ .name = "glVertexArrayAttribBinding", .linkage = linkage });
+    @export(&bindings.vertexArrayAttribFormat, .{ .name = "glVertexArrayAttribFormat", .linkage = linkage });
+    @export(&bindings.vertexArrayAttribIFormat, .{ .name = "glVertexArrayAttribIFormat", .linkage = linkage });
+    @export(&bindings.vertexArrayAttribLFormat, .{ .name = "glVertexArrayAttribLFormat", .linkage = linkage });
+    @export(&bindings.vertexArrayBindingDivisor, .{ .name = "glVertexArrayBindingDivisor", .linkage = linkage });
+    @export(&bindings.getVertexArrayiv, .{ .name = "glGetVertexArrayiv", .linkage = linkage });
+    @export(&bindings.getVertexArrayIndexediv, .{ .name = "glGetVertexArrayIndexediv", .linkage = linkage });
+    @export(&bindings.getVertexArrayIndexed64iv, .{ .name = "glGetVertexArrayIndexed64iv", .linkage = linkage });
+    @export(&bindings.createSamplers, .{ .name = "glCreateSamplers", .linkage = linkage });
+    @export(&bindings.createProgramPipelines, .{ .name = "glCreateProgramPipelines", .linkage = linkage });
+    @export(&bindings.createQueries, .{ .name = "glCreateQueries", .linkage = linkage });
+    @export(&bindings.getQueryBufferObjecti64v, .{ .name = "glGetQueryBufferObjecti64v", .linkage = linkage });
+    @export(&bindings.getQueryBufferObjectiv, .{ .name = "glGetQueryBufferObjectiv", .linkage = linkage });
+    @export(&bindings.getQueryBufferObjectui64v, .{ .name = "glGetQueryBufferObjectui64v", .linkage = linkage });
+    @export(&bindings.getQueryBufferObjectuiv, .{ .name = "glGetQueryBufferObjectuiv", .linkage = linkage });
+    @export(&bindings.memoryBarrierByRegion, .{ .name = "glMemoryBarrierByRegion", .linkage = linkage });
+    @export(&bindings.getTextureSubImage, .{ .name = "glGetTextureSubImage", .linkage = linkage });
+    @export(&bindings.getCompressedTextureSubImage, .{ .name = "glGetCompressedTextureSubImage", .linkage = linkage });
+    @export(&bindings.getGraphicsResetStatus, .{ .name = "glGetGraphicsResetStatus", .linkage = linkage });
+    @export(&bindings.getnCompressedTexImage, .{ .name = "glGetnCompressedTexImage", .linkage = linkage });
+    @export(&bindings.getnTexImage, .{ .name = "glGetnTexImage", .linkage = linkage });
+    @export(&bindings.getnUniformdv, .{ .name = "glGetnUniformdv", .linkage = linkage });
+    @export(&bindings.getnUniformfv, .{ .name = "glGetnUniformfv", .linkage = linkage });
+    @export(&bindings.getnUniformiv, .{ .name = "glGetnUniformiv", .linkage = linkage });
+    @export(&bindings.getnUniformuiv, .{ .name = "glGetnUniformuiv", .linkage = linkage });
+    @export(&bindings.readnPixels, .{ .name = "glReadnPixels", .linkage = linkage });
+    @export(&bindings.textureBarrier, .{ .name = "glTextureBarrier", .linkage = linkage });
+    //----------------------------------------------------------------------------------------------
+    // OpenGL 4.6 (Core Profile)
+    //----------------------------------------------------------------------------------------------
+    @export(&bindings.multiDrawArraysIndirectCount, .{ .name = "glMultiDrawArraysIndirectCount", .linkage = linkage });
+    @export(&bindings.multiDrawElementsIndirectCount, .{ .name = "glMultiDrawElementsIndirectCount", .linkage = linkage });
+    @export(&bindings.polygonOffsetClamp, .{ .name = "glPolygonOffsetClamp", .linkage = linkage });
+    @export(&bindings.specializeShader, .{ .name = "glSpecializeShader", .linkage = linkage });
 }

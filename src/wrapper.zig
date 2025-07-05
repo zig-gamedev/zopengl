@@ -5074,6 +5074,300 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     label: [*c]Char,
         // ) callconv(.C) void = undefined;
 
+        //--------------------------------------------------------------------------------------------------
+        //
+        // OpenGL 4.4 (Core Profile)
+        //
+        //--------------------------------------------------------------------------------------------------
+        pub const BUFFER_IMMUTABLE_STORAGE = bindings.BUFFER_IMMUTABLE_STORAGE;
+        pub const BUFFER_STORAGE_FLAGS = bindings.BUFFER_STORAGE_FLAGS;
+        pub const CLIENT_STORAGE_BIT = bindings.CLIENT_STORAGE_BIT;
+        pub const DYNAMIC_STORAGE_BIT = bindings.DYNAMIC_STORAGE_BIT;
+        pub const CLIENT_MAPPED_BUFFER_BARRIER_BIT = bindings.CLIENT_MAPPED_BUFFER_BARRIER_BIT;
+        pub const MAP_PERSISTENT_BIT = bindings.MAP_PERSISTENT_BIT;
+        pub const MAP_COHERENT_BIT = bindings.MAP_COHERENT_BIT;
+        pub const CLEAR_TEXTURE = bindings.CLEAR_TEXTURE;
+        pub const LOCATION_COMPONENT = bindings.LOCATION_COMPONENT;
+        pub const TRANSFORM_FEEDBACK_BUFFER_INDEX = bindings.TRANSFORM_FEEDBACK_BUFFER_INDEX;
+        pub const TRANSFORM_FEEDBACK_BUFFER_STRIDE = bindings.TRANSFORM_FEEDBACK_BUFFER_STRIDE;
+        pub const MAX_VERTEX_ATTRIB_STRIDE = bindings.MAX_VERTEX_ATTRIB_STRIDE;
+        pub const QUERY_BUFFER = bindings.QUERY_BUFFER;
+        pub const QUERY_BUFFER_BINDING = bindings.QUERY_BUFFER_BINDING;
+        pub const QUERY_RESULT_NO_WAIT = bindings.QUERY_RESULT_NO_WAIT;
+        pub const MIRROR_CLAMP_TO_EDGE = bindings.MIRROR_CLAMP_TO_EDGE;
+        pub fn bufferStorage(target: BufferTarget, size: usize, data: ?[]const u8, flags: packed struct(Bitfield) {
+            dynamic_storage: bool = false,
+            map_read: bool = false,
+            map_write: bool = false,
+            map_persistent: bool = false,
+            map_coherent: bool = false,
+            client_storage: bool = false,
+            __unused: u26 = 0,
+        }) void {
+            bindings.bufferStorage(
+                @intFromEnum(target),
+                @as(Sizeiptr, @bitCast(size)),
+                if (data) |d| d.ptr else null,
+                @bitCast(flags),
+            );
+        }
+        pub fn clearTexImage(texture: Texture, level: i32, format: PixelFormat, pixel_type: PixelType, data: ?[]const u8) void {
+            bindings.clearTexImage(
+                texture.name,
+                level,
+                @intFromEnum(format),
+                @intFromEnum(pixel_type),
+                if (data) |d| d.ptr else null,
+            );
+        }
+        pub fn clearTexSubImage(
+            texture: Texture,
+            level: i32,
+            xoffset: i32,
+            yoffset: i32,
+            zoffset: i32,
+            width: u32,
+            height: u32,
+            depth: u32,
+            format: PixelFormat,
+            pixel_type: PixelType,
+            data: ?[]const u8,
+        ) void {
+            bindings.clearTexSubImage(
+                texture.name,
+                level,
+                xoffset,
+                yoffset,
+                zoffset,
+                @as(Sizei, @bitCast(width)),
+                @as(Sizei, @bitCast(height)),
+                @as(Sizei, @bitCast(depth)),
+                @intFromEnum(format),
+                @intFromEnum(pixel_type),
+                if (data) |d| d.ptr else null,
+            );
+        }
+        pub fn bindBuffersBase(target: IndexedBufferTarget, first: u32, buffers: []const Buffer) void {
+            bindings.bindBuffersBase(
+                @intFromEnum(target),
+                first,
+                @intCast(buffers.len),
+                @ptrCast(buffers.ptr),
+            );
+        }
+        pub fn bindBuffersRange(
+            target: IndexedBufferTarget,
+            first: u32,
+            buffers: []const Buffer,
+            offsets: []const Intptr,
+            sizes: []const Sizeiptr,
+        ) void {
+            assert(buffers.len == offsets.len);
+            assert(buffers.len == sizes.len);
+            bindings.bindBuffersRange(
+                @intFromEnum(target),
+                first,
+                @intCast(buffers.len),
+                @ptrCast(buffers.ptr),
+                offsets.ptr,
+                sizes.ptr,
+            );
+        }
+        pub fn bindTextures(first: u32, textures: []const Texture) void {
+            bindings.bindTextures(
+                first,
+                @intCast(textures.len),
+                @ptrCast(textures.ptr),
+            );
+        }
+        pub fn bindSamplers(first: u32, samplers: []const Uint) void {
+            bindings.bindSamplers(
+                first,
+                @intCast(samplers.len),
+                samplers.ptr,
+            );
+        }
+        pub fn bindImageTextures(first: u32, textures: []const Texture) void {
+            bindings.bindImageTextures(
+                first,
+                @intCast(textures.len),
+                @ptrCast(textures.ptr),
+            );
+        }
+        pub fn bindVertexBuffers(
+            first: u32,
+            buffers: []const Buffer,
+            offsets: []const Intptr,
+            strides: []const Sizei,
+        ) void {
+            assert(buffers.len == offsets.len);
+            assert(buffers.len == strides.len);
+            bindings.bindVertexBuffers(
+                first,
+                @intCast(buffers.len),
+                @ptrCast(buffers.ptr),
+                offsets.ptr,
+                strides.ptr,
+            );
+        }
+
+        //--------------------------------------------------------------------------------------------------
+        //
+        // OpenGL 4.5 (Core Profile)
+        //
+        //--------------------------------------------------------------------------------------------------
+        pub const NEGATIVE_ONE_TO_ONE = bindings.NEGATIVE_ONE_TO_ONE;
+        pub const ZERO_TO_ONE = bindings.ZERO_TO_ONE;
+        pub const QUERY_WAIT_INVERTED = bindings.QUERY_WAIT_INVERTED;
+        pub const QUERY_NO_WAIT_INVERTED = bindings.QUERY_NO_WAIT_INVERTED;
+        pub const QUERY_BY_REGION_WAIT_INVERTED = bindings.QUERY_BY_REGION_WAIT_INVERTED;
+        pub const QUERY_BY_REGION_NO_WAIT_INVERTED = bindings.QUERY_BY_REGION_NO_WAIT_INVERTED;
+        pub const MAX_CULL_DISTANCES = bindings.MAX_CULL_DISTANCES;
+        pub const MAX_COMBINED_CLIP_AND_CULL_DISTANCES = bindings.MAX_COMBINED_CLIP_AND_CULL_DISTANCES;
+        pub const TEXTURE_TARGET = bindings.TEXTURE_TARGET;
+        pub const QUERY_TARGET = bindings.QUERY_TARGET;
+        pub const TEXTURE_BINDING = bindings.TEXTURE_BINDING;
+        pub const CONTEXT_FLAG_ROBUST_ACCESS_BIT_ARB = bindings.CONTEXT_FLAG_ROBUST_ACCESS_BIT_ARB;
+        pub const LOSE_CONTEXT_ON_RESET_ARB = bindings.LOSE_CONTEXT_ON_RESET_ARB;
+        pub const GUILTY_CONTEXT_RESET_ARB = bindings.GUILTY_CONTEXT_RESET_ARB;
+        pub const INNOCENT_CONTEXT_RESET_ARB = bindings.INNOCENT_CONTEXT_RESET_ARB;
+        pub const UNKNOWN_CONTEXT_RESET_ARB = bindings.UNKNOWN_CONTEXT_RESET_ARB;
+        pub const RESET_NOTIFICATION_STRATEGY_ARB = bindings.RESET_NOTIFICATION_STRATEGY_ARB;
+        pub const NO_RESET_NOTIFICATION_ARB = bindings.NO_RESET_NOTIFICATION_ARB;
+
+        pub fn clipControl(
+            origin: enum(Enum) { lower_left = LOWER_LEFT, upper_left = UPPER_LEFT },
+            depth: enum(Enum) { negative_one_to_one = NEGATIVE_ONE_TO_ONE, zero_to_one = ZERO_TO_ONE },
+        ) void {
+            bindings.clipControl(@intFromEnum(origin), @intFromEnum(depth));
+        }
+
+        pub fn createBuffer(ptr: *Buffer) void {
+            bindings.createBuffers(1, @ptrCast(&ptr.name));
+        }
+
+        pub fn createBuffers(buffers: []Buffer) void {
+            bindings.createBuffers(@intCast(buffers.len), @ptrCast(buffers.ptr));
+        }
+
+        pub fn namedBufferData(buffer: Buffer, data: []const u8, usage: BufferUsage) void {
+            bindings.namedBufferData(buffer.name, @intCast(data.len), data.ptr, @intFromEnum(usage));
+        }
+
+        pub fn createTexture(target: TextureTarget, ptr: *Texture) void {
+            bindings.createTextures(@intFromEnum(target), 1, @ptrCast(&ptr.name));
+        }
+
+        pub fn createTextures(target: TextureTarget, textures: []Texture) void {
+            bindings.createTextures(@intFromEnum(target), @intCast(textures.len), @ptrCast(textures.ptr));
+        }
+
+        pub fn textureStorage2D(texture: Texture, levels: u32, internal_format: InternalFormat, width: u32, height: u32) void {
+            bindings.textureStorage2D(texture.name, @intCast(levels), @intFromEnum(internal_format), @intCast(width), @intCast(height));
+        }
+
+        pub fn createFramebuffer(ptr: *Framebuffer) void {
+            bindings.createFramebuffers(1, @ptrCast(&ptr.name));
+        }
+
+        pub fn namedFramebufferTexture(framebuffer: Framebuffer, attachment: FramebufferAttachment, texture: Texture, level: i32) void {
+            bindings.namedFramebufferTexture(framebuffer.name, @intFromEnum(attachment), texture.name, level);
+        }
+
+        pub fn getTextureSubImage(texture: Texture, level: i32, xoffset: i32, yoffset: i32, zoffset: i32, width: u32, height: u32, depth: u32, format: PixelFormat, pixel_type: PixelType, buf_size: u32, pixels: ?[*]u8) void {
+            bindings.getTextureSubImage(texture.name, level, xoffset, yoffset, zoffset, @intCast(width), @intCast(height), @intCast(depth), @intFromEnum(format), @intFromEnum(pixel_type), @intCast(buf_size), pixels);
+        }
+
+        pub fn getGraphicsResetStatus() enum(Enum) {
+            no_error = NO_ERROR,
+            guilty_context_reset = GUILTY_CONTEXT_RESET_ARB,
+            innocent_context_reset = INNOCENT_CONTEXT_RESET_ARB,
+            unknown_context_reset = UNKNOWN_CONTEXT_RESET_ARB,
+        } {
+            return @enumFromInt(bindings.getGraphicsResetStatus());
+        }
+
+        //--------------------------------------------------------------------------------------------------
+        //
+        // OpenGL 4.6 (Core Profile)
+        //
+        //--------------------------------------------------------------------------------------------------
+        pub const PARAMETER_BUFFER = bindings.PARAMETER_BUFFER;
+        pub const PARAMETER_BUFFER_BINDING = bindings.PARAMETER_BUFFER_BINDING;
+        pub const VERTICES_SUBMITTED = bindings.VERTICES_SUBMITTED;
+        pub const PRIMITIVES_SUBMITTED = bindings.PRIMITIVES_SUBMITTED;
+        pub const VERTEX_SHADER_INVOCATIONS = bindings.VERTEX_SHADER_INVOCATIONS;
+        pub const TESS_CONTROL_SHADER_PATCHES = bindings.TESS_CONTROL_SHADER_PATCHES;
+        pub const TESS_EVALUATION_SHADER_INVOCATIONS = bindings.TESS_EVALUATION_SHADER_INVOCATIONS;
+        pub const GEOMETRY_SHADER_PRIMITIVES_EMITTED = bindings.GEOMETRY_SHADER_PRIMITIVES_EMITTED;
+        pub const FRAGMENT_SHADER_INVOCATIONS = bindings.FRAGMENT_SHADER_INVOCATIONS;
+        pub const COMPUTE_SHADER_INVOCATIONS = bindings.COMPUTE_SHADER_INVOCATIONS;
+        pub const CLIPPING_INPUT_PRIMITIVES = bindings.CLIPPING_INPUT_PRIMITIVES;
+        pub const CLIPPING_OUTPUT_PRIMITIVES = bindings.CLIPPING_OUTPUT_PRIMITIVES;
+        pub const SPIR_V_BINARY = bindings.SPIR_V_BINARY;
+        pub const SHADER_BINARY_FORMAT_SPIR_V = bindings.SHADER_BINARY_FORMAT_SPIR_V;
+        pub const SPIR_V_EXTENSIONS = bindings.SPIR_V_EXTENSIONS;
+        pub const NUM_SPIR_V_EXTENSIONS = bindings.NUM_SPIR_V_EXTENSIONS;
+        pub const TEXTURE_MAX_ANISOTROPY = bindings.TEXTURE_MAX_ANISOTROPY;
+        pub const MAX_TEXTURE_MAX_ANISOTROPY = bindings.MAX_TEXTURE_MAX_ANISOTROPY;
+        pub const TRANSFORM_FEEDBACK_OVERFLOW = bindings.TRANSFORM_FEEDBACK_OVERFLOW;
+        pub const TRANSFORM_FEEDBACK_STREAM_OVERFLOW = bindings.TRANSFORM_FEEDBACK_STREAM_OVERFLOW;
+        pub const CONTEXT_FLAG_NO_ERROR_BIT = bindings.CONTEXT_FLAG_NO_ERROR_BIT;
+
+        pub fn multiDrawArraysIndirectCount(
+            mode: PrimitiveType,
+            indirect: *const anyopaque,
+            drawcount: Intptr,
+            maxdrawcount: u32,
+            stride: u32,
+        ) void {
+            bindings.multiDrawArraysIndirectCount(
+                @intFromEnum(mode),
+                indirect,
+                drawcount,
+                @as(Sizei, @bitCast(maxdrawcount)),
+                @as(Sizei, @bitCast(stride)),
+            );
+        }
+
+        pub fn multiDrawElementsIndirectCount(
+            mode: PrimitiveType,
+            index_type: enum(Enum) { unsigned_byte = UNSIGNED_BYTE, unsigned_short = UNSIGNED_SHORT, unsigned_int = UNSIGNED_INT },
+            indirect: *const anyopaque,
+            drawcount: Intptr,
+            maxdrawcount: u32,
+            stride: u32,
+        ) void {
+            bindings.multiDrawElementsIndirectCount(
+                @intFromEnum(mode),
+                @intFromEnum(index_type),
+                indirect,
+                drawcount,
+                @as(Sizei, @bitCast(maxdrawcount)),
+                @as(Sizei, @bitCast(stride)),
+            );
+        }
+
+        pub fn polygonOffsetClamp(factor: f32, units: f32, clamp: f32) void {
+            bindings.polygonOffsetClamp(factor, units, clamp);
+        }
+
+        pub fn specializeShader(
+            shader: Shader,
+            entry_point: [:0]const u8,
+            constant_indices: []const u32,
+            constant_values: []const u32,
+        ) void {
+            assert(constant_indices.len == constant_values.len);
+            bindings.specializeShader(
+                shader.name,
+                @ptrCast(entry_point.ptr),
+                @intCast(constant_indices.len),
+                constant_indices.ptr,
+                constant_values.ptr,
+            );
+        }
+
         //------------------------------------------------------------------------------------------
         //
         // OpenGL ES 1.0
