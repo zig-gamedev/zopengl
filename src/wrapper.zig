@@ -5095,6 +5095,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const QUERY_BUFFER_BINDING = bindings.QUERY_BUFFER_BINDING;
         pub const QUERY_RESULT_NO_WAIT = bindings.QUERY_RESULT_NO_WAIT;
         pub const MIRROR_CLAMP_TO_EDGE = bindings.MIRROR_CLAMP_TO_EDGE;
+
         pub fn bufferStorage(target: BufferTarget, size: usize, data: ?[]const u8, flags: packed struct(Bitfield) {
             dynamic_storage: bool = false,
             map_read: bool = false,
@@ -5111,15 +5112,17 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(flags),
             );
         }
+
         pub fn clearTexImage(texture: Texture, level: i32, format: PixelFormat, pixel_type: PixelType, data: ?[]const u8) void {
             bindings.clearTexImage(
-                texture.name,
+                @intFromEnum(texture),
                 level,
                 @intFromEnum(format),
                 @intFromEnum(pixel_type),
                 if (data) |d| d.ptr else null,
             );
         }
+
         pub fn clearTexSubImage(
             texture: Texture,
             level: i32,
@@ -5134,7 +5137,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: ?[]const u8,
         ) void {
             bindings.clearTexSubImage(
-                texture.name,
+                @intFromEnum(texture),
                 level,
                 xoffset,
                 yoffset,
@@ -5147,6 +5150,7 @@ pub fn Wrap(comptime bindings: anytype) type {
                 if (data) |d| d.ptr else null,
             );
         }
+
         pub fn bindBuffersBase(target: IndexedBufferTarget, first: u32, buffers: []const Buffer) void {
             bindings.bindBuffersBase(
                 @intFromEnum(target),
@@ -5155,6 +5159,7 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @ptrCast(buffers.ptr),
             );
         }
+
         pub fn bindBuffersRange(
             target: IndexedBufferTarget,
             first: u32,
@@ -5173,6 +5178,7 @@ pub fn Wrap(comptime bindings: anytype) type {
                 sizes.ptr,
             );
         }
+
         pub fn bindTextures(first: u32, textures: []const Texture) void {
             bindings.bindTextures(
                 first,
@@ -5180,6 +5186,7 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @ptrCast(textures.ptr),
             );
         }
+
         pub fn bindSamplers(first: u32, samplers: []const Uint) void {
             bindings.bindSamplers(
                 first,
@@ -5187,6 +5194,7 @@ pub fn Wrap(comptime bindings: anytype) type {
                 samplers.ptr,
             );
         }
+
         pub fn bindImageTextures(first: u32, textures: []const Texture) void {
             bindings.bindImageTextures(
                 first,
@@ -5194,6 +5202,7 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @ptrCast(textures.ptr),
             );
         }
+
         pub fn bindVertexBuffers(
             first: u32,
             buffers: []const Buffer,
@@ -5243,7 +5252,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn createBuffer(ptr: *Buffer) void {
-            bindings.createBuffers(1, @ptrCast(&ptr.name));
+            bindings.createBuffers(1, @ptrCast(@constCast(&ptr)));
         }
 
         pub fn createBuffers(buffers: []Buffer) void {
@@ -5251,11 +5260,11 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn namedBufferData(buffer: Buffer, data: []const u8, usage: BufferUsage) void {
-            bindings.namedBufferData(buffer.name, @intCast(data.len), data.ptr, @intFromEnum(usage));
+            bindings.namedBufferData(@intFromEnum(buffer), @intCast(data.len), data.ptr, @intFromEnum(usage));
         }
 
         pub fn createTexture(target: TextureTarget, ptr: *Texture) void {
-            bindings.createTextures(@intFromEnum(target), 1, @ptrCast(&ptr.name));
+            bindings.createTextures(@intFromEnum(target), 1, @ptrCast(ptr));
         }
 
         pub fn createTextures(target: TextureTarget, textures: []Texture) void {
@@ -5263,19 +5272,19 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn textureStorage2D(texture: Texture, levels: u32, internal_format: InternalFormat, width: u32, height: u32) void {
-            bindings.textureStorage2D(texture.name, @intCast(levels), @intFromEnum(internal_format), @intCast(width), @intCast(height));
+            bindings.textureStorage2D(@intFromEnum(texture), @intCast(levels), @intFromEnum(internal_format), @intCast(width), @intCast(height));
         }
 
         pub fn createFramebuffer(ptr: *Framebuffer) void {
-            bindings.createFramebuffers(1, @ptrCast(&ptr.name));
+            bindings.createFramebuffers(1, @ptrCast(ptr));
         }
 
         pub fn namedFramebufferTexture(framebuffer: Framebuffer, attachment: FramebufferAttachment, texture: Texture, level: i32) void {
-            bindings.namedFramebufferTexture(framebuffer.name, @intFromEnum(attachment), texture.name, level);
+            bindings.namedFramebufferTexture(@intFromEnum(framebuffer), @intFromEnum(attachment), @intFromEnum(texture), level);
         }
 
         pub fn getTextureSubImage(texture: Texture, level: i32, xoffset: i32, yoffset: i32, zoffset: i32, width: u32, height: u32, depth: u32, format: PixelFormat, pixel_type: PixelType, buf_size: u32, pixels: ?[*]u8) void {
-            bindings.getTextureSubImage(texture.name, level, xoffset, yoffset, zoffset, @intCast(width), @intCast(height), @intCast(depth), @intFromEnum(format), @intFromEnum(pixel_type), @intCast(buf_size), pixels);
+            bindings.getTextureSubImage(@intFromEnum(texture), level, xoffset, yoffset, zoffset, @intCast(width), @intCast(height), @intCast(depth), @intFromEnum(format), @intFromEnum(pixel_type), @intCast(buf_size), pixels);
         }
 
         pub fn getGraphicsResetStatus() enum(Enum) {
@@ -5360,7 +5369,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(constant_indices.len == constant_values.len);
             bindings.specializeShader(
-                shader.name,
+                @intFromEnum(shader),
                 @ptrCast(entry_point.ptr),
                 @intCast(constant_indices.len),
                 constant_indices.ptr,
