@@ -1918,42 +1918,6 @@ pub var vertexAttribP4uiv: *const fn (index: Uint, type: Enum, normalized: Boole
 
 //--------------------------------------------------------------------------------------------------
 //
-// OpenGL 3.3 (Compatibility Profile)
-//
-//--------------------------------------------------------------------------------------------------
-pub var vertexP2ui: *const fn (type: Enum, value: Uint) callconv(.C) void = undefined;
-pub var vertexP2uiv: *const fn (type: Enum, value: *const Uint) callconv(.C) void = undefined;
-pub var vertexP3ui: *const fn (type: Enum, value: Uint) callconv(.C) void = undefined;
-pub var vertexP3uiv: *const fn (type: Enum, value: *const Uint) callconv(.C) void = undefined;
-pub var vertexP4ui: *const fn (type: Enum, value: Uint) callconv(.C) void = undefined;
-pub var vertexP4uiv: *const fn (type: Enum, value: *const Uint) callconv(.C) void = undefined;
-pub var texCoordP1ui: *const fn (type: Enum, coords: Uint) callconv(.C) void = undefined;
-pub var texCoordP1uiv: *const fn (type: Enum, coords: *const Uint) callconv(.C) void = undefined;
-pub var texCoordP2ui: *const fn (type: Enum, coords: Uint) callconv(.C) void = undefined;
-pub var texCoordP2uiv: *const fn (type: Enum, coords: *const Uint) callconv(.C) void = undefined;
-pub var texCoordP3ui: *const fn (type: Enum, coords: Uint) callconv(.C) void = undefined;
-pub var texCoordP3uiv: *const fn (type: Enum, coords: *const Uint) callconv(.C) void = undefined;
-pub var texCoordP4ui: *const fn (type: Enum, coords: Uint) callconv(.C) void = undefined;
-pub var texCoordP4uiv: *const fn (type: Enum, coords: *const Uint) callconv(.C) void = undefined;
-pub var multiTexCoordP1ui: *const fn (texture: Enum, type: Enum, coords: Uint) callconv(.C) void = undefined;
-pub var multiTexCoordP1uiv: *const fn (texture: Enum, type: Enum, coords: *const Uint) callconv(.C) void = undefined;
-pub var multiTexCoordP2ui: *const fn (texture: Enum, type: Enum, coords: Uint) callconv(.C) void = undefined;
-pub var multiTexCoordP2uiv: *const fn (texture: Enum, type: Enum, coords: *const Uint) callconv(.C) void = undefined;
-pub var multiTexCoordP3ui: *const fn (texture: Enum, type: Enum, coords: Uint) callconv(.C) void = undefined;
-pub var multiTexCoordP3uiv: *const fn (texture: Enum, type: Enum, coords: *const Uint) callconv(.C) void = undefined;
-pub var multiTexCoordP4ui: *const fn (texture: Enum, type: Enum, coords: Uint) callconv(.C) void = undefined;
-pub var multiTexCoordP4uiv: *const fn (texture: Enum, type: Enum, coords: *const Uint) callconv(.C) void = undefined;
-pub var normalP3ui: *const fn (type: Enum, coords: Uint) callconv(.C) void = undefined;
-pub var normalP3uiv: *const fn (type: Enum, coords: *const Uint) callconv(.C) void = undefined;
-pub var colorP3ui: *const fn (type: Enum, color: Uint) callconv(.C) void = undefined;
-pub var colorP3uiv: *const fn (type: Enum, color: *const Uint) callconv(.C) void = undefined;
-pub var colorP4ui: *const fn (type: Enum, color: Uint) callconv(.C) void = undefined;
-pub var colorP4uiv: *const fn (type: Enum, color: *const Uint) callconv(.C) void = undefined;
-pub var secondaryColorP3ui: *const fn (type: Enum, color: Uint) callconv(.C) void = undefined;
-pub var secondaryColorP3uiv: *const fn (type: Enum, color: *const Uint) callconv(.C) void = undefined;
-
-//--------------------------------------------------------------------------------------------------
-//
 // OpenGL 4.0 (Core Profile)
 //
 //--------------------------------------------------------------------------------------------------
@@ -2834,8 +2798,6 @@ pub const ATOMIC_COUNTER_BUFFER_REFERENCED_BY_COMPUTE_SHADER = 0x90ED;
 pub const DISPATCH_INDIRECT_BUFFER = 0x90EE;
 pub const DISPATCH_INDIRECT_BUFFER_BINDING = 0x90EF;
 pub const COMPUTE_SHADER_BIT = 0x00000020;
-// ARB_copy_image (none)
-// KHR_debug
 pub const DEBUGPROC = *const fn (
     source: Enum,
     type: Enum,
@@ -3164,7 +3126,6 @@ pub var invalidateSubFramebuffer: *const fn (
     width: Sizei,
     height: Sizei,
 ) callconv(.C) void = undefined;
-// ARB_multi_draw_indirect
 pub var multiDrawArraysIndirect: *const fn (
     mode: Enum,
     indirect: [*c]const u8,
@@ -3178,7 +3139,6 @@ pub var multiDrawElementsIndirect: *const fn (
     drawcount: Sizei,
     stride: Sizei,
 ) callconv(.C) void = undefined;
-// ARB_program_interface_query
 pub var getProgramInterfaceiv: *const fn (
     program: Uint,
     programInterface: Enum,
@@ -3218,16 +3178,11 @@ pub var getProgramResourceLocationIndex: *const fn (
     programInterface: Enum,
     name: [*c]const Char,
 ) callconv(.C) Int = undefined;
-// ARB_robust_buffer_access_behavior (none)
-// ARB_shader_image_size (none, GLSL only)
-// ARB_shader_storage_buffer_object
 pub var shaderStorageBlockBinding: *const fn (
     program: Uint,
     storageBlockIndex: Uint,
     storageBlockBinding: Uint,
 ) callconv(.C) void = undefined;
-// ARB_stencil_texturing (none)
-// ARB_texture_buffer_range
 pub var texBufferRange: *const fn (
     target: Enum,
     internalformat: Enum,
@@ -3235,8 +3190,6 @@ pub var texBufferRange: *const fn (
     offset: Intptr,
     size: Sizeiptr,
 ) callconv(.C) void = undefined;
-// ARB_texture_query_levels (none)
-// ARB_texture_storage_multisample
 pub var texStorage2DMultisample: *const fn (
     target: Enum,
     samples: Sizei,
@@ -3254,7 +3207,6 @@ pub var texStorage3DMultisample: *const fn (
     depth: Sizei,
     fixedsamplelocations: Boolean,
 ) callconv(.C) void = undefined;
-// ARB_texture_view
 pub var textureView: *const fn (
     texture: Uint,
     target: Enum,
@@ -3265,7 +3217,6 @@ pub var textureView: *const fn (
     minlayer: Uint,
     numlayers: Uint,
 ) callconv(.C) void = undefined;
-// ARB_vertex_attrib_binding
 pub var bindVertexBuffer: *const fn (
     bindingindex: Uint,
     buffer: Uint,
@@ -3299,7 +3250,6 @@ pub var vertexBindingDivisor: *const fn (
     bindingindex: Uint,
     divisor: Uint,
 ) callconv(.C) void = undefined;
-// KHR_debug
 pub var debugMessageControl: *const fn (
     source: Enum,
     type: Enum,
@@ -4212,7 +4162,7 @@ pub var specializeShader: *const fn (
 
 //--------------------------------------------------------------------------------------------------
 //
-// OpenGL 1.0 and 1.1 (Compatibility Profile)
+// Compatibility Profile
 //
 //--------------------------------------------------------------------------------------------------
 pub const MODELVIEW = 0x1700;
@@ -4245,11 +4195,38 @@ pub var popMatrix: *const fn () callconv(.C) void = undefined;
 pub var rotatef: *const fn (angle: Float, x: Float, y: Float, z: Float) callconv(.C) void = undefined;
 pub var scalef: *const fn (x: Float, y: Float, z: Float) callconv(.C) void = undefined;
 pub var translatef: *const fn (x: Float, y: Float, z: Float) callconv(.C) void = undefined;
-//--------------------------------------------------------------------------------------------------
-//
-// OpenGL misc. extensions (Compatibility Profile)
-//
-//--------------------------------------------------------------------------------------------------
+
+pub var vertexP2ui: *const fn (type: Enum, value: Uint) callconv(.C) void = undefined;
+pub var vertexP2uiv: *const fn (type: Enum, value: *const Uint) callconv(.C) void = undefined;
+pub var vertexP3ui: *const fn (type: Enum, value: Uint) callconv(.C) void = undefined;
+pub var vertexP3uiv: *const fn (type: Enum, value: *const Uint) callconv(.C) void = undefined;
+pub var vertexP4ui: *const fn (type: Enum, value: Uint) callconv(.C) void = undefined;
+pub var vertexP4uiv: *const fn (type: Enum, value: *const Uint) callconv(.C) void = undefined;
+pub var texCoordP1ui: *const fn (type: Enum, coords: Uint) callconv(.C) void = undefined;
+pub var texCoordP1uiv: *const fn (type: Enum, coords: *const Uint) callconv(.C) void = undefined;
+pub var texCoordP2ui: *const fn (type: Enum, coords: Uint) callconv(.C) void = undefined;
+pub var texCoordP2uiv: *const fn (type: Enum, coords: *const Uint) callconv(.C) void = undefined;
+pub var texCoordP3ui: *const fn (type: Enum, coords: Uint) callconv(.C) void = undefined;
+pub var texCoordP3uiv: *const fn (type: Enum, coords: *const Uint) callconv(.C) void = undefined;
+pub var texCoordP4ui: *const fn (type: Enum, coords: Uint) callconv(.C) void = undefined;
+pub var texCoordP4uiv: *const fn (type: Enum, coords: *const Uint) callconv(.C) void = undefined;
+pub var multiTexCoordP1ui: *const fn (texture: Enum, type: Enum, coords: Uint) callconv(.C) void = undefined;
+pub var multiTexCoordP1uiv: *const fn (texture: Enum, type: Enum, coords: *const Uint) callconv(.C) void = undefined;
+pub var multiTexCoordP2ui: *const fn (texture: Enum, type: Enum, coords: Uint) callconv(.C) void = undefined;
+pub var multiTexCoordP2uiv: *const fn (texture: Enum, type: Enum, coords: *const Uint) callconv(.C) void = undefined;
+pub var multiTexCoordP3ui: *const fn (texture: Enum, type: Enum, coords: Uint) callconv(.C) void = undefined;
+pub var multiTexCoordP3uiv: *const fn (texture: Enum, type: Enum, coords: *const Uint) callconv(.C) void = undefined;
+pub var multiTexCoordP4ui: *const fn (texture: Enum, type: Enum, coords: Uint) callconv(.C) void = undefined;
+pub var multiTexCoordP4uiv: *const fn (texture: Enum, type: Enum, coords: *const Uint) callconv(.C) void = undefined;
+pub var normalP3ui: *const fn (type: Enum, coords: Uint) callconv(.C) void = undefined;
+pub var normalP3uiv: *const fn (type: Enum, coords: *const Uint) callconv(.C) void = undefined;
+pub var colorP3ui: *const fn (type: Enum, color: Uint) callconv(.C) void = undefined;
+pub var colorP3uiv: *const fn (type: Enum, color: *const Uint) callconv(.C) void = undefined;
+pub var colorP4ui: *const fn (type: Enum, color: Uint) callconv(.C) void = undefined;
+pub var colorP4uiv: *const fn (type: Enum, color: *const Uint) callconv(.C) void = undefined;
+pub var secondaryColorP3ui: *const fn (type: Enum, color: Uint) callconv(.C) void = undefined;
+pub var secondaryColorP3uiv: *const fn (type: Enum, color: *const Uint) callconv(.C) void = undefined;
+
 pub var matrixLoadIdentityEXT: *const fn (mode: Enum) callconv(.C) void = undefined;
 pub var matrixOrthoEXT: *const fn (
     mode: Enum,
@@ -4260,6 +4237,22 @@ pub var matrixOrthoEXT: *const fn (
     zNear: Double,
     zFar: Double,
 ) callconv(.C) void = undefined;
+
+//--------------------------------------------------------------------------------------------------
+//
+// OpenGL ES 1.0
+//
+//--------------------------------------------------------------------------------------------------
+pub var clearDepthf: *const fn (depth: Float) callconv(.C) void = undefined;
+pub var depthRangef: *const fn (n: Clampf, f: Clampf) callconv(.C) void = undefined;
+
+//--------------------------------------------------------------------------------------------------
+//
+// OpenGL ES 2.0
+//
+//--------------------------------------------------------------------------------------------------
+pub const FRAMEBUFFER_INCOMPLETE_DIMENSIONS = 0x8CD9;
+
 //--------------------------------------------------------------------------------------------------
 //
 // EXT_copy_texture
@@ -4344,19 +4337,6 @@ pub var programUniformui64NV: *const fn (
     value: Uint64,
 ) callconv(.C) void = undefined;
 // TODO: Add the rest
-//--------------------------------------------------------------------------------------------------
-//
-// OpenGL ES 1.0
-//
-//--------------------------------------------------------------------------------------------------
-pub var clearDepthf: *const fn (depth: Float) callconv(.C) void = undefined;
-pub var depthRangef: *const fn (n: Clampf, f: Clampf) callconv(.C) void = undefined;
-//--------------------------------------------------------------------------------------------------
-//
-// OpenGL ES 2.0
-//
-//--------------------------------------------------------------------------------------------------
-pub const FRAMEBUFFER_INCOMPLETE_DIMENSIONS = 0x8CD9;
 //--------------------------------------------------------------------------------------------------
 //
 // OES_vertex_array_object (OpenGL ES Extension #71)
