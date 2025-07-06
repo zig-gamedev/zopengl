@@ -1187,9 +1187,21 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         pub const IndexedBufferTarget = enum(Enum) {
             //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            transform_feedback_buffer = TRANSFORM_FEEDBACK_BUFFER,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            uniform_buffer = UNIFORM_BUFFER,
+            //--------------------------------------------------------------------------------------
             // OpenGL 4.2 (Core Profile)
             //--------------------------------------------------------------------------------------
             atomic_counter_buffer = ATOMIC_COUNTER_BUFFER,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            shader_storage_buffer = SHADER_STORAGE_BUFFER,
         };
 
         pub const BufferUsage = enum(Enum) {
@@ -1225,6 +1237,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             lines_adjacency = LINES_ADJACENCY,
             triangle_strip_adjacency = TRIANGLE_STRIP_ADJACENCY,
             triangles_adjacency = TRIANGLES_ADJACENCY,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            patches = PATCHES,
         };
 
         pub const Face = enum(Enum) {
@@ -1478,17 +1494,14 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const TEXTURE_WRAP_T = bindings.TEXTURE_WRAP_T;
         pub const REPEAT = bindings.REPEAT;
 
-        // pub var cullFace: *const fn (mode: Enum) callconv(.C) void = undefined;
         pub fn cullFace(mode: Face) void {
             bindings.cullFace(@intFromEnum(mode));
         }
 
-        // pub var frontFace: *const fn (mode: Enum) callconv(.C) void = undefined;
         pub fn frontFace(mode: enum(Enum) { cw = CW, ccw = CCW }) void {
             bindings.frontFace(@intFromEnum(mode));
         }
 
-        // pub var hint: *const fn (target: Enum, mode: Enum) callconv(.C) void = undefined;
         pub fn hint(
             target: enum(Enum) {
                 //------------------------------------------------------------------------------------------
@@ -1514,17 +1527,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             bindings.hint(@intFromEnum(target), @intFromEnum(mode));
         }
 
-        // pub var lineWidth: *const fn (width: Float) callconv(.C) void = undefined;
         pub fn lineWidth(width: f32) void {
             bindings.lineWidth(width);
         }
 
-        // pub var pointSize: *const fn (size: Float) callconv(.C) void = undefined;
         pub fn pointSize(size: f32) void {
             bindings.pointSize(size);
         }
 
-        // pub var polygonMode: *const fn (face: Enum, mode: Enum) callconv(.C) void = undefined;
         pub fn polygonMode(face: Face, mode: enum(Enum) {
             point = POINT,
             line = LINE,
@@ -1533,41 +1543,26 @@ pub fn Wrap(comptime bindings: anytype) type {
             bindings.polygonMode(@intFromEnum(face), @intFromEnum(mode));
         }
 
-        // pub var scissor: *const fn (x: Int, y: Int, width: Sizei, height: Sizei) callconv(.C) void = undefined;
         pub fn scissor(x: i32, y: i32, width: i32, height: i32) void {
             bindings.scissor(x, y, width, height);
         }
 
-        // pub var texParameterf: *const fn (target: Enum, pname: Enum, param: Float) callconv(.C) void = undefined;
         pub fn texParameterf(target: TextureTarget, pname: TexParameter, param: f32) void {
             bindings.texParameterf(@intFromEnum(target), @intFromEnum(pname), param);
         }
 
-        // pub var texParameterfv: *const fn (target: Enum, pname: Enum, params: [*c]const Float) callconv(.C) void = undefined;
         pub fn texParameterfv(target: TextureTarget, pname: TexParameter, params: []const f32) void {
             bindings.texParameterfv(@intFromEnum(target), @intFromEnum(pname), params.ptr);
         }
 
-        // pub var texParameteri: *const fn (target: Enum, pname: Enum, param: Int,) callconv(.C) void = undefined;
         pub fn texParameteri(target: TextureTarget, pname: TexParameter, param: i32) void {
             bindings.texParameteri(@intFromEnum(target), @intFromEnum(pname), param);
         }
 
-        // pub var texParameteriv: *const fn (target: Enum, pname: Enum, params: [*c]const Int) callconv(.C) void = undefined;
         pub fn texParameteriv(target: TextureTarget, pname: TexParameter, params: []const i32) void {
             bindings.texParameteriv(@intFromEnum(target), @intFromEnum(pname), params.ptr);
         }
 
-        // pub var texImage1D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     internalformat: Enum,
-        //     width: Sizei,
-        //     border: Int,
-        //     format: Enum,
-        //     type: Enum,
-        //     pixels: ?*const anyopaque,
-        // ) callconv(.C) void = undefined;
         pub fn texImage1D(args: struct {
             target: TexImageTarget,
             level: u32,
@@ -1591,17 +1586,6 @@ pub fn Wrap(comptime bindings: anytype) type {
             );
         }
 
-        // pub var texImage2D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     internalformat: Enum,
-        //     width: Sizei,
-        //     height: Sizei,
-        //     border: Int,
-        //     format: Enum,
-        //     type: Enum,
-        //     pixels: ?*const anyopaque,
-        // ) callconv(.C) void = undefined;
         pub fn texImage2D(args: struct {
             target: TexImageTarget,
             level: u32,
@@ -1627,12 +1611,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             );
         }
 
-        // pub var drawBuffer: *const fn (buf: Enum) callconv(.C) void = undefined;
         pub fn drawBuffer(buf: ColorBuffer) void {
             bindings.drawBuffer(@intFromEnum(buf));
         }
 
-        // pub var clear: *const fn (mask: Bitfield) callconv(.C) void = undefined;
         pub fn clear(mask: packed struct(Bitfield) {
             comptime {
                 assert(@clz(@bitReverse(@as(Bitfield, DEPTH_BUFFER_BIT))) == @bitOffsetOf(@This(), "depth"));
@@ -1650,32 +1632,22 @@ pub fn Wrap(comptime bindings: anytype) type {
             bindings.clear(@bitCast(mask));
         }
 
-        // pub var clearColor: *const fn (red: Float, green: Float, blue: Float, alpha: Float) callconv(.C) void = undefined;
         pub fn clearColor(r: f32, g: f32, b: f32, a: f32) void {
             bindings.clearColor(r, g, b, a);
         }
 
-        // pub var clearStencil: *const fn (s: Int) callconv(.C) void = undefined;
         pub fn clearStencil(s: Int) void {
             bindings.clearStencil(s);
         }
 
-        // pub var clearDepth: *const fn (depth: Double) callconv(.C) void = undefined;
         pub fn clearDepth(depth: Double) void {
             bindings.clearDepth(depth);
         }
 
-        // pub var stencilMask: *const fn (mask: Uint) callconv(.C) void = undefined;
         pub fn stencilMask(mask: Uint) void {
             bindings.stencilMask(mask);
         }
 
-        // pub var colorMask: *const fn (
-        //     red: Boolean,
-        //     green: Boolean,
-        //     blue: Boolean,
-        //     alpha: Boolean,
-        // ) callconv(.C) void = undefined;
         pub fn colorMask(red: bool, green: bool, blue: bool, alpha: bool) void {
             bindings.colorMask(
                 @intFromBool(red),
@@ -1685,37 +1657,30 @@ pub fn Wrap(comptime bindings: anytype) type {
             );
         }
 
-        // pub var depthMask: *const fn (flag: Boolean) callconv(.C) void = undefined;
         pub fn depthMask(flag: bool) void {
             bindings.depthMask(@intFromBool(flag));
         }
 
-        // pub var disable: *const fn (cap: Enum) callconv(.C) void = undefined;
         pub fn disable(capability: Capability) void {
             bindings.disable(@intFromEnum(capability));
         }
 
-        // pub var enable: *const fn (cap: Enum) callconv(.C) void = undefined;
         pub fn enable(capability: Capability) void {
             bindings.enable(@intFromEnum(capability));
         }
 
-        // pub var finish: *const fn () callconv(.C) void = undefined;
         pub fn finish() void {
             bindings.finish();
         }
 
-        // pub var flush: *const fn () callconv(.C) void = undefined;
         pub fn flush() void {
             bindings.flush();
         }
 
-        // pub var blendFunc: *const fn (sfactor: Enum, dfactor: Enum) callconv(.C) void = undefined;
         pub fn blendFunc(sfactor: BlendFactor, dfactor: BlendFactor) void {
             bindings.blendFunc(@intFromEnum(sfactor), @intFromEnum(dfactor));
         }
 
-        // pub var logicOp: *const fn (opcode: Enum) callconv(.C) void = undefined;
         pub fn logicOp(opcode: enum(Enum) {
             clear = CLEAR,
             set = SET,
@@ -1736,45 +1701,30 @@ pub fn Wrap(comptime bindings: anytype) type {
             bindings.logicOp(@intFromEnum(opcode));
         }
 
-        // pub var stencilFunc: *const fn (func: Enum, ref: Int, mask: Uint) callconv(.C) void = undefined;
         pub fn stencilFunc(func: Func, ref: i32, mask: u32) void {
             bindings.stencilFunc(@intFromEnum(func), ref, mask);
         }
 
-        // pub var stencilOp: *const fn (fail: Enum, zfail: Enum, zpass: Enum) callconv(.C) void = undefined;
         pub fn stencilOp(fail: StencilAction, zfail: StencilAction, zpass: StencilAction) void {
             bindings.stencilOp(@intFromEnum(fail), @intFromEnum(zfail), @intFromEnum(zpass));
         }
 
-        // pub var depthFunc: *const fn (func: Enum) callconv(.C) void = undefined;
         pub fn depthFunc(func: Func) void {
             bindings.depthFunc(@intFromEnum(func));
         }
 
-        // pub var pixelStoref: *const fn (pname: Enum, param: Float) callconv(.C) void = undefined;
         pub fn pixelStoref(pname: PixelStoreParameter, param: f32) void {
             bindings.pixelStoref(@intFromEnum(pname), param);
         }
 
-        // pub var pixelStorei: *const fn (pname: Enum, param: Int) callconv(.C) void = undefined;
         pub fn pixelStorei(pname: PixelStoreParameter, param: i32) void {
             bindings.pixelStorei(@intFromEnum(pname), param);
         }
 
-        // pub var readBuffer: *const fn (src: Enum) callconv(.C) void = undefined;
         pub fn readBuffer(src: ColorBuffer) void {
             bindings.readBuffer(@intFromEnum(src));
         }
 
-        // pub var readPixels: *const fn (
-        //     x: Int,
-        //     y: Int,
-        //     width: Sizei,
-        //     height: Sizei,
-        //     format: Enum,
-        //     type: Enum,
-        //     pixels: ?*anyopaque,
-        // ) callconv(.C) void = undefined;
         pub fn readPixels(
             x: i32,
             y: i32,
@@ -1795,17 +1745,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             );
         }
 
-        // pub var getBooleanv: *const fn (pname: Enum, data: [*c]Boolean) callconv(.C) void = undefined;
         pub fn getBooleanv(pname: ParamName, ptr: [*]Boolean) void {
             bindings.getBooleanv(@intFromEnum(pname), ptr);
         }
 
-        // pub var getDoublev: *const fn (pname: Enum, data: [*c]Double) callconv(.C) void = undefined;
         pub fn getDoublev(pname: ParamName, ptr: [*]Double) void {
             bindings.getDoublev(@intFromEnum(pname), ptr);
         }
 
-        // pub var getError: *const fn () callconv(.C) Enum = undefined;
         pub fn getError() Error {
             const res = bindings.getError();
             return std.meta.intToEnum(Error, res) catch onInvalid: {
@@ -1814,28 +1761,18 @@ pub fn Wrap(comptime bindings: anytype) type {
             };
         }
 
-        // pub var getFloatv: *const fn (pname: Enum, data: [*c]Float) callconv(.C) void = undefined;
         pub fn getFloatv(pname: ParamName, ptr: [*]Float) void {
             bindings.getFloatv(@intFromEnum(pname), ptr);
         }
 
-        // pub var getIntegerv: *const fn (pname: Enum, data: [*c]Int) callconv(.C) void = undefined;
         pub fn getIntegerv(pname: ParamName, ptr: [*]Int) void {
             bindings.getIntegerv(@intFromEnum(pname), ptr);
         }
 
-        // pub var getString: *const fn (name: Enum) callconv(.C) [*c]const Ubyte = undefined;
         pub fn getString(name: StringParamName) [*:0]const u8 {
             return bindings.getString(@intFromEnum(name));
         }
 
-        // pub var getTexImage: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     format: Enum,
-        //     type: Enum,
-        //     pixels: ?*anyopaque,
-        // ) callconv(.C) void = undefined;
         pub fn getTexImage(
             target: TexImageTarget,
             level: u32,
@@ -1852,22 +1789,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             );
         }
 
-        // pub var getTexParameterfv: *const fn (target: Enum, pname: Enum, params: [*c]Float) callconv(.C) void = undefined;
         pub fn getTexParameterfv(target: TextureTarget, pname: GetTexParameter, params: []f32) void {
             bindings.getTexParameterfv(@intFromEnum(target), @intFromEnum(pname), params.ptr);
         }
 
-        // pub var getTexParameteriv: *const fn (target: Enum, pname: Enum, params: [*c]Int) callconv(.C) void = undefined;
         pub fn getTexParameteriv(target: TextureTarget, pname: GetTexParameter, params: []i32) void {
             bindings.getTexParameteriv(@intFromEnum(target), @intFromEnum(pname), params.ptr);
         }
 
-        // pub var getTexLevelParameterfv: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     pname: Enum,
-        //     params: [*c]Float,
-        // ) callconv(.C) void = undefined;
         pub fn getTexLevelParameterfv(
             target: TexLevelTarget,
             level: u32,
@@ -1882,12 +1811,6 @@ pub fn Wrap(comptime bindings: anytype) type {
             );
         }
 
-        // pub var getTexLevelParameteriv: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     pname: Enum,
-        //     params: [*c]Int,
-        // ) callconv(.C) void = undefined;
         pub fn getTexLevelParameteriv(
             target: TexLevelTarget,
             level: u32,
@@ -1902,17 +1825,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             );
         }
 
-        // pub var isEnabled: *const fn (cap: Enum) callconv(.C) Boolean = undefined;
         pub fn isEnabled(capability: Capability) bool {
             return bindings.isEnabled(@intFromEnum(capability)) == TRUE;
         }
 
-        // pub var depthRange: *const fn (n: Double, f: Double) callconv(.C) void = undefined;
         pub fn depthRange(near: f64, far: f64) void {
             bindings.depthRange(near, far);
         }
 
-        // pub var viewport: *const fn (x: Int, y: Int, width: Sizei, height: Sizei) callconv(.C) void = undefined;
         pub fn viewport(x: Int, y: Int, width: u32, height: u32) void {
             bindings.viewport(x, y, @as(Sizei, @bitCast(width)), @as(Sizei, @bitCast(height)));
         }
@@ -1957,82 +1877,132 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const RGBA16 = bindings.RGBA16;
         pub const VERTEX_ARRAY = bindings.VERTEX_ARRAY;
 
-        // pub var drawArrays: *const fn (mode: Enum, first: Int, count: Sizei) callconv(.C) void = undefined;
         pub fn drawArrays(prim_type: PrimitiveType, first: u32, count: u32) void {
             bindings.drawArrays(@intFromEnum(prim_type), @as(Int, @bitCast(first)), @as(Sizei, @bitCast(count)));
         }
 
-        // pub var drawElements: *const fn (
-        //     mode: Enum,
-        //     count: Sizei,
-        //     type: Enum,
-        //     indices: ?*const anyopaque,
-        // ) callconv(.C) void = undefined;
-        // pub var polygonOffset: *const fn (factor: Float, units: Float) callconv(.C) void = undefined;
-        // pub var copyTexImage1D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     internalformat: Enum,
-        //     x: Int,
-        //     y: Int,
-        //     width: Sizei,
-        //     border: Int,
-        // ) callconv(.C) void = undefined;
-        // pub var copyTexImage2D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     internalformat: Enum,
-        //     x: Int,
-        //     y: Int,
-        //     width: Sizei,
-        //     height: Sizei,
-        //     border: Int,
-        // ) callconv(.C) void = undefined;
-        // pub var copyTexSubImage1D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     xoffset: Int,
-        //     x: Int,
-        //     y: Int,
-        //     width: Sizei,
-        // ) callconv(.C) void = undefined;
-        // pub var copyTexSubImage2D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     xoffset: Int,
-        //     yoffset: Int,
-        //     x: Int,
-        //     y: Int,
-        //     width: Sizei,
-        //     height: Sizei,
-        // ) callconv(.C) void = undefined;
-        // pub var texSubImage1D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     xoffset: Int,
-        //     width: Sizei,
-        //     format: Enum,
-        //     type: Enum,
-        //     pixels: ?*const anyopaque,
-        // ) callconv(.C) void = undefined;
-        // pub var texSubImage2D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     xoffset: Int,
-        //     yoffset: Int,
-        //     width: Sizei,
-        //     height: Sizei,
-        //     format: Enum,
-        //     type: Enum,
-        //     pixels: ?*const anyopaque,
-        // ) callconv(.C) void = undefined;
+        pub fn drawElements(
+            mode: PrimitiveType,
+            index_type: enum(Enum) {
+                unsigned_byte = UNSIGNED_BYTE,
+                unsigned_short = UNSIGNED_SHORT,
+                unsigned_int = UNSIGNED_INT,
+            },
+            indices: []const anyopaque,
+        ) void {
+            bindings.drawElements(@intFromEnum(mode), @intCast(indices.len), @intFromEnum(index_type), indices.ptr);
+        }
 
-        // pub var bindTexture: *const fn (target: Enum, texture: Uint) callconv(.C) void = undefined;
+        pub fn polygonOffset(factor: f32, units: f32) void {
+            bindings.polygonOffset(factor, units);
+        }
+
+        pub fn copyTexImage1D(
+            target: TexImageTarget,
+            level: i32,
+            internal_format: InternalFormat,
+            x: i32,
+            y: i32,
+            width: u32,
+            border: i32,
+        ) void {
+            bindings.copyTexImage1D(
+                @intFromEnum(target),
+                level,
+                @intFromEnum(internal_format),
+                x,
+                y,
+                @intCast(width),
+                border,
+            );
+        }
+
+        pub fn copyTexImage2D(
+            target: TexImageTarget,
+            level: i32,
+            internal_format: InternalFormat,
+            x: i32,
+            y: i32,
+            width: u32,
+            height: u32,
+            border: i32,
+        ) void {
+            bindings.copyTexImage2D(
+                @intFromEnum(target),
+                level,
+                @intFromEnum(internal_format),
+                x,
+                y,
+                @intCast(width),
+                @intCast(height),
+                border,
+            );
+        }
+
+        pub fn copyTexSubImage1D(target: TexImageTarget, level: i32, xoffset: i32, x: i32, y: i32, width: u32) void {
+            bindings.copyTexSubImage1D(@intFromEnum(target), level, xoffset, x, y, @intCast(width));
+        }
+
+        pub fn copyTexSubImage2D(
+            target: TexImageTarget,
+            level: i32,
+            xoffset: i32,
+            yoffset: i32,
+            x: i32,
+            y: i32,
+            width: u32,
+            height: u32,
+        ) void {
+            bindings.copyTexSubImage2D(
+                @intFromEnum(target),
+                level,
+                xoffset,
+                yoffset,
+                x,
+                y,
+                @intCast(width),
+                @intCast(height),
+            );
+        }
+
+        pub fn texSubImage1D(
+            target: TexImageTarget,
+            level: i32,
+            xoffset: i32,
+            width: u32,
+            format: PixelFormat,
+            pixel_type: PixelType,
+            data: ?[*]const u8,
+        ) void {
+            bindings.texSubImage1D(
+                @intFromEnum(target),
+                level,
+                xoffset,
+                @intCast(width),
+                @intFromEnum(format),
+                @intFromEnum(pixel_type),
+                data,
+            );
+        }
+
+        pub fn texSubImage2D(
+            target: TexImageTarget,
+            level: i32,
+            xoffset: i32,
+            yoffset: i32,
+            width: u32,
+            height: u32,
+            format: PixelFormat,
+            pixel_type: PixelType,
+            data: ?[*]const u8,
+        ) void {
+            bindings.texSubImage2D(@intFromEnum(target), level, xoffset, yoffset, @intCast(width), @intCast(height), @intFromEnum(format), @intFromEnum(pixel_type), data);
+        }
+
         pub fn bindTexture(target: TextureTarget, texture: Texture) void {
             bindings.bindTexture(@intFromEnum(target), @intFromEnum(texture));
         }
 
-        // pub var deleteTextures: *const fn (n: Sizei, textures: [*c]const Uint) callconv(.C) void = undefined;
         pub fn deleteTexture(ptr: *const Texture) void {
             bindings.deleteTextures(1, @as([*c]const Uint, @ptrCast(ptr)));
         }
@@ -2040,7 +2010,6 @@ pub fn Wrap(comptime bindings: anytype) type {
             bindings.deleteTextures(@intCast(textures.len), @as([*c]const Uint, @ptrCast(textures.ptr)));
         }
 
-        // pub var genTextures: *const fn (n: Sizei, textures: [*c]Uint) callconv(.C) void = undefined;
         pub fn genTexture(ptr: *Texture) void {
             bindings.genTextures(1, @as([*c]Uint, @ptrCast(ptr)));
         }
@@ -2048,7 +2017,6 @@ pub fn Wrap(comptime bindings: anytype) type {
             bindings.genTextures(@intCast(textures.len), @as([*c]Uint, @ptrCast(textures.ptr)));
         }
 
-        // pub var isTexture: *const fn (texture: Uint) callconv(.C) Boolean = undefined;
         pub fn isTexture(texture: Texture) bool {
             return bindings.isTexture(@intFromEnum(texture)) == TRUE;
         }
@@ -2095,50 +2063,106 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const SMOOTH_LINE_WIDTH_GRANULARITY = bindings.SMOOTH_LINE_WIDTH_GRANULARITY;
         pub const ALIASED_LINE_WIDTH_RANGE = bindings.ALIASED_LINE_WIDTH_RANGE;
 
-        // pub var drawRangeElements: *const fn (
-        //     mode: Enum,
-        //     start: Uint,
-        //     end: Uint,
-        //     count: Sizei,
-        //     type: Enum,
-        //     indices: ?*const anyopaque,
-        // ) callconv(.C) void = undefined;
-        // pub var texImage3D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     internalformat: Enum,
-        //     width: Sizei,
-        //     height: Sizei,
-        //     depth: Sizei,
-        //     border: Int,
-        //     format: Enum,
-        //     type: Enum,
-        //     pixels: ?*const anyopaque,
-        // ) callconv(.C) void = undefined;
-        // pub var texSubImage3D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     xoffset: Int,
-        //     yoffset: Int,
-        //     zoffset: Int,
-        //     width: Sizei,
-        //     height: Sizei,
-        //     depth: Sizei,
-        //     format: Enum,
-        //     type: Enum,
-        //     pixels: ?*const anyopaque,
-        // ) callconv(.C) void = undefined;
-        // pub var copyTexSubImage3D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     xoffset: Int,
-        //     yoffset: Int,
-        //     zoffset: Int,
-        //     x: Int,
-        //     y: Int,
-        //     width: Sizei,
-        //     height: Sizei,
-        // ) callconv(.C) void = undefined;
+        pub fn drawRangeElements(prim_type: PrimitiveType, start: u32, end: u32, indices: []const u16) void {
+            bindings.drawRangeElements(
+                @intFromEnum(prim_type),
+                start,
+                end,
+                @intCast(indices.len),
+                UNSIGNED_SHORT,
+                indices.ptr,
+            );
+        }
+
+        pub fn drawRangeElementsU32(prim_type: PrimitiveType, start: u32, end: u32, indices: []const u32) void {
+            bindings.drawRangeElements(
+                @intFromEnum(prim_type),
+                start,
+                end,
+                @intCast(indices.len),
+                UNSIGNED_INT,
+                indices.ptr,
+            );
+        }
+
+        pub fn texImage3D(args: struct {
+            target: TexImageTarget,
+            level: i32 = 0,
+            internal_format: InternalFormat,
+            width: u32,
+            height: u32,
+            depth: u32,
+            border: i32 = 0,
+            format: PixelFormat,
+            pixel_type: PixelType,
+            data: ?[*]const u8,
+        }) void {
+            bindings.texImage3D(
+                @intFromEnum(args.target),
+                args.level,
+                @intFromEnum(args.internal_format),
+                @intCast(args.width),
+                @intCast(args.height),
+                @intCast(args.depth),
+                args.border,
+                @intFromEnum(args.format),
+                @intFromEnum(args.pixel_type),
+                args.data,
+            );
+        }
+
+        pub fn texSubImage3D(
+            target: TexImageTarget,
+            level: i32,
+            xoffset: i32,
+            yoffset: i32,
+            zoffset: i32,
+            width: u32,
+            height: u32,
+            depth: u32,
+            format: PixelFormat,
+            pixel_type: PixelType,
+            data: ?[*]const u8,
+        ) void {
+            bindings.texSubImage3D(
+                @intFromEnum(target),
+                level,
+                xoffset,
+                yoffset,
+                zoffset,
+                @intCast(width),
+                @intCast(height),
+                @intCast(depth),
+                @intFromEnum(format),
+                @intFromEnum(pixel_type),
+                data,
+            );
+        }
+
+        pub fn copyTexSubImage3D(
+            target: TexImageTarget,
+            level: i32,
+            xoffset: i32,
+            yoffset: i32,
+            zoffset: i32,
+            x: i32,
+            y: i32,
+            width: u32,
+            height: u32,
+        ) void {
+            bindings.copyTexSubImage3D(
+                @intFromEnum(target),
+                level,
+                xoffset,
+                yoffset,
+                zoffset,
+                x,
+                y,
+                @intCast(width),
+                @intCast(height),
+            );
+        }
+
         //------------------------------------------------------------------------------------------
         //
         // OpenGL 1.3 (Core Profile)
@@ -2204,75 +2228,150 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const COMPRESSED_TEXTURE_FORMATS = bindings.COMPRESSED_TEXTURE_FORMATS;
         pub const CLAMP_TO_BORDER = bindings.CLAMP_TO_BORDER;
 
-        // pub var activeTexture: *const fn (texture: Enum) callconv(.C) void = undefined;
         pub fn activeTexture(texture_unit: TexUnit) void {
             bindings.activeTexture(@intFromEnum(texture_unit));
         }
-        // pub var sampleCoverage: *const fn (value: Float, invert: Boolean) callconv(.C) void = undefined;
-        // pub var compressedTexImage3D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     internalformat: Enum,
-        //     width: Sizei,
-        //     height: Sizei,
-        //     depth: Sizei,
-        //     border: Int,
-        //     imageSize: Sizei,
-        //     data: ?*const anyopaque,
-        // ) callconv(.C) void = undefined;
-        // pub var compressedTexImage2D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     internalformat: Enum,
-        //     width: Sizei,
-        //     height: Sizei,
-        //     border: Int,
-        //     imageSize: Sizei,
-        //     data: ?*const anyopaque,
-        // ) callconv(.C) void = undefined;
-        // pub var compressedTexImage1D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     internalformat: Enum,
-        //     width: Sizei,
-        //     border: Int,
-        //     imageSize: Sizei,
-        //     data: ?*const anyopaque,
-        // ) callconv(.C) void = undefined;
-        // pub var compressedTexSubImage3D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     xoffset: Int,
-        //     yoffset: Int,
-        //     zoffset: Int,
-        //     width: Sizei,
-        //     height: Sizei,
-        //     depth: Sizei,
-        //     format: Enum,
-        //     imageSize: Sizei,
-        //     data: ?*const anyopaque,
-        // ) callconv(.C) void = undefined;
-        // pub var compressedTexSubImage2D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     xoffset: Int,
-        //     yoffset: Int,
-        //     width: Sizei,
-        //     height: Sizei,
-        //     format: Enum,
-        //     imageSize: Sizei,
-        //     data: ?*const anyopaque,
-        // ) callconv(.C) void = undefined;
-        // pub var compressedTexSubImage1D: *const fn (
-        //     target: Enum,
-        //     level: Int,
-        //     xoffset: Int,
-        //     width: Sizei,
-        //     format: Enum,
-        //     imageSize: Sizei,
-        //     data: ?*const anyopaque,
-        // ) callconv(.C) void = undefined;
-        // pub var getCompressedTexImage: *const fn (target: Enum, level: Int, img: ?*anyopaque) callconv(.C) void = undefined;
+
+        pub fn sampleCoverage(value: f32, invert: bool) void {
+            bindings.sampleCoverage(value, if (invert) TRUE else FALSE);
+        }
+
+        pub fn compressedTexImage3D(
+            target: TexImageTarget,
+            level: i32,
+            internal_format: CompressedPixelFormat,
+            width: u32,
+            height: u32,
+            depth: u32,
+            border: i32,
+            data: []const u8,
+        ) void {
+            bindings.compressedTexImage3D(
+                @intFromEnum(target),
+                level,
+                @intFromEnum(internal_format),
+                @intCast(width),
+                @intCast(height),
+                @intCast(depth),
+                border,
+                @intCast(data.len),
+                data.ptr,
+            );
+        }
+
+        pub fn compressedTexImage2D(
+            target: TexImageTarget,
+            level: i32,
+            internal_format: CompressedPixelFormat,
+            width: u32,
+            height: u32,
+            border: i32,
+            data: []const u8,
+        ) void {
+            bindings.compressedTexImage2D(
+                @intFromEnum(target),
+                level,
+                @intFromEnum(internal_format),
+                @intCast(width),
+                @intCast(height),
+                border,
+                @intCast(data.len),
+                data.ptr,
+            );
+        }
+
+        pub fn compressedTexImage1D(
+            target: TexImageTarget,
+            level: i32,
+            internal_format: CompressedPixelFormat,
+            width: u32,
+            border: i32,
+            data: []const u8,
+        ) void {
+            bindings.compressedTexImage1D(
+                @intFromEnum(target),
+                level,
+                @intFromEnum(internal_format),
+                @intCast(width),
+                border,
+                @intCast(data.len),
+                data.ptr,
+            );
+        }
+
+        pub fn compressedTexSubImage3D(
+            target: TexImageTarget,
+            level: i32,
+            xoffset: i32,
+            yoffset: i32,
+            zoffset: i32,
+            width: u32,
+            height: u32,
+            depth: u32,
+            format: CompressedPixelFormat,
+            data: []const u8,
+        ) void {
+            bindings.compressedTexSubImage3D(
+                @intFromEnum(target),
+                level,
+                xoffset,
+                yoffset,
+                zoffset,
+                @intCast(width),
+                @intCast(height),
+                @intCast(depth),
+                @intFromEnum(format),
+                @intCast(data.len),
+                data.ptr,
+            );
+        }
+
+        pub fn compressedTexSubImage2D(
+            target: TexImageTarget,
+            level: i32,
+            xoffset: i32,
+            yoffset: i32,
+            width: u32,
+            height: u32,
+            format: CompressedPixelFormat,
+            data: []const u8,
+        ) void {
+            bindings.compressedTexSubImage2D(
+                @intFromEnum(target),
+                level,
+                xoffset,
+                yoffset,
+                @intCast(width),
+                @intCast(height),
+                @intFromEnum(format),
+                @intCast(data.len),
+                data.ptr,
+            );
+        }
+
+        pub fn compressedTexSubImage1D(
+            target: TexImageTarget,
+            level: i32,
+            xoffset: i32,
+            width: u32,
+            format: CompressedPixelFormat,
+            data: []const u8,
+        ) void {
+            bindings.compressedTexSubImage1D(
+                @intFromEnum(target),
+                level,
+                xoffset,
+                @intCast(width),
+                @intFromEnum(format),
+                @intCast(data.len),
+                data.ptr,
+            );
+        }
+
+        pub fn getCompressedTexImage(target: TexLevelTarget, level: i32, data: [*]u8) void {
+            bindings.getCompressedTexImage(@intFromEnum(target), level, data);
+        }
+
         //------------------------------------------------------------------------------------------
         //
         // OpenGL 1.4 (Core Profile)
@@ -2306,31 +2405,50 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const MIN = bindings.MIN;
         pub const MAX = bindings.MAX;
 
-        // pub var blendFuncSeparate: *const fn (
-        //     sfactorRGB: Enum,
-        //     dfactorRGB: Enum,
-        //     sfactorAlpha: Enum,
-        //     dfactorAlpha: Enum,
-        // ) callconv(.C) void = undefined;
-        // pub var multiDrawArrays: *const fn (
-        //     mode: Enum,
-        //     first: [*c]const Int,
-        //     count: [*c]const Sizei,
-        //     drawcount: Sizei,
-        // ) callconv(.C) void = undefined;
-        // pub var multiDrawElements: *const fn (
-        //     mode: Enum,
-        //     count: [*c]const Sizei,
-        //     type: Enum,
-        //     indices: [*c]const ?*const anyopaque,
-        //     drawcount: Sizei,
-        // ) callconv(.C) void = undefined;
-        // pub var pointParameterf: *const fn (pname: Enum, param: Float) callconv(.C) void = undefined;
-        // pub var pointParameterfv: *const fn (pname: Enum, params: [*c]const Float) callconv(.C) void = undefined;
-        // pub var pointParameteri: *const fn (pname: Enum, param: Int) callconv(.C) void = undefined;
-        // pub var pointParameteriv: *const fn (pname: Enum, params: [*c]const Int) callconv(.C) void = undefined;
-        // pub var blendColor: *const fn (red: Float, green: Float, blue: Float, alpha: Float) callconv(.C) void = undefined;
-        // pub var blendEquation: *const fn (mode: Enum) callconv(.C) void = undefined;
+        pub fn blendFuncSeparate(src_rgb: BlendFactor, dst_rgb: BlendFactor, src_alpha: BlendFactor, dst_alpha: BlendFactor) void {
+            bindings.blendFuncSeparate(@intFromEnum(src_rgb), @intFromEnum(dst_rgb), @intFromEnum(src_alpha), @intFromEnum(dst_alpha));
+        }
+
+        pub fn multiDrawArrays(prim_type: PrimitiveType, first: []const i32, count: []const u32) void {
+            assert(first.len == count.len);
+            bindings.multiDrawArrays(@intFromEnum(prim_type), first.ptr, @ptrCast(count.ptr), @intCast(first.len));
+        }
+
+        pub fn multiDrawElements(prim_type: PrimitiveType, count: []const u32, index_type: VertexAttribType, indices: []const ?*const anyopaque) void {
+            assert(count.len == indices.len);
+            bindings.multiDrawElements(@intFromEnum(prim_type), @ptrCast(count.ptr), @intFromEnum(index_type), indices.ptr, @intCast(count.len));
+        }
+
+        pub fn pointParameterf(pname: enum(Enum) { point_fade_threshold_size = POINT_FADE_THRESHOLD_SIZE }, param: f32) void {
+            bindings.pointParameterf(@intFromEnum(pname), param);
+        }
+
+        pub fn pointParameterfv(pname: enum(Enum) { point_fade_threshold_size = POINT_FADE_THRESHOLD_SIZE }, params: []const f32) void {
+            bindings.pointParameterfv(@intFromEnum(pname), params.ptr);
+        }
+
+        pub fn pointParameteri(pname: enum(Enum) { point_fade_threshold_size = POINT_FADE_THRESHOLD_SIZE }, param: i32) void {
+            bindings.pointParameteri(@intFromEnum(pname), param);
+        }
+
+        pub fn pointParameteriv(pname: enum(Enum) { point_fade_threshold_size = POINT_FADE_THRESHOLD_SIZE }, params: []const i32) void {
+            bindings.pointParameteriv(@intFromEnum(pname), params.ptr);
+        }
+
+        pub fn blendColor(red: f32, green: f32, blue: f32, alpha: f32) void {
+            bindings.blendColor(red, green, blue, alpha);
+        }
+
+        pub fn blendEquation(mode: enum(Enum) {
+            func_add = FUNC_ADD,
+            func_subtract = FUNC_SUBTRACT,
+            func_reverse_subtract = FUNC_REVERSE_SUBTRACT,
+            min = MIN,
+            max = MAX,
+        }) void {
+            bindings.blendEquation(@intFromEnum(mode));
+        }
+
         //------------------------------------------------------------------------------------------
         //
         // OpenGL 1.5 (Core Profile)
@@ -4970,6 +5088,23 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const DISPATCH_INDIRECT_BUFFER = bindings.DISPATCH_INDIRECT_BUFFER;
         pub const DISPATCH_INDIRECT_BUFFER_BINDING = bindings.DISPATCH_INDIRECT_BUFFER_BINDING;
         pub const COMPUTE_SHADER_BIT = bindings.COMPUTE_SHADER_BIT;
+        pub const SHADER_STORAGE_BUFFER = bindings.SHADER_STORAGE_BUFFER;
+        pub const SHADER_STORAGE_BUFFER_BINDING = bindings.SHADER_STORAGE_BUFFER_BINDING;
+        pub const SHADER_STORAGE_BUFFER_START = bindings.SHADER_STORAGE_BUFFER_START;
+        pub const SHADER_STORAGE_BUFFER_SIZE = bindings.SHADER_STORAGE_BUFFER_SIZE;
+        pub const MAX_VERTEX_SHADER_STORAGE_BLOCKS = bindings.MAX_VERTEX_SHADER_STORAGE_BLOCKS;
+        pub const MAX_GEOMETRY_SHADER_STORAGE_BLOCKS = bindings.MAX_GEOMETRY_SHADER_STORAGE_BLOCKS;
+        pub const MAX_TESS_CONTROL_SHADER_STORAGE_BLOCKS = bindings.MAX_TESS_CONTROL_SHADER_STORAGE_BLOCKS;
+        pub const MAX_TESS_EVALUATION_SHADER_STORAGE_BLOCKS = bindings.MAX_TESS_EVALUATION_SHADER_STORAGE_BLOCKS;
+        pub const MAX_FRAGMENT_SHADER_STORAGE_BLOCKS = bindings.MAX_FRAGMENT_SHADER_STORAGE_BLOCKS;
+        pub const MAX_COMPUTE_SHADER_STORAGE_BLOCKS = bindings.MAX_COMPUTE_SHADER_STORAGE_BLOCKS;
+        pub const MAX_COMBINED_SHADER_STORAGE_BLOCKS = bindings.MAX_COMBINED_SHADER_STORAGE_BLOCKS;
+        pub const MAX_SHADER_STORAGE_BUFFER_BINDINGS = bindings.MAX_SHADER_STORAGE_BUFFER_BINDINGS;
+        pub const MAX_SHADER_STORAGE_BLOCK_SIZE = bindings.MAX_SHADER_STORAGE_BLOCK_SIZE;
+        pub const SHADER_STORAGE_BUFFER_OFFSET_ALIGNMENT = bindings.SHADER_STORAGE_BUFFER_OFFSET_ALIGNMENT;
+        pub const SHADER_STORAGE_BARRIER_BIT = bindings.SHADER_STORAGE_BARRIER_BIT;
+        pub const MAX_COMBINED_SHADER_OUTPUT_RESOURCES = bindings.MAX_COMBINED_SHADER_OUTPUT_RESOURCES;
+
         pub const DEBUGPROC = *const fn (
             source: DebugSource,
             type: DebugType,
@@ -5017,10 +5152,6 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     buf: [*c]const u8,
         // ) callconv(.C) void = undefined;
 
-        // pub var debugMessageCallback: *const fn (
-        //     callback: DEBUGPROC,
-        //     userParam: ?*const anyopaque,
-        // ) callconv(.C) void = undefined;
         pub fn debugMessageCallback(
             callback: DEBUGPROC,
             userParam: ?*const anyopaque,
