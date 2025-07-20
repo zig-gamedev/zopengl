@@ -861,7 +861,7 @@ pub fn loadEsProfile(loader: LoaderFn, major: u32, minor: u32) !void {
         try load("glClear", .{&bindings.clear});
         try load("glClearColor", .{&bindings.clearColor});
         try load("glClearStencil", .{&bindings.clearStencil});
-        try load("glClearDepth", .{&bindings.clearDepth});
+        try load("glClearDepthf", .{&bindings.clearDepthf});
         try load("glStencilMask", .{&bindings.stencilMask});
         try load("glColorMask", .{&bindings.colorMask});
         try load("glDepthMask", .{&bindings.depthMask});
