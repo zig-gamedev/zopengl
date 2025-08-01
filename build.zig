@@ -16,20 +16,25 @@ pub fn build(b: *std.Build) void {
 
         const tests = b.addTest(.{
             .name = "zopengl-tests",
-            .root_source_file = b.path("src/zopengl.zig"),
-            .target = target,
-            .optimize = optimize,
+            .root_module = b.createModule(.{
+                .root_source_file = b.path("src/zopengl.zig"),
+                .target = target,
+                .optimize = optimize,
+            }),
         });
         b.installArtifact(tests);
 
         test_step.dependOn(&b.addRunArtifact(tests).step);
     }
 
-    const lib = b.addStaticLibrary(.{
+    const lib = b.addLibrary(.{
         .name = "zopengl",
-        .root_source_file = b.path("src/zopengl.zig"),
-        .target = target,
-        .optimize = optimize,
+        .linkage = .static,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("src/zopengl.zig"),
+            .target = target,
+            .optimize = optimize,
+        }),
     });
     _ = b.installArtifact(lib);
 }
