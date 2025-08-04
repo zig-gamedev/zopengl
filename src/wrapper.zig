@@ -5227,15 +5227,36 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const QUERY_RESULT_NO_WAIT = bindings.QUERY_RESULT_NO_WAIT;
         pub const MIRROR_CLAMP_TO_EDGE = bindings.MIRROR_CLAMP_TO_EDGE;
 
-        pub fn bufferStorage(target: BufferTarget, size: usize, data: ?[]const u8, flags: packed struct(Bitfield) {
-            dynamic_storage: bool = false,
-            map_read: bool = false,
-            map_write: bool = false,
-            map_persistent: bool = false,
-            map_coherent: bool = false,
-            client_storage: bool = false,
-            __unused: u26 = 0,
-        }) void {
+        pub fn bufferStorage(
+            target: BufferTarget,
+            size: usize,
+            data: ?[]const u8,
+            flags: packed struct(Bitfield) {
+                ///Enables reading via buffer mapping; read mapping fails otherwise.
+                map_read: bool = false, //0x1
+
+                ///Enables write mapping; write mapping fails otherwise.
+                map_write: bool = false, //0x2
+
+                /// DO NOT WRITE
+                pad1: u4 = 0,
+
+                ///Permits buffer operations while mapped; otherwise, such operations fail.
+                map_persistent: bool = false, //0x40
+
+                ///Makes persistent accesses coherent without barriers; barriers required otherwise.
+                map_coherent: bool = false, //0x80
+
+                ///Permits glNamedBufferSubData updates; calls fail otherwise.
+                dynamic_storage: bool = false, //0x100
+
+                ///Hints storage should use client memory.
+                client_storage: bool = false, //0x200
+
+                /// DO NOT WRITE
+                pad2: u22 = 0,
+            },
+        ) void {
             bindings.bufferStorage(
                 @intFromEnum(target),
                 @as(Sizeiptr, @bitCast(size)),
