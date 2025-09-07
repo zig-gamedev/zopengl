@@ -1883,14 +1883,15 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         pub fn drawElements(
             mode: PrimitiveType,
+            length: u32,
             index_type: enum(Enum) {
                 unsigned_byte = UNSIGNED_BYTE,
                 unsigned_short = UNSIGNED_SHORT,
                 unsigned_int = UNSIGNED_INT,
             },
-            indices: []const anyopaque,
+            indices: u32, //offset in buffer
         ) void {
-            bindings.drawElements(@intFromEnum(mode), @intCast(indices.len), @intFromEnum(index_type), indices.ptr);
+            bindings.drawElements(@intFromEnum(mode), @intCast(length), @intFromEnum(index_type), @ptrFromInt(indices));
         }
 
         pub fn polygonOffset(factor: f32, units: f32) void {
