@@ -34,7 +34,7 @@ pub fn main() !void {
     gl.clearBufferfv(gl.COLOR, 0, &.{ 0.2, 0.4, 0.8, 1.0 });
 }
 
-fn getProcAddress(name: [:0]const u8) callconv(.c) ?*const anyopaque {
+fn getProcAddress(name: [*:0]const u8) callconv(.c) ?*const anyopaque {
     // Load GL function pointer here
     // You could use `zsdl.gl.getProcAddress() or `zglfw.getProcAddress()`
 }
