@@ -2502,11 +2502,11 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         // pub var deleteBuffers: *const fn (n: Sizei, buffers: [*c]const Uint) callconv(.c) void = undefined;
-        pub fn deleteBuffer(ptr: *Buffer) void {
-            bindings.deleteBuffers(1, @as([*c]Uint, @ptrCast(ptr)));
+        pub fn deleteBuffer(ptr: *const Buffer) void {
+            bindings.deleteBuffers(1, @as([*c]const Uint, @ptrCast(ptr)));
         }
-        pub fn deleteBuffers(buffers: []Buffer) void {
-            bindings.deleteBuffers(@intCast(buffers.len), @as([*c]Uint, @ptrCast(buffers.ptr)));
+        pub fn deleteBuffers(buffers: []const Buffer) void {
+            bindings.deleteBuffers(@intCast(buffers.len), @as([*c]const Uint, @ptrCast(buffers.ptr)));
         }
 
         // pub var genBuffers: *const fn (n: Sizei, buffers: [*c]Uint) callconv(.c) void = undefined;
