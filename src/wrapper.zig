@@ -41,6 +41,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const Shader = enum(Uint) { invalid = 0, _ };
         pub const Program = enum(Uint) { invalid = 0, _ };
         pub const Texture = enum(Uint) { invalid = 0, _ };
+        pub const Query = enum(Uint) { invalid = 0, _ };
         pub const Buffer = enum(Uint) { invalid = 0, _ };
         pub const VertexArrayObject = enum(Uint) { invalid = 0, _ };
 
@@ -1159,6 +1160,51 @@ pub fn Wrap(comptime bindings: anytype) type {
             pack_compressed_block_height = PACK_COMPRESSED_BLOCK_HEIGHT,
             pack_compressed_block_depth = PACK_COMPRESSED_BLOCK_DEPTH,
             pack_compressed_block_size = PACK_COMPRESSED_BLOCK_SIZE,
+        };
+
+        pub const QueryTarget = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            samples_passed = SAMPLES_PASSED,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            primitives_generated = PRIMITIVES_GENERATED,
+            transform_feedback_primitives_written = TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            any_samples_passed = ANY_SAMPLES_PASSED,
+            time_elapsed = TIME_ELAPSED,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            any_samples_passed_conservative = ANY_SAMPLES_PASSED_CONSERVATIVE,
+        };
+
+        pub const QueryParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            current_query = CURRENT_QUERY,
+            query_counter_bits = QUERY_COUNTER_BITS,
+        };
+
+        pub const QueryObjectParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            query_result = QUERY_RESULT,
+            query_result_available = QUERY_RESULT_AVAILABLE,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.4 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            query_result_no_wait = QUERY_RESULT_NO_WAIT,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            query_target = QUERY_TARGET,
         };
 
         pub const BufferTarget = enum(Enum) {
@@ -2488,13 +2534,63 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const SRC1_ALPHA = bindings.SRC1_ALPHA;
 
         // pub var genQueries: *const fn (n: Sizei, ids: [*c]Uint) callconv(.c) void = undefined;
+        pub fn genQuery(ptr: *Query) void {
+            bindings.genQueries(1, @as([*c]Uint, @ptrCast(ptr)));
+        }
+        pub fn genQueries(queries: []Query) void {
+            bindings.genQueries(@intCast(queries.len), @as([*c]Uint, @ptrCast(queries.ptr)));
+        }
+
         // pub var deleteQueries: *const fn (n: Sizei, ids: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn deleteQuery(ptr: *const Query) void {
+            bindings.deleteQueries(1, @as([*c]const Uint, @ptrCast(ptr)));
+        }
+        pub fn deleteQueries(queries: []const Query) void {
+            bindings.deleteQueries(@intCast(queries.len), @as([*c]const Uint, @ptrCast(queries.ptr)));
+        }
+
         // pub var isQuery: *const fn (id: Uint) callconv(.c) Boolean = undefined;
+        pub fn isQuery(query: Query) bool {
+            return bindings.isQuery(@intFromEnum(query)) == TRUE;
+        }
+
         // pub var beginQuery: *const fn (target: Enum, id: Uint) callconv(.c) void = undefined;
+        pub fn beginQuery(target: QueryTarget, query: Query) void {
+            bindings.beginQuery(@intFromEnum(target), @intFromEnum(query));
+        }
+
         // pub var endQuery: *const fn (target: Enum) callconv(.c) void = undefined;
+        pub fn endQuery(target: QueryTarget) void {
+            bindings.endQuery(@intFromEnum(target));
+        }
+
         // pub var getQueryiv: *const fn (target: Enum, pname: Enum, params: [*c]Int) callconv(.c) void = undefined;
+        pub fn getQueryiv(
+            target: meta.mergeEnums(.{
+                QueryTarget,
+                enum(Enum) {
+                    timestamp = TIMESTAMP,
+                },
+            }),
+            pname: QueryParameter,
+            params: []i32,
+        ) void {
+            bindings.getQueryiv(
+                @intFromEnum(target),
+                @intFromEnum(pname),
+                @as([*c]Int, @ptrCast(params.ptr)),
+            );
+        }
+
         // pub var getQueryObjectiv: *const fn (id: Uint, pname: Enum, params: [*c]Int) callconv(.c) void = undefined;
+        pub fn getQueryObjectiv(query: Query, pname: QueryObjectParameter, params: []i32) void {
+            bindings.getQueryObjectiv(@intFromEnum(query), @intFromEnum(pname), @as([*c]Int, @ptrCast(params.ptr)));
+        }
+
         // pub var getQueryObjectuiv: *const fn (id: Uint, pname: Enum, params: [*c]Uint) callconv(.c) void = undefined;
+        pub fn getQueryObjectuiv(query: Query, pname: QueryObjectParameter, params: []u32) void {
+            bindings.getQueryObjectuiv(@intFromEnum(query), @intFromEnum(pname), @as([*c]Uint, @ptrCast(params.ptr)));
+        }
 
         // pub var bindBuffer: *const fn (target: Enum, buffer: Uint) callconv(.c) void = undefined;
         pub fn bindBuffer(target: BufferTarget, buffer: Buffer) void {
