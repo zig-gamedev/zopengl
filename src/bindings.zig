@@ -1999,7 +1999,7 @@ pub const TRANSFORM_FEEDBACK_BINDING = 0x8E25;
 pub const MAX_TRANSFORM_FEEDBACK_BUFFERS = 0x8E70;
 pub const MAX_VERTEX_STREAMS = 0x8E71;
 
-// TODO: should proboably be in wrapper.zig
+// TODO: should probably be in wrapper.zig
 pub const DrawArraysIndirectCommand = extern struct {
     count: Uint,
     instance_count: Uint,
@@ -2516,8 +2516,8 @@ pub var vertexAttribL1dv: *const fn (index: Uint, v: [*c]const Double) callconv(
 pub var vertexAttribL2dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
 pub var vertexAttribL3dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
 pub var vertexAttribL4dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
-// TOOD: missing glVertexAttribLPointer(GLuint index, GLint size, GLenum type, GLsizei stride, const void *pointer)
-// TOOD: missing glGetVertexAttribLdv(GLuint index, GLenum pname, GLdouble *params)
+// TODO: missing glVertexAttribLPointer(GLuint index, GLint size, GLenum type, GLsizei stride, const void *pointer)
+// TODO: missing glGetVertexAttribLdv(GLuint index, GLenum pname, GLdouble *params)
 pub var viewportArrayv: *const fn (
     first: Uint,
     count: Sizei,
