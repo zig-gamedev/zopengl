@@ -3317,7 +3317,7 @@ pub var getObjectPtrLabel: *const fn (
 ) callconv(.c) void = undefined;
 pub var getPointerv: *const fn (
     pname: Enum,
-    params: *anyopaque,
+    params: [*c]?*anyopaque,
 ) callconv(.c) void = undefined;
 //--------------------------------------------------------------------------------------------------
 //
@@ -4391,7 +4391,7 @@ pub var getDebugMessageLogKHR: *const fn (
 ) callconv(.c) Uint = undefined;
 pub var getPointervKHR: *const fn (
     pname: Enum,
-    params: *anyopaque,
+    params: [*c]?*anyopaque,
 ) callconv(.c) void = undefined;
 pub var pushDebugGroupKHR: *const fn (
     source: Enum,
