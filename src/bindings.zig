@@ -3271,7 +3271,7 @@ pub var debugMessageInsert: *const fn (
     message: [*c]const Char,
 ) callconv(.c) void = undefined;
 pub var debugMessageCallback: *const fn (
-    callback: DEBUGPROC,
+    callback: ?DEBUGPROC,
     userParam: ?*const anyopaque,
 ) callconv(.c) void = undefined;
 pub var getDebugMessageLog: *const fn (
@@ -4376,7 +4376,7 @@ pub var debugMessageInsertKHR: *const fn (
     buf: [*c]const Char,
 ) callconv(.c) void = undefined;
 pub var debugMessageCallbackKHR: *const fn (
-    callback: DEBUGPROC,
+    callback: ?DEBUGPROC,
     userParam: ?*const anyopaque,
 ) callconv(.c) void = undefined;
 pub var getDebugMessageLogKHR: *const fn (
