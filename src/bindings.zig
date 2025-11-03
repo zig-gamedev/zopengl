@@ -956,10 +956,10 @@ pub var uniform4fv: *const fn (
     count: Sizei,
     value: [*c]const Float,
 ) callconv(.c) void = undefined;
-pub var uniform1iv: *const fn (location: Int, count: Sizei, value: [*]const Int) callconv(.c) void = undefined;
-pub var uniform2iv: *const fn (location: Int, count: Sizei, value: [*]const Int) callconv(.c) void = undefined;
-pub var uniform3iv: *const fn (location: Int, count: Sizei, value: [*]const Int) callconv(.c) void = undefined;
-pub var uniform4iv: *const fn (location: Int, count: Sizei, value: [*]const Int) callconv(.c) void = undefined;
+pub var uniform1iv: *const fn (location: Int, count: Sizei, value: [*c]const Int) callconv(.c) void = undefined;
+pub var uniform2iv: *const fn (location: Int, count: Sizei, value: [*c]const Int) callconv(.c) void = undefined;
+pub var uniform3iv: *const fn (location: Int, count: Sizei, value: [*c]const Int) callconv(.c) void = undefined;
+pub var uniform4iv: *const fn (location: Int, count: Sizei, value: [*c]const Int) callconv(.c) void = undefined;
 pub var uniformMatrix2fv: *const fn (
     location: Int,
     count: Sizei,
@@ -1854,7 +1854,7 @@ pub var bindFragDataLocationIndexed: *const fn (
     program: Uint,
     colorNumber: Uint,
     index: Uint,
-    name: [*:0]const Char,
+    name: [*c]const Char,
 ) callconv(.c) void = undefined;
 pub var getFragDataIndex: *const fn (program: Uint, name: [*c]const Char) callconv(.c) Int = undefined;
 pub var genSamplers: *const fn (count: Sizei, samplers: [*c]Uint) callconv(.c) void = undefined;
@@ -1908,13 +1908,13 @@ pub var getQueryObjecti64v: *const fn (id: Uint, pname: Enum, params: [*c]Int64)
 pub var getQueryObjectui64v: *const fn (id: Uint, pname: Enum, params: [*c]Uint64) callconv(.c) void = undefined;
 pub var vertexAttribDivisor: *const fn (index: Uint, divisor: Uint) callconv(.c) void = undefined;
 pub var vertexAttribP1ui: *const fn (index: Uint, type: Enum, normalized: Boolean, value: Uint) callconv(.c) void = undefined;
-pub var vertexAttribP1uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: *const Uint) callconv(.c) void = undefined;
+pub var vertexAttribP1uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: [*c]const Uint) callconv(.c) void = undefined;
 pub var vertexAttribP2ui: *const fn (index: Uint, type: Enum, normalized: Boolean, value: Uint) callconv(.c) void = undefined;
-pub var vertexAttribP2uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: *const Uint) callconv(.c) void = undefined;
+pub var vertexAttribP2uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: [*c]const Uint) callconv(.c) void = undefined;
 pub var vertexAttribP3ui: *const fn (index: Uint, type: Enum, normalized: Boolean, value: Uint) callconv(.c) void = undefined;
-pub var vertexAttribP3uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: *const Uint) callconv(.c) void = undefined;
+pub var vertexAttribP3uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: [*c]const Uint) callconv(.c) void = undefined;
 pub var vertexAttribP4ui: *const fn (index: Uint, type: Enum, normalized: Boolean, value: Uint) callconv(.c) void = undefined;
-pub var vertexAttribP4uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: *const Uint) callconv(.c) void = undefined;
+pub var vertexAttribP4uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: [*c]const Uint) callconv(.c) void = undefined;
 
 //--------------------------------------------------------------------------------------------------
 //
@@ -1999,6 +1999,7 @@ pub const TRANSFORM_FEEDBACK_BINDING = 0x8E25;
 pub const MAX_TRANSFORM_FEEDBACK_BUFFERS = 0x8E70;
 pub const MAX_VERTEX_STREAMS = 0x8E71;
 
+// TODO: should probably be in wrapper.zig
 pub const DrawArraysIndirectCommand = extern struct {
     count: Uint,
     instance_count: Uint,
@@ -2020,8 +2021,9 @@ pub var blendEquationi: *const fn (buf: Uint, mode: Enum) callconv(.c) void = un
 pub var blendEquationSeparatei: *const fn (buf: Uint, modeRGB: Enum, modeAlpha: Enum) callconv(.c) void = undefined;
 pub var blendFunci: *const fn (buf: Uint, src: Enum, dst: Enum) callconv(.c) void = undefined;
 pub var blendFuncSeparatei: *const fn (buf: Uint, srcRGB: Enum, dstRGB: Enum, srcAlpha: Enum, dstAlpha: Enum) callconv(.c) void = undefined;
-pub var drawArraysIndirect: *const fn (mode: Enum, indirect: *const DrawArraysIndirectCommand) callconv(.c) void = undefined;
-pub var drawElementsIndirect: *const fn (mode: Enum, type: Enum, indirect: *const DrawElementsIndirectCommand) callconv(.c) void = undefined;
+// TODO: ?*const anyopaque should be used to keep bindings as closed to reference
+pub var drawArraysIndirect: *const fn (mode: Enum, indirect: [*c]const DrawArraysIndirectCommand) callconv(.c) void = undefined;
+pub var drawElementsIndirect: *const fn (mode: Enum, type: Enum, indirect: [*c]const DrawElementsIndirectCommand) callconv(.c) void = undefined;
 pub var uniform1d: *const fn (location: Int, x: Double) callconv(.c) void = undefined;
 pub var uniform2d: *const fn (location: Int, x: Double, y: Double) callconv(.c) void = undefined;
 pub var uniform3d: *const fn (location: Int, x: Double, y: Double, z: Double) callconv(.c) void = undefined;
@@ -2105,30 +2107,30 @@ pub const UNDEFINED_VERTEX = 0x8260;
 pub var releaseShaderCompiler: *const fn () callconv(.c) void = undefined;
 pub var shaderBinary: *const fn (
     count: Sizei,
-    shaders: [*]const Uint,
-    binary_format: Enum,
-    binary: *const anyopaque,
+    shaders: [*c]const Uint,
+    binaryFormat: Enum,
+    binary: ?*const anyopaque,
     length: Sizei,
 ) callconv(.c) void = undefined;
 pub var getShaderPrecisionFormat: *const fn (
-    shader_type: Enum,
-    precisionType: Enum,
-    range: *Int,
-    precision: *Int,
+    shadertype: Enum,
+    precisiontype: Enum,
+    range: [*c]Int,
+    precision: [*c]Int,
 ) callconv(.c) void = undefined;
 // depthRangef first defined by OpenGL ES 1.0
 // clearDepthf first defined by OpenGL ES 1.0
 pub var getProgramBinary: *const fn (
     program: Uint,
-    buf_size: Sizei,
-    length: *Sizei,
-    binary_format: *Enum,
-    binary: *anyopaque,
+    bufSize: Sizei,
+    length: [*c]Sizei,
+    binaryFormat: [*c]Enum,
+    binary: ?*anyopaque,
 ) callconv(.c) void = undefined;
 pub var programBinary: *const fn (
     program: Uint,
-    binary_format: Enum,
-    binary: *const anyopaque,
+    binaryFormat: Enum,
+    binary: ?*const anyopaque,
     length: Sizei,
 ) callconv(.c) void = undefined;
 pub var programParameteri: *const fn (
@@ -2153,347 +2155,347 @@ pub var createShaderProgramv: *const fn (
 pub var bindProgramPipeline: *const fn (pipeline: Uint) callconv(.c) void = undefined;
 pub var deleteProgramPipelines: *const fn (
     n: Sizei,
-    pipelines: [*]const Uint,
+    pipelines: [*c]const Uint,
 ) callconv(.c) void = undefined;
-pub var genProgramPipelines: *const fn (n: Sizei, pipelines: [*]Uint) callconv(.c) void = undefined;
+pub var genProgramPipelines: *const fn (n: Sizei, pipelines: [*c]Uint) callconv(.c) void = undefined;
 pub var isProgramPipeline: *const fn (pipeline: Uint) callconv(.c) Boolean = undefined;
 pub var getProgramPipelineiv: *const fn (
     pipeline: Uint,
     pname: Enum,
-    params: [*]Int,
+    params: [*c]Int,
 ) callconv(.c) void = undefined;
 pub var programUniform1i: *const fn (
     program: Uint,
     location: Int,
-    x: Int,
+    v0: Int,
 ) callconv(.c) void = undefined;
 pub var programUniform2i: *const fn (
     program: Uint,
     location: Int,
-    x: Int,
-    y: Int,
+    v0: Int,
+    v1: Int,
 ) callconv(.c) void = undefined;
 pub var programUniform3i: *const fn (
     program: Uint,
     location: Int,
-    x: Int,
-    y: Int,
-    z: Int,
+    v0: Int,
+    v1: Int,
+    v2: Int,
 ) callconv(.c) void = undefined;
 pub var programUniform4i: *const fn (
     program: Uint,
     location: Int,
-    x: Int,
-    y: Int,
-    z: Int,
-    w: Int,
+    v0: Int,
+    v1: Int,
+    v2: Int,
+    v3: Int,
 ) callconv(.c) void = undefined;
 pub var programUniform1ui: *const fn (
     program: Uint,
     location: Int,
-    x: Uint,
+    v0: Uint,
 ) callconv(.c) void = undefined;
 pub var programUniform2ui: *const fn (
     program: Uint,
     location: Int,
-    x: Uint,
-    y: Uint,
+    v0: Uint,
+    v1: Uint,
 ) callconv(.c) void = undefined;
 pub var programUniform3ui: *const fn (
     program: Uint,
     location: Int,
-    x: Uint,
-    y: Uint,
-    z: Uint,
+    v0: Uint,
+    v1: Uint,
+    v2: Uint,
 ) callconv(.c) void = undefined;
 pub var programUniform4ui: *const fn (
     program: Uint,
     location: Int,
-    x: Uint,
-    y: Uint,
-    z: Uint,
-    w: Uint,
+    v0: Uint,
+    v1: Uint,
+    v2: Uint,
+    v3: Uint,
 ) callconv(.c) void = undefined;
 pub var programUniform1f: *const fn (
     program: Uint,
     location: Int,
-    x: Float,
+    v0: Float,
 ) callconv(.c) void = undefined;
 pub var programUniform2f: *const fn (
     program: Uint,
     location: Int,
-    x: Float,
-    y: Float,
+    v0: Float,
+    v1: Float,
 ) callconv(.c) void = undefined;
 pub var programUniform3f: *const fn (
     program: Uint,
     location: Int,
-    x: Float,
-    y: Float,
-    z: Float,
+    v0: Float,
+    v1: Float,
+    v2: Float,
 ) callconv(.c) void = undefined;
 pub var programUniform4f: *const fn (
     program: Uint,
     location: Int,
-    x: Float,
-    y: Float,
-    z: Float,
-    w: Float,
+    v0: Float,
+    v1: Float,
+    v2: Float,
+    v3: Float,
 ) callconv(.c) void = undefined;
 pub var programUniform1d: *const fn (
     program: Uint,
     location: Int,
-    x: Double,
+    v0: Double,
 ) callconv(.c) void = undefined;
 pub var programUniform2d: *const fn (
     program: Uint,
     location: Int,
-    x: Double,
-    y: Double,
+    v0: Double,
+    v1: Double,
 ) callconv(.c) void = undefined;
 pub var programUniform3d: *const fn (
     program: Uint,
     location: Int,
-    x: Double,
-    y: Double,
-    z: Double,
+    v0: Double,
+    v1: Double,
+    v2: Double,
 ) callconv(.c) void = undefined;
 pub var programUniform4d: *const fn (
     program: Uint,
     location: Int,
-    x: Double,
-    y: Double,
-    z: Double,
-    w: Double,
+    v0: Double,
+    v1: Double,
+    v2: Double,
+    v3: Double,
 ) callconv(.c) void = undefined;
 pub var programUniform1iv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Int,
+    value: [*c]const Int,
 ) callconv(.c) void = undefined;
 pub var programUniform2iv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Int,
+    value: [*c]const Int,
 ) callconv(.c) void = undefined;
 pub var programUniform3iv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Int,
+    value: [*c]const Int,
 ) callconv(.c) void = undefined;
 pub var programUniform4iv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Int,
+    value: [*c]const Int,
 ) callconv(.c) void = undefined;
 pub var programUniform1uiv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Uint,
+    value: [*c]const Uint,
 ) callconv(.c) void = undefined;
 pub var programUniform2uiv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Uint,
+    value: [*c]const Uint,
 ) callconv(.c) void = undefined;
 pub var programUniform3uiv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Uint,
+    value: [*c]const Uint,
 ) callconv(.c) void = undefined;
 pub var programUniform4uiv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Uint,
+    value: [*c]const Uint,
 ) callconv(.c) void = undefined;
 pub var programUniform1fv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Float,
+    value: [*c]const Float,
 ) callconv(.c) void = undefined;
 pub var programUniform2fv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Float,
+    value: [*c]const Float,
 ) callconv(.c) void = undefined;
 pub var programUniform3fv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Float,
+    value: [*c]const Float,
 ) callconv(.c) void = undefined;
 pub var programUniform4fv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Float,
+    value: [*c]const Float,
 ) callconv(.c) void = undefined;
 pub var programUniform1dv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Double,
+    value: [*c]const Double,
 ) callconv(.c) void = undefined;
 pub var programUniform2dv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Double,
+    value: [*c]const Double,
 ) callconv(.c) void = undefined;
 pub var programUniform3dv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Double,
+    value: [*c]const Double,
 ) callconv(.c) void = undefined;
 pub var programUniform4dv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
-    value: [*]const Double,
+    value: [*c]const Double,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix2fv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Float,
+    value: [*c]const Float,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix3fv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Float,
+    value: [*c]const Float,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix4fv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Float,
+    value: [*c]const Float,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix2dv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Double,
+    value: [*c]const Double,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix3dv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Double,
+    value: [*c]const Double,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix4dv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Double,
+    value: [*c]const Double,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix2x3fv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Float,
+    value: [*c]const Float,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix3x2fv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Float,
+    value: [*c]const Float,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix2x4fv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Float,
+    value: [*c]const Float,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix4x2fv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Float,
+    value: [*c]const Float,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix3x4fv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Float,
+    value: [*c]const Float,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix4x3fv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Float,
+    value: [*c]const Float,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix2x3dv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Double,
+    value: [*c]const Double,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix3x2dv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Double,
+    value: [*c]const Double,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix2x4dv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Double,
+    value: [*c]const Double,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix4x2dv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Double,
+    value: [*c]const Double,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix3x4dv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Double,
+    value: [*c]const Double,
 ) callconv(.c) void = undefined;
 pub var programUniformMatrix4x3dv: *const fn (
     program: Uint,
     location: Int,
     count: Sizei,
     transpose: Boolean,
-    value: [*]const Double,
+    value: [*c]const Double,
 ) callconv(.c) void = undefined;
 pub var validateProgramPipeline: *const fn (pipeline: Uint) callconv(.c) void = undefined;
 pub var getProgramPipelineInfoLog: *const fn (
     pipeline: Uint,
     bufSize: Sizei,
-    length: *Sizei,
-    infoLog: [*]u8,
+    length: [*c]Sizei,
+    infoLog: [*c]Char,
 ) callconv(.c) void = undefined;
 pub var vertexAttribL1d: *const fn (index: Uint, x: Double) callconv(.c) void = undefined;
 pub var vertexAttribL2d: *const fn (index: Uint, x: Double, y: Double) callconv(.c) void = undefined;
@@ -2510,14 +2512,16 @@ pub var vertexAttribL4d: *const fn (
     z: Double,
     w: Double,
 ) callconv(.c) void = undefined;
-pub var vertexAttribL1dv: *const fn (index: Uint, v: [*]const Double) callconv(.c) void = undefined;
-pub var vertexAttribL2dv: *const fn (index: Uint, v: [*]const Double) callconv(.c) void = undefined;
-pub var vertexAttribL3dv: *const fn (index: Uint, v: [*]const Double) callconv(.c) void = undefined;
-pub var vertexAttribL4dv: *const fn (index: Uint, v: [*]const Double) callconv(.c) void = undefined;
+pub var vertexAttribL1dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
+pub var vertexAttribL2dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
+pub var vertexAttribL3dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
+pub var vertexAttribL4dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
+// TODO: missing glVertexAttribLPointer(GLuint index, GLint size, GLenum type, GLsizei stride, const void *pointer)
+// TODO: missing glGetVertexAttribLdv(GLuint index, GLenum pname, GLdouble *params)
 pub var viewportArrayv: *const fn (
     first: Uint,
     count: Sizei,
-    v: [*]const Float,
+    v: [*c]const Float,
 ) callconv(.c) void = undefined;
 pub var viewportIndexedf: *const fn (
     index: Uint,
@@ -2526,11 +2530,11 @@ pub var viewportIndexedf: *const fn (
     w: Float,
     h: Float,
 ) callconv(.c) void = undefined;
-pub var viewportIndexedfv: *const fn (index: Uint, v: [*]const Float) callconv(.c) void = undefined;
+pub var viewportIndexedfv: *const fn (index: Uint, v: [*c]const Float) callconv(.c) void = undefined;
 pub var scissorArrayv: *const fn (
     first: Uint,
     count: Sizei,
-    v: [*]const Int,
+    v: [*c]const Int,
 ) callconv(.c) void = undefined;
 pub var scissorIndexed: *const fn (
     index: Uint,
@@ -2539,26 +2543,26 @@ pub var scissorIndexed: *const fn (
     width: Sizei,
     height: Sizei,
 ) callconv(.c) void = undefined;
-pub var scissorIndexedv: *const fn (index: Uint, v: [*]const Int) callconv(.c) void = undefined;
+pub var scissorIndexedv: *const fn (index: Uint, v: [*c]const Int) callconv(.c) void = undefined;
 pub var depthRangeArrayv: *const fn (
     first: Uint,
     count: Sizei,
-    v: [*]const Clampd,
+    v: [*c]const Double,
 ) callconv(.c) void = undefined;
 pub var depthRangeIndexed: *const fn (
     index: Uint,
-    n: Clampd,
-    f: Clampd,
+    n: Double,
+    f: Double,
 ) callconv(.c) void = undefined;
 pub var getFloati_v: *const fn (
     target: Enum,
     index: Uint,
-    data: [*]Float,
+    data: [*c]Float,
 ) callconv(.c) void = undefined;
 pub var getDoublei_v: *const fn (
     target: Enum,
     index: Uint,
-    data: [*]Double,
+    data: [*c]Double,
 ) callconv(.c) void = undefined;
 
 //--------------------------------------------------------------------------------------------------
@@ -2689,7 +2693,7 @@ pub var drawElementsInstancedBaseInstance: *const fn (
     mode: Enum,
     count: Sizei,
     type: Enum,
-    indices: *const anyopaque,
+    indices: ?*const anyopaque,
     instancecount: Sizei,
     baseinstance: Uint,
 ) callconv(.c) void = undefined;
@@ -2697,7 +2701,7 @@ pub var drawElementsInstancedBaseVertexBaseInstance: *const fn (
     mode: Enum,
     count: Sizei,
     type: Enum,
-    indices: *const anyopaque,
+    indices: ?*const anyopaque,
     instancecount: Sizei,
     basevertex: Int,
     baseinstance: Uint,
@@ -2805,7 +2809,7 @@ pub const DEBUGPROC = *const fn (
     severity: Enum,
     length: Sizei,
     message: [*c]const Char,
-    userParam: *const anyopaque,
+    userParam: ?*const anyopaque,
 ) callconv(.c) void;
 pub const DEBUG_OUTPUT_SYNCHRONOUS = 0x8242;
 pub const DEBUG_NEXT_LOGGED_MESSAGE_LENGTH = 0x8243;
@@ -3036,8 +3040,8 @@ pub var clearBufferData: *const fn (
     target: Enum,
     internalformat: Enum,
     format: Enum,
-    @"type": Enum,
-    data: [*c]const u8,
+    type: Enum,
+    data: ?*const anyopaque,
 ) callconv(.c) void = undefined;
 pub var clearBufferSubData: *const fn (
     target: Enum,
@@ -3045,8 +3049,8 @@ pub var clearBufferSubData: *const fn (
     offset: Intptr,
     size: Sizeiptr,
     format: Enum,
-    @"type": Enum,
-    data: [*c]const u8,
+    type: Enum,
+    data: ?*const anyopaque,
 ) callconv(.c) void = undefined;
 pub var dispatchCompute: *const fn (
     num_groups_x: Uint,
@@ -3128,14 +3132,14 @@ pub var invalidateSubFramebuffer: *const fn (
 ) callconv(.c) void = undefined;
 pub var multiDrawArraysIndirect: *const fn (
     mode: Enum,
-    indirect: [*c]const u8,
+    indirect: ?*const anyopaque,
     drawcount: Sizei,
     stride: Sizei,
 ) callconv(.c) void = undefined;
 pub var multiDrawElementsIndirect: *const fn (
     mode: Enum,
-    @"type": Enum,
-    indirect: [*c]const u8,
+    type: Enum,
+    indirect: ?*const anyopaque,
     drawcount: Sizei,
     stride: Sizei,
 ) callconv(.c) void = undefined;
@@ -3155,7 +3159,7 @@ pub var getProgramResourceName: *const fn (
     programInterface: Enum,
     index: Uint,
     bufSize: Sizei,
-    length: *Sizei,
+    length: [*c]Sizei,
     name: [*c]Char,
 ) callconv(.c) void = undefined;
 pub var getProgramResourceiv: *const fn (
@@ -3165,7 +3169,7 @@ pub var getProgramResourceiv: *const fn (
     propCount: Sizei,
     props: [*c]const Enum,
     count: Sizei,
-    length: *Sizei,
+    length: [*c]Sizei,
     params: [*c]Int,
 ) callconv(.c) void = undefined;
 pub var getProgramResourceLocation: *const fn (
@@ -3226,20 +3230,20 @@ pub var bindVertexBuffer: *const fn (
 pub var vertexAttribFormat: *const fn (
     attribindex: Uint,
     size: Int,
-    @"type": Enum,
+    type: Enum,
     normalized: Boolean,
     relativeoffset: Uint,
 ) callconv(.c) void = undefined;
 pub var vertexAttribIFormat: *const fn (
     attribindex: Uint,
     size: Int,
-    @"type": Enum,
+    type: Enum,
     relativeoffset: Uint,
 ) callconv(.c) void = undefined;
 pub var vertexAttribLFormat: *const fn (
     attribindex: Uint,
     size: Int,
-    @"type": Enum,
+    type: Enum,
     relativeoffset: Uint,
 ) callconv(.c) void = undefined;
 pub var vertexAttribBinding: *const fn (
@@ -3264,10 +3268,10 @@ pub var debugMessageInsert: *const fn (
     id: Uint,
     severity: Enum,
     length: Sizei,
-    buf: [*c]const u8,
+    message: [*c]const Char,
 ) callconv(.c) void = undefined;
 pub var debugMessageCallback: *const fn (
-    callback: DEBUGPROC,
+    callback: ?DEBUGPROC,
     userParam: ?*const anyopaque,
 ) callconv(.c) void = undefined;
 pub var getDebugMessageLog: *const fn (
@@ -3297,23 +3301,23 @@ pub var getObjectLabel: *const fn (
     identifier: Enum,
     name: Uint,
     bufSize: Sizei,
-    length: *Sizei,
+    length: [*c]Sizei,
     label: [*c]Char,
 ) callconv(.c) void = undefined;
 pub var objectPtrLabel: *const fn (
-    ptr: *anyopaque,
+    ptr: ?*const anyopaque,
     length: Sizei,
     label: [*c]const Char,
 ) callconv(.c) void = undefined;
 pub var getObjectPtrLabel: *const fn (
-    ptr: *anyopaque,
+    ptr: ?*const anyopaque,
     bufSize: Sizei,
-    length: *Sizei,
+    length: [*c]Sizei,
     label: [*c]Char,
 ) callconv(.c) void = undefined;
 pub var getPointerv: *const fn (
     pname: Enum,
-    params: *anyopaque,
+    params: [*c]?*anyopaque,
 ) callconv(.c) void = undefined;
 //--------------------------------------------------------------------------------------------------
 //
@@ -4134,7 +4138,7 @@ pub const CONTEXT_FLAG_NO_ERROR_BIT = 0x00000008;
 
 pub var multiDrawArraysIndirectCount: *const fn (
     mode: Enum,
-    indirect: *const anyopaque,
+    indirect: ?*const anyopaque,
     drawcount: Intptr,
     maxdrawcount: Sizei,
     stride: Sizei,
@@ -4142,7 +4146,7 @@ pub var multiDrawArraysIndirectCount: *const fn (
 pub var multiDrawElementsIndirectCount: *const fn (
     mode: Enum,
     type: Enum,
-    indirect: *const anyopaque,
+    indirect: ?*const anyopaque,
     drawcount: Intptr,
     maxdrawcount: Sizei,
     stride: Sizei,
@@ -4197,35 +4201,35 @@ pub var scalef: *const fn (x: Float, y: Float, z: Float) callconv(.c) void = und
 pub var translatef: *const fn (x: Float, y: Float, z: Float) callconv(.c) void = undefined;
 
 pub var vertexP2ui: *const fn (type: Enum, value: Uint) callconv(.c) void = undefined;
-pub var vertexP2uiv: *const fn (type: Enum, value: *const Uint) callconv(.c) void = undefined;
+pub var vertexP2uiv: *const fn (type: Enum, value: [*c]const Uint) callconv(.c) void = undefined;
 pub var vertexP3ui: *const fn (type: Enum, value: Uint) callconv(.c) void = undefined;
-pub var vertexP3uiv: *const fn (type: Enum, value: *const Uint) callconv(.c) void = undefined;
+pub var vertexP3uiv: *const fn (type: Enum, value: [*c]const Uint) callconv(.c) void = undefined;
 pub var vertexP4ui: *const fn (type: Enum, value: Uint) callconv(.c) void = undefined;
-pub var vertexP4uiv: *const fn (type: Enum, value: *const Uint) callconv(.c) void = undefined;
+pub var vertexP4uiv: *const fn (type: Enum, value: [*c]const Uint) callconv(.c) void = undefined;
 pub var texCoordP1ui: *const fn (type: Enum, coords: Uint) callconv(.c) void = undefined;
-pub var texCoordP1uiv: *const fn (type: Enum, coords: *const Uint) callconv(.c) void = undefined;
+pub var texCoordP1uiv: *const fn (type: Enum, coords: [*c]const Uint) callconv(.c) void = undefined;
 pub var texCoordP2ui: *const fn (type: Enum, coords: Uint) callconv(.c) void = undefined;
-pub var texCoordP2uiv: *const fn (type: Enum, coords: *const Uint) callconv(.c) void = undefined;
+pub var texCoordP2uiv: *const fn (type: Enum, coords: [*c]const Uint) callconv(.c) void = undefined;
 pub var texCoordP3ui: *const fn (type: Enum, coords: Uint) callconv(.c) void = undefined;
-pub var texCoordP3uiv: *const fn (type: Enum, coords: *const Uint) callconv(.c) void = undefined;
+pub var texCoordP3uiv: *const fn (type: Enum, coords: [*c]const Uint) callconv(.c) void = undefined;
 pub var texCoordP4ui: *const fn (type: Enum, coords: Uint) callconv(.c) void = undefined;
-pub var texCoordP4uiv: *const fn (type: Enum, coords: *const Uint) callconv(.c) void = undefined;
+pub var texCoordP4uiv: *const fn (type: Enum, coords: [*c]const Uint) callconv(.c) void = undefined;
 pub var multiTexCoordP1ui: *const fn (texture: Enum, type: Enum, coords: Uint) callconv(.c) void = undefined;
-pub var multiTexCoordP1uiv: *const fn (texture: Enum, type: Enum, coords: *const Uint) callconv(.c) void = undefined;
+pub var multiTexCoordP1uiv: *const fn (texture: Enum, type: Enum, coords: [*c]const Uint) callconv(.c) void = undefined;
 pub var multiTexCoordP2ui: *const fn (texture: Enum, type: Enum, coords: Uint) callconv(.c) void = undefined;
-pub var multiTexCoordP2uiv: *const fn (texture: Enum, type: Enum, coords: *const Uint) callconv(.c) void = undefined;
+pub var multiTexCoordP2uiv: *const fn (texture: Enum, type: Enum, coords: [*c]const Uint) callconv(.c) void = undefined;
 pub var multiTexCoordP3ui: *const fn (texture: Enum, type: Enum, coords: Uint) callconv(.c) void = undefined;
-pub var multiTexCoordP3uiv: *const fn (texture: Enum, type: Enum, coords: *const Uint) callconv(.c) void = undefined;
+pub var multiTexCoordP3uiv: *const fn (texture: Enum, type: Enum, coords: [*c]const Uint) callconv(.c) void = undefined;
 pub var multiTexCoordP4ui: *const fn (texture: Enum, type: Enum, coords: Uint) callconv(.c) void = undefined;
-pub var multiTexCoordP4uiv: *const fn (texture: Enum, type: Enum, coords: *const Uint) callconv(.c) void = undefined;
+pub var multiTexCoordP4uiv: *const fn (texture: Enum, type: Enum, coords: [*c]const Uint) callconv(.c) void = undefined;
 pub var normalP3ui: *const fn (type: Enum, coords: Uint) callconv(.c) void = undefined;
-pub var normalP3uiv: *const fn (type: Enum, coords: *const Uint) callconv(.c) void = undefined;
+pub var normalP3uiv: *const fn (type: Enum, coords: [*c]const Uint) callconv(.c) void = undefined;
 pub var colorP3ui: *const fn (type: Enum, color: Uint) callconv(.c) void = undefined;
-pub var colorP3uiv: *const fn (type: Enum, color: *const Uint) callconv(.c) void = undefined;
+pub var colorP3uiv: *const fn (type: Enum, color: [*c]const Uint) callconv(.c) void = undefined;
 pub var colorP4ui: *const fn (type: Enum, color: Uint) callconv(.c) void = undefined;
-pub var colorP4uiv: *const fn (type: Enum, color: *const Uint) callconv(.c) void = undefined;
+pub var colorP4uiv: *const fn (type: Enum, color: [*c]const Uint) callconv(.c) void = undefined;
 pub var secondaryColorP3ui: *const fn (type: Enum, color: Uint) callconv(.c) void = undefined;
-pub var secondaryColorP3uiv: *const fn (type: Enum, color: *const Uint) callconv(.c) void = undefined;
+pub var secondaryColorP3uiv: *const fn (type: Enum, color: [*c]const Uint) callconv(.c) void = undefined;
 
 pub var matrixLoadIdentityEXT: *const fn (mode: Enum) callconv(.c) void = undefined;
 pub var matrixOrthoEXT: *const fn (
@@ -4369,10 +4373,10 @@ pub var debugMessageInsertKHR: *const fn (
     id: Uint,
     severity: Enum,
     length: Sizei,
-    buf: [*c]const u8,
+    buf: [*c]const Char,
 ) callconv(.c) void = undefined;
 pub var debugMessageCallbackKHR: *const fn (
-    callback: DEBUGPROC,
+    callback: ?DEBUGPROC,
     userParam: ?*const anyopaque,
 ) callconv(.c) void = undefined;
 pub var getDebugMessageLogKHR: *const fn (
@@ -4387,7 +4391,7 @@ pub var getDebugMessageLogKHR: *const fn (
 ) callconv(.c) Uint = undefined;
 pub var getPointervKHR: *const fn (
     pname: Enum,
-    params: *anyopaque,
+    params: [*c]?*anyopaque,
 ) callconv(.c) void = undefined;
 pub var pushDebugGroupKHR: *const fn (
     source: Enum,
@@ -4406,18 +4410,18 @@ pub var getObjectLabelKHR: *const fn (
     identifier: Enum,
     name: Uint,
     bufSize: Sizei,
-    length: *Sizei,
+    length: [*c]Sizei,
     label: [*c]Char,
 ) callconv(.c) void = undefined;
 pub var objectPtrLabelKHR: *const fn (
-    ptr: *anyopaque,
+    ptr: ?*const anyopaque,
     length: Sizei,
     label: [*c]const Char,
 ) callconv(.c) void = undefined;
 pub var getObjectPtrLabelKHR: *const fn (
-    ptr: *anyopaque,
+    ptr: ?*const anyopaque,
     bufSize: Sizei,
-    length: *Sizei,
+    length: [*c]Sizei,
     label: [*c]Char,
 ) callconv(.c) void = undefined;
 //--------------------------------------------------------------------------------------------------
