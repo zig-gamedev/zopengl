@@ -1231,6 +1231,43 @@ pub fn Wrap(comptime bindings: anytype) type {
             uniform_buffer = UNIFORM_BUFFER,
         };
 
+        pub const Access = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            read_only = READ_ONLY,
+            write_only = WRITE_ONLY,
+            read_write = READ_WRITE,
+        };
+
+        pub const BufferParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            buffer_size = BUFFER_SIZE,
+            buffer_usage = BUFFER_USAGE,
+            buffer_access = BUFFER_ACCESS,
+            buffer_mapped = BUFFER_MAPPED,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            buffer_access_flags = BUFFER_ACCESS_FLAGS,
+            buffer_map_offset = BUFFER_MAP_OFFSET,
+            buffer_map_length = BUFFER_MAP_LENGTH,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.4 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            buffer_immutable_storage = BUFFER_IMMUTABLE_STORAGE,
+            buffer_storage_flags = BUFFER_STORAGE_FLAGS,
+        };
+
+        pub const BufferPointerParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            buffer_map_pointer = BUFFER_MAP_POINTER,
+        };
+
         pub const IndexedBufferTarget = enum(Enum) {
             //--------------------------------------------------------------------------------------
             // OpenGL 3.0 (Core Profile)
@@ -2614,6 +2651,9 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         // pub var isBuffer: *const fn (buffer: Uint) callconv(.c) Boolean = undefined;
+        pub fn isBuffer(buffer: Buffer) bool {
+            return bindings.isBuffer(@intFromEnum(buffer)) == TRUE;
+        }
 
         // pub var bufferData: *const fn (
         //     target: Enum,
@@ -2656,14 +2696,52 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     size: Sizeiptr,
         //     data: ?*anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn getBufferSubData(
+            target: BufferTarget,
+            offset: usize,
+            size: usize,
+            data: ?[*]u8,
+        ) void {
+            bindings.getBufferSubData(
+                @intFromEnum(target),
+                @as(Intptr, @bitCast(offset)),
+                @as(Sizeiptr, @bitCast(size)),
+                data,
+            );
+        }
+
         // pub var mapBuffer: *const fn (target: Enum, access: Enum) callconv(.c) ?*anyopaque = undefined;
+        pub fn mapBuffer(target: BufferTarget, access: Access) ?[*]u8 {
+            return @ptrCast(bindings.mapBuffer(@intFromEnum(target), @intFromEnum(access)));
+        }
+
         // pub var unmapBuffer: *const fn (target: Enum) callconv(.c) Boolean = undefined;
+        pub fn unmapBuffer(target: BufferTarget) bool {
+            return bindings.unmapBuffer(@intFromEnum(target)) == TRUE;
+        }
+
         // pub var getBufferParameteriv: *const fn (target: Enum, pname: Enum, params: [*c]Int) callconv(.c) void = undefined;
+        pub fn getBufferParameteriv(target: BufferTarget, pname: BufferParameter, params: []i32) void {
+            bindings.getBufferParameteriv(
+                @intFromEnum(target),
+                @intFromEnum(pname),
+                @as([*c]Int, @ptrCast(params.ptr)),
+            );
+        }
+
         // pub var getBufferPointerv: *const fn (
         //     target: Enum,
         //     pname: Enum,
         //     params: [*c]?*anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn getBufferPointerv(target: BufferTarget, pname: BufferPointerParameter, params: *?[*]u8) void {
+            bindings.getBufferPointerv(
+                @intFromEnum(target),
+                @intFromEnum(pname),
+                @as([*c]?*anyopaque, @ptrCast(params)),
+            );
+        }
+
         //------------------------------------------------------------------------------------------
         //
         // OpenGL 2.0 (Core Profile)
