@@ -2699,14 +2699,13 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub fn getBufferSubData(
             target: BufferTarget,
             offset: usize,
-            size: usize,
-            data: ?[*]u8,
+            data: []u8,
         ) void {
             bindings.getBufferSubData(
                 @intFromEnum(target),
                 @as(Intptr, @bitCast(offset)),
-                @as(Sizeiptr, @bitCast(size)),
-                data,
+                @as(Sizeiptr, @bitCast(data.len)),
+                data.ptr,
             );
         }
 
