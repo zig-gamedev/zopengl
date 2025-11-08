@@ -186,6 +186,7 @@ pub const TEXTURE_MIN_FILTER = 0x2801;
 pub const TEXTURE_WRAP_S = 0x2802;
 pub const TEXTURE_WRAP_T = 0x2803;
 pub const REPEAT = 0x2901;
+
 pub var cullFace: *const fn (mode: Enum) callconv(.c) void = undefined;
 pub var frontFace: *const fn (mode: Enum) callconv(.c) void = undefined;
 pub var hint: *const fn (target: Enum, mode: Enum) callconv(.c) void = undefined;
@@ -282,6 +283,7 @@ pub var getTexLevelParameteriv: *const fn (
 pub var isEnabled: *const fn (cap: Enum) callconv(.c) Boolean = undefined;
 pub var depthRange: *const fn (n: Double, f: Double) callconv(.c) void = undefined;
 pub var viewport: *const fn (x: Int, y: Int, width: Sizei, height: Sizei) callconv(.c) void = undefined;
+
 //--------------------------------------------------------------------------------------------------
 //
 // OpenGL 1.1 (Core Profile)
@@ -321,6 +323,7 @@ pub const RGB10_A2 = 0x8059;
 pub const RGBA12 = 0x805A;
 pub const RGBA16 = 0x805B;
 pub const VERTEX_ARRAY = 0x8074;
+
 pub var drawArrays: *const fn (mode: Enum, first: Int, count: Sizei) callconv(.c) void = undefined;
 pub var drawElements: *const fn (
     mode: Enum,
@@ -390,6 +393,7 @@ pub var bindTexture: *const fn (target: Enum, texture: Uint) callconv(.c) void =
 pub var deleteTextures: *const fn (n: Sizei, textures: [*c]const Uint) callconv(.c) void = undefined;
 pub var genTextures: *const fn (n: Sizei, textures: [*c]Uint) callconv(.c) void = undefined;
 pub var isTexture: *const fn (texture: Uint) callconv(.c) Boolean = undefined;
+
 //--------------------------------------------------------------------------------------------------
 //
 // OpenGL 1.2 (Core Profile)
@@ -431,6 +435,7 @@ pub const SMOOTH_POINT_SIZE_GRANULARITY = 0x0B13;
 pub const SMOOTH_LINE_WIDTH_RANGE = 0x0B22;
 pub const SMOOTH_LINE_WIDTH_GRANULARITY = 0x0B23;
 pub const ALIASED_LINE_WIDTH_RANGE = 0x846E;
+
 pub var drawRangeElements: *const fn (
     mode: Enum,
     start: Uint,
@@ -475,6 +480,7 @@ pub var copyTexSubImage3D: *const fn (
     width: Sizei,
     height: Sizei,
 ) callconv(.c) void = undefined;
+
 //--------------------------------------------------------------------------------------------------
 //
 // OpenGL 1.3 (Core Profile)
@@ -539,6 +545,7 @@ pub const TEXTURE_COMPRESSED = 0x86A1;
 pub const NUM_COMPRESSED_TEXTURE_FORMATS = 0x86A2;
 pub const COMPRESSED_TEXTURE_FORMATS = 0x86A3;
 pub const CLAMP_TO_BORDER = 0x812D;
+
 pub var activeTexture: *const fn (texture: Enum) callconv(.c) void = undefined;
 pub var sampleCoverage: *const fn (value: Float, invert: Boolean) callconv(.c) void = undefined;
 pub var compressedTexImage3D: *const fn (
@@ -605,6 +612,7 @@ pub var compressedTexSubImage1D: *const fn (
     data: ?*const anyopaque,
 ) callconv(.c) void = undefined;
 pub var getCompressedTexImage: *const fn (target: Enum, level: Int, img: ?*anyopaque) callconv(.c) void = undefined;
+
 //--------------------------------------------------------------------------------------------------
 //
 // OpenGL 1.4 (Core Profile)
@@ -637,6 +645,7 @@ pub const FUNC_REVERSE_SUBTRACT = 0x800B;
 pub const FUNC_SUBTRACT = 0x800A;
 pub const MIN = 0x8007;
 pub const MAX = 0x8008;
+
 pub var blendFuncSeparate: *const fn (
     sfactorRGB: Enum,
     dfactorRGB: Enum,
@@ -662,6 +671,7 @@ pub var pointParameteri: *const fn (pname: Enum, param: Int) callconv(.c) void =
 pub var pointParameteriv: *const fn (pname: Enum, params: [*c]const Int) callconv(.c) void = undefined;
 pub var blendColor: *const fn (red: Float, green: Float, blue: Float, alpha: Float) callconv(.c) void = undefined;
 pub var blendEquation: *const fn (mode: Enum) callconv(.c) void = undefined;
+
 //--------------------------------------------------------------------------------------------------
 //
 // OpenGL 1.5 (Core Profile)
@@ -698,6 +708,7 @@ pub const DYNAMIC_READ = 0x88E9;
 pub const DYNAMIC_COPY = 0x88EA;
 pub const SAMPLES_PASSED = 0x8914;
 pub const SRC1_ALPHA = 0x8589;
+
 pub var genQueries: *const fn (n: Sizei, ids: [*c]Uint) callconv(.c) void = undefined;
 pub var deleteQueries: *const fn (n: Sizei, ids: [*c]const Uint) callconv(.c) void = undefined;
 pub var isQuery: *const fn (id: Uint) callconv(.c) Boolean = undefined;
@@ -736,6 +747,7 @@ pub var getBufferPointerv: *const fn (
     pname: Enum,
     params: [*c]?*anyopaque,
 ) callconv(.c) void = undefined;
+
 //--------------------------------------------------------------------------------------------------
 //
 // OpenGL 2.0 (Core Profile)
@@ -826,6 +838,7 @@ pub const UPPER_LEFT = 0x8CA2;
 pub const STENCIL_BACK_REF = 0x8CA3;
 pub const STENCIL_BACK_VALUE_MASK = 0x8CA4;
 pub const STENCIL_BACK_WRITEMASK = 0x8CA5;
+
 pub var blendEquationSeparate: *const fn (modeRGB: Enum, modeAlpha: Enum) callconv(.c) void = undefined;
 pub var drawBuffers: *const fn (n: Sizei, bufs: [*c]const Enum) callconv(.c) void = undefined;
 pub var stencilOpSeparate: *const fn (
@@ -1047,6 +1060,7 @@ pub var vertexAttribPointer: *const fn (
     stride: Sizei,
     pointer: ?*const anyopaque,
 ) callconv(.c) void = undefined;
+
 //--------------------------------------------------------------------------------------------------
 //
 // OpenGL 2.1 (Core Profile)
@@ -1068,6 +1082,7 @@ pub const SRGB_ALPHA = 0x8C42;
 pub const SRGB8_ALPHA8 = 0x8C43;
 pub const COMPRESSED_SRGB = 0x8C48;
 pub const COMPRESSED_SRGB_ALPHA = 0x8C49;
+
 pub var uniformMatrix2x3fv: *const fn (
     location: Int,
     count: Sizei,
@@ -1104,6 +1119,7 @@ pub var uniformMatrix4x3fv: *const fn (
     transpose: Boolean,
     value: [*c]const Float,
 ) callconv(.c) void = undefined;
+
 //--------------------------------------------------------------------------------------------------
 //
 // OpenGL 3.0 (Core Profile)
@@ -1342,6 +1358,7 @@ pub const RG16UI = 0x823A;
 pub const RG32I = 0x823B;
 pub const RG32UI = 0x823C;
 pub const VERTEX_ARRAY_BINDING = 0x85B5;
+
 pub var colorMaski: *const fn (
     index: Uint,
     r: Boolean,
@@ -1548,6 +1565,7 @@ pub var bindVertexArray: *const fn (array: Uint) callconv(.c) void = undefined;
 pub var deleteVertexArrays: *const fn (n: Sizei, arrays: [*c]const Uint) callconv(.c) void = undefined;
 pub var genVertexArrays: *const fn (n: Sizei, arrays: [*c]Uint) callconv(.c) void = undefined;
 pub var isVertexArray: *const fn (array: Uint) callconv(.c) Boolean = undefined;
+
 //--------------------------------------------------------------------------------------------------
 //
 // OpenGL 3.1 (Core Profile)
@@ -1614,6 +1632,7 @@ pub const UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER = 0x8A44;
 pub const UNIFORM_BLOCK_REFERENCED_BY_GEOMETRY_SHADER = 0x8A45;
 pub const UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER = 0x8A46;
 pub const INVALID_INDEX = 0xFFFFFFFF;
+
 pub var drawArraysInstanced: *const fn (
     mode: Enum,
     first: Int,
@@ -1678,6 +1697,7 @@ pub var uniformBlockBinding: *const fn (
     uniformBlockIndex: Uint,
     uniformBlockBinding: Uint,
 ) callconv(.c) void = undefined;
+
 //--------------------------------------------------------------------------------------------------
 //
 // OpenGL 3.2 (Core Profile)
@@ -1751,6 +1771,7 @@ pub const UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY = 0x910D;
 pub const MAX_COLOR_TEXTURE_SAMPLES = 0x910E;
 pub const MAX_DEPTH_TEXTURE_SAMPLES = 0x910F;
 pub const MAX_INTEGER_SAMPLES = 0x9110;
+
 pub var drawElementsBaseVertex: *const fn (
     mode: Enum,
     count: Sizei,
@@ -1850,6 +1871,7 @@ pub const TEXTURE_SWIZZLE_RGBA = 0x8E46;
 pub const TIME_ELAPSED = 0x88BF;
 pub const TIMESTAMP = 0x8E28;
 pub const INT_2_10_10_10_REV = 0x8D9F;
+
 pub var bindFragDataLocationIndexed: *const fn (
     program: Uint,
     colorNumber: Uint,
@@ -1939,6 +1961,7 @@ pub const MAX_GEOMETRY_SHADER_INVOCATIONS = 0x8E5A;
 pub const MIN_FRAGMENT_INTERPOLATION_OFFSET = 0x8E5B;
 pub const MAX_FRAGMENT_INTERPOLATION_OFFSET = 0x8E5C;
 pub const FRAGMENT_INTERPOLATION_OFFSET_BITS = 0x8E5D;
+pub const MAX_VERTEX_STREAMS = 0x8E71;
 pub const DOUBLE_VEC2 = 0x8FFC;
 pub const DOUBLE_VEC3 = 0x8FFD;
 pub const DOUBLE_VEC4 = 0x8FFE;
@@ -1997,7 +2020,6 @@ pub const TRANSFORM_FEEDBACK_BUFFER_PAUSED = 0x8E23;
 pub const TRANSFORM_FEEDBACK_BUFFER_ACTIVE = 0x8E24;
 pub const TRANSFORM_FEEDBACK_BINDING = 0x8E25;
 pub const MAX_TRANSFORM_FEEDBACK_BUFFERS = 0x8E70;
-pub const MAX_VERTEX_STREAMS = 0x8E71;
 
 // TODO: should probably be in wrapper.zig
 pub const DrawArraysIndirectCommand = extern struct {
@@ -2016,6 +2038,7 @@ pub const DrawElementsIndirectCommand = extern struct {
     /// base_instance should always be set to zero for GL versions < 4.2
     base_instance: Uint = 0,
 };
+
 pub var minSampleShading: *const fn (value: Float) callconv(.c) void = undefined;
 pub var blendEquationi: *const fn (buf: Uint, mode: Enum) callconv(.c) void = undefined;
 pub var blendEquationSeparatei: *const fn (buf: Uint, modeRGB: Enum, modeAlpha: Enum) callconv(.c) void = undefined;
@@ -2104,6 +2127,7 @@ pub const VIEWPORT_BOUNDS_RANGE = 0x825D;
 pub const LAYER_PROVOKING_VERTEX = 0x825E;
 pub const VIEWPORT_INDEX_PROVOKING_VERTEX = 0x825F;
 pub const UNDEFINED_VERTEX = 0x8260;
+
 pub var releaseShaderCompiler: *const fn () callconv(.c) void = undefined;
 pub var shaderBinary: *const fn (
     count: Sizei,
@@ -2570,10 +2594,10 @@ pub var getDoublei_v: *const fn (
 // OpenGL 4.2 (Core Profile)
 //
 //--------------------------------------------------------------------------------------------------
-pub const COPY_READ_BUFFER_BINDING = COPY_READ_BUFFER;
-pub const COPY_WRITE_BUFFER_BINDING = COPY_WRITE_BUFFER;
-pub const TRANSFORM_FEEDBACK_PAUSED = TRANSFORM_FEEDBACK_BUFFER_PAUSED;
-pub const TRANSFORM_FEEDBACK_ACTIVE = TRANSFORM_FEEDBACK_BUFFER_ACTIVE;
+pub const COPY_READ_BUFFER_BINDING = 0x8F36;
+pub const COPY_WRITE_BUFFER_BINDING = 0x8F37;
+pub const TRANSFORM_FEEDBACK_ACTIVE = 0x8E24;
+pub const TRANSFORM_FEEDBACK_PAUSED = 0x8E23;
 pub const UNPACK_COMPRESSED_BLOCK_WIDTH = 0x9127;
 pub const UNPACK_COMPRESSED_BLOCK_HEIGHT = 0x9128;
 pub const UNPACK_COMPRESSED_BLOCK_DEPTH = 0x9129;
@@ -2682,6 +2706,7 @@ pub const COMPRESSED_SRGB_ALPHA_BPTC_UNORM = 0x8E8D;
 pub const COMPRESSED_RGB_BPTC_SIGNED_FLOAT = 0x8E8E;
 pub const COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT = 0x8E8F;
 pub const TEXTURE_IMMUTABLE_FORMAT = 0x912F;
+
 pub var drawArraysInstancedBaseInstance: *const fn (
     mode: Enum,
     first: Int,
@@ -2769,6 +2794,16 @@ pub var drawTransformFeedbackStreamInstanced: *const fn (
 // OpenGL 4.3 (Core Profile)
 //
 //--------------------------------------------------------------------------------------------------
+pub const DEBUGPROC = *const fn (
+    source: Enum,
+    type: Enum,
+    id: Uint,
+    severity: Enum,
+    length: Sizei,
+    message: [*c]const Char,
+    userParam: ?*const anyopaque,
+) callconv(.c) void;
+
 pub const NUM_SHADING_LANGUAGE_VERSIONS = 0x82E9;
 pub const VERTEX_ATTRIB_ARRAY_LONG = 0x874E;
 pub const COMPRESSED_RGB8_ETC2 = 0x9274;
@@ -2802,15 +2837,6 @@ pub const ATOMIC_COUNTER_BUFFER_REFERENCED_BY_COMPUTE_SHADER = 0x90ED;
 pub const DISPATCH_INDIRECT_BUFFER = 0x90EE;
 pub const DISPATCH_INDIRECT_BUFFER_BINDING = 0x90EF;
 pub const COMPUTE_SHADER_BIT = 0x00000020;
-pub const DEBUGPROC = *const fn (
-    source: Enum,
-    type: Enum,
-    id: Uint,
-    severity: Enum,
-    length: Sizei,
-    message: [*c]const Char,
-    userParam: ?*const anyopaque,
-) callconv(.c) void;
 pub const DEBUG_OUTPUT_SYNCHRONOUS = 0x8242;
 pub const DEBUG_NEXT_LOGGED_MESSAGE_LENGTH = 0x8243;
 pub const DEBUG_CALLBACK_FUNCTION = 0x8244;
@@ -2953,7 +2979,7 @@ pub const VIEW_CLASS_S3TC_DXT1_RGBA = 0x82CD;
 pub const VIEW_CLASS_S3TC_DXT3_RGBA = 0x82CE;
 pub const VIEW_CLASS_S3TC_DXT5_RGBA = 0x82CF;
 pub const VIEW_CLASS_RGTC1_RED = 0x82D0;
-pub const VIEW_CLASS_RGTC1_RG = 0x82D1;
+pub const VIEW_CLASS_RGTC2_RG = 0x82D1;
 pub const VIEW_CLASS_BPTC_UNORM = 0x82D2;
 pub const VIEW_CLASS_BPTC_FLOAT = 0x82D3;
 pub const UNIFORM = 0x92E1;
@@ -3036,6 +3062,7 @@ pub const VERTEX_BINDING_STRIDE = 0x82D8;
 pub const MAX_VERTEX_ATTRIB_RELATIVE_OFFSET = 0x82D9;
 pub const MAX_VERTEX_ATTRIB_BINDINGS = 0x82DA;
 pub const VERTEX_BINDING_BUFFER = 0x8F4F;
+
 pub var clearBufferData: *const fn (
     target: Enum,
     internalformat: Enum,
@@ -3319,24 +3346,28 @@ pub var getPointerv: *const fn (
     pname: Enum,
     params: [*c]?*anyopaque,
 ) callconv(.c) void = undefined;
+
 //--------------------------------------------------------------------------------------------------
 //
 // OpenGL 4.4 (Core Profile)
 //
 //--------------------------------------------------------------------------------------------------
-pub const BUFFER_IMMUTABLE_STORAGE = 0x821F;
-pub const BUFFER_STORAGE_FLAGS = 0x8220;
-pub const CLIENT_STORAGE_BIT = 0x0200;
-pub const DYNAMIC_STORAGE_BIT = 0x0100;
-pub const CLIENT_MAPPED_BUFFER_BARRIER_BIT = 0x00004000;
+pub const MAX_VERTEX_ATTRIB_STRIDE = 0x82E5;
+pub const PRIMITIVE_RESTART_FOR_PATCHES_SUPPORTED = 0x8221;
+pub const TEXTURE_BUFFER_BINDING = 0x8C2A;
 pub const MAP_PERSISTENT_BIT = 0x0040;
 pub const MAP_COHERENT_BIT = 0x0080;
+pub const DYNAMIC_STORAGE_BIT = 0x0100;
+pub const CLIENT_STORAGE_BIT = 0x0200;
+pub const CLIENT_MAPPED_BUFFER_BARRIER_BIT = 0x00004000;
+pub const BUFFER_IMMUTABLE_STORAGE = 0x821F;
+pub const BUFFER_STORAGE_FLAGS = 0x8220;
 pub const CLEAR_TEXTURE = 0x9365;
 pub const LOCATION_COMPONENT = 0x934A;
 pub const TRANSFORM_FEEDBACK_BUFFER_INDEX = 0x934B;
 pub const TRANSFORM_FEEDBACK_BUFFER_STRIDE = 0x934C;
-pub const MAX_VERTEX_ATTRIB_STRIDE = 0x82E5;
 pub const QUERY_BUFFER = 0x9192;
+pub const QUERY_BUFFER_BARRIER_BIT = 0x00008000;
 pub const QUERY_BUFFER_BINDING = 0x9193;
 pub const QUERY_RESULT_NO_WAIT = 0x9194;
 pub const MIRROR_CLAMP_TO_EDGE = 0x8743;
@@ -3409,8 +3440,11 @@ pub var bindVertexBuffers: *const fn (
 // OpenGL 4.5 (Core Profile)
 //
 //--------------------------------------------------------------------------------------------------
+pub const CONTEXT_LOST = 0x0507;
 pub const NEGATIVE_ONE_TO_ONE = 0x935E;
 pub const ZERO_TO_ONE = 0x935F;
+pub const CLIP_ORIGIN = 0x935C;
+pub const CLIP_DEPTH_MODE = 0x935D;
 pub const QUERY_WAIT_INVERTED = 0x8E17;
 pub const QUERY_NO_WAIT_INVERTED = 0x8E18;
 pub const QUERY_BY_REGION_WAIT_INVERTED = 0x8E19;
@@ -3419,14 +3453,16 @@ pub const MAX_CULL_DISTANCES = 0x82F9;
 pub const MAX_COMBINED_CLIP_AND_CULL_DISTANCES = 0x82FA;
 pub const TEXTURE_TARGET = 0x1006;
 pub const QUERY_TARGET = 0x82EA;
-pub const TEXTURE_BINDING = 0x82EB;
-pub const CONTEXT_FLAG_ROBUST_ACCESS_BIT_ARB = 0x00000004;
-pub const LOSE_CONTEXT_ON_RESET_ARB = 0x8252;
-pub const GUILTY_CONTEXT_RESET_ARB = 0x8253;
-pub const INNOCENT_CONTEXT_RESET_ARB = 0x8254;
-pub const UNKNOWN_CONTEXT_RESET_ARB = 0x8255;
-pub const RESET_NOTIFICATION_STRATEGY_ARB = 0x8256;
-pub const NO_RESET_NOTIFICATION_ARB = 0x8261;
+pub const GUILTY_CONTEXT_RESET = 0x8253;
+pub const INNOCENT_CONTEXT_RESET = 0x8254;
+pub const UNKNOWN_CONTEXT_RESET = 0x8255;
+pub const RESET_NOTIFICATION_STRATEGY = 0x8256;
+pub const LOSE_CONTEXT_ON_RESET = 0x8252;
+pub const NO_RESET_NOTIFICATION = 0x8261;
+pub const CONTEXT_FLAG_ROBUST_ACCESS_BIT = 0x00000004;
+pub const CONTEXT_RELEASE_BEHAVIOR = 0x82FB;
+pub const CONTEXT_RELEASE_BEHAVIOR_FLUSH = 0x82FC;
+
 pub var clipControl: *const fn (
     origin: Enum,
     depth: Enum,
@@ -4114,8 +4150,11 @@ pub var textureBarrier: *const fn () callconv(.c) void = undefined;
 // OpenGL 4.6 (Core Profile)
 //
 //--------------------------------------------------------------------------------------------------
+pub const SHADER_BINARY_FORMAT_SPIR_V = 0x9551;
+pub const SPIR_V_BINARY = 0x9552;
 pub const PARAMETER_BUFFER = 0x80EE;
 pub const PARAMETER_BUFFER_BINDING = 0x80EF;
+pub const CONTEXT_FLAG_NO_ERROR_BIT = 0x00000008;
 pub const VERTICES_SUBMITTED = 0x82EE;
 pub const PRIMITIVES_SUBMITTED = 0x82EF;
 pub const VERTEX_SHADER_INVOCATIONS = 0x82F0;
@@ -4126,15 +4165,13 @@ pub const FRAGMENT_SHADER_INVOCATIONS = 0x82F4;
 pub const COMPUTE_SHADER_INVOCATIONS = 0x82F5;
 pub const CLIPPING_INPUT_PRIMITIVES = 0x82F6;
 pub const CLIPPING_OUTPUT_PRIMITIVES = 0x82F7;
-pub const SPIR_V_BINARY = 0x9552;
-pub const SHADER_BINARY_FORMAT_SPIR_V = 0x9551;
+pub const POLYGON_OFFSET_CLAMP = 0x8E1B;
 pub const SPIR_V_EXTENSIONS = 0x9553;
 pub const NUM_SPIR_V_EXTENSIONS = 0x9554;
 pub const TEXTURE_MAX_ANISOTROPY = 0x84FE;
 pub const MAX_TEXTURE_MAX_ANISOTROPY = 0x84FF;
 pub const TRANSFORM_FEEDBACK_OVERFLOW = 0x82EC;
 pub const TRANSFORM_FEEDBACK_STREAM_OVERFLOW = 0x82ED;
-pub const CONTEXT_FLAG_NO_ERROR_BIT = 0x00000008;
 
 pub var multiDrawArraysIndirectCount: *const fn (
     mode: Enum,
