@@ -475,6 +475,52 @@ pub fn Wrap(comptime bindings: anytype) type {
             color_attachment31 = COLOR_ATTACHMENT31,
         };
 
+        pub const ColorBufferSingle = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            none = NONE,
+            front_left = FRONT_LEFT,
+            front_right = FRONT_RIGHT,
+            back_left = BACK_LEFT,
+            back_right = BACK_RIGHT,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            color_attachment0 = COLOR_ATTACHMENT0,
+            color_attachment1 = COLOR_ATTACHMENT1,
+            color_attachment2 = COLOR_ATTACHMENT2,
+            color_attachment3 = COLOR_ATTACHMENT3,
+            color_attachment4 = COLOR_ATTACHMENT4,
+            color_attachment5 = COLOR_ATTACHMENT5,
+            color_attachment6 = COLOR_ATTACHMENT6,
+            color_attachment7 = COLOR_ATTACHMENT7,
+            color_attachment8 = COLOR_ATTACHMENT8,
+            color_attachment9 = COLOR_ATTACHMENT9,
+            color_attachment10 = COLOR_ATTACHMENT10,
+            color_attachment11 = COLOR_ATTACHMENT11,
+            color_attachment12 = COLOR_ATTACHMENT12,
+            color_attachment13 = COLOR_ATTACHMENT13,
+            color_attachment14 = COLOR_ATTACHMENT14,
+            color_attachment15 = COLOR_ATTACHMENT15,
+            color_attachment16 = COLOR_ATTACHMENT16,
+            color_attachment17 = COLOR_ATTACHMENT17,
+            color_attachment18 = COLOR_ATTACHMENT18,
+            color_attachment19 = COLOR_ATTACHMENT19,
+            color_attachment20 = COLOR_ATTACHMENT20,
+            color_attachment21 = COLOR_ATTACHMENT21,
+            color_attachment22 = COLOR_ATTACHMENT22,
+            color_attachment23 = COLOR_ATTACHMENT23,
+            color_attachment24 = COLOR_ATTACHMENT24,
+            color_attachment25 = COLOR_ATTACHMENT25,
+            color_attachment26 = COLOR_ATTACHMENT26,
+            color_attachment27 = COLOR_ATTACHMENT27,
+            color_attachment28 = COLOR_ATTACHMENT28,
+            color_attachment29 = COLOR_ATTACHMENT29,
+            color_attachment30 = COLOR_ATTACHMENT30,
+            color_attachment31 = COLOR_ATTACHMENT31,
+        };
+
         pub const FramebufferTarget = enum(Enum) {
             //--------------------------------------------------------------------------------------
             // OpenGL 3.0 (Core Profile)
@@ -590,6 +636,17 @@ pub fn Wrap(comptime bindings: anytype) type {
             incomplete_dimensions = FRAMEBUFFER_INCOMPLETE_DIMENSIONS,
         };
 
+        pub const BlendEquation = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.4 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            func_add = FUNC_ADD,
+            func_subtract = FUNC_SUBTRACT,
+            func_reverse_subtract = FUNC_REVERSE_SUBTRACT,
+            min = MIN,
+            max = MAX,
+        };
+
         pub const ShaderType = enum(Enum) {
             //--------------------------------------------------------------------------------------
             // OpenGL 2.0 (Core Profile)
@@ -611,6 +668,39 @@ pub fn Wrap(comptime bindings: anytype) type {
             compute = COMPUTE_SHADER,
         };
 
+        pub const ProgramParameter = enum(Enum) {
+            //----------------------------------------------------------------------------------
+            // OpenGL 2.0 (Core Profile)
+            //----------------------------------------------------------------------------------
+            delete_status = DELETE_STATUS,
+            link_status = LINK_STATUS,
+            validate_status = VALIDATE_STATUS,
+            info_log_length = INFO_LOG_LENGTH,
+            attached_shaders = ATTACHED_SHADERS,
+            active_attributes = ACTIVE_ATTRIBUTES,
+            active_attribute_max_length = ACTIVE_ATTRIBUTE_MAX_LENGTH,
+            active_uniforms = ACTIVE_UNIFORMS,
+            active_uniform_blocks = ACTIVE_UNIFORM_BLOCKS,
+            active_uniform_block_max_name_length = ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH,
+            active_uniform_max_length = ACTIVE_UNIFORM_MAX_LENGTH,
+            //----------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //----------------------------------------------------------------------------------
+            transform_feedback_buffer_mode = TRANSFORM_FEEDBACK_BUFFER_MODE,
+            transform_feedback_varyings = TRANSFORM_FEEDBACK_VARYINGS,
+            transform_feedback_varying_max_length = TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH,
+            //----------------------------------------------------------------------------------
+            // OpenGL 3.2 (Core Profile)
+            //----------------------------------------------------------------------------------
+            geometry_vertices_out = GEOMETRY_VERTICES_OUT,
+            geometry_input_type = GEOMETRY_INPUT_TYPE,
+            geometry_output_type = GEOMETRY_OUTPUT_TYPE,
+            //----------------------------------------------------------------------------------
+            // OpenGL 4.1 (Core Profile)
+            //----------------------------------------------------------------------------------
+            program_binary_length = PROGRAM_BINARY_LENGTH,
+        };
+
         pub const ShaderParameter = enum(Enum) {
             //--------------------------------------------------------------------------------------
             // OpenGL 2.0 (Core Profile)
@@ -620,6 +710,231 @@ pub fn Wrap(comptime bindings: anytype) type {
             compile_status = COMPILE_STATUS,
             info_log_length = INFO_LOG_LENGTH,
             shader_source_length = SHADER_SOURCE_LENGTH,
+        };
+
+        pub const AttribType = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 2.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            float = FLOAT,
+            float_vec2 = FLOAT_VEC2,
+            float_vec3 = FLOAT_VEC3,
+            float_vec4 = FLOAT_VEC4,
+            float_mat2 = FLOAT_MAT2,
+            float_mat3 = FLOAT_MAT3,
+            float_mat4 = FLOAT_MAT4,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 2.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            float_mat2x3 = FLOAT_MAT2x3,
+            float_mat2x4 = FLOAT_MAT2x4,
+            float_mat3x2 = FLOAT_MAT3x2,
+            float_mat3x4 = FLOAT_MAT3x4,
+            float_mat4x2 = FLOAT_MAT4x2,
+            float_mat4x3 = FLOAT_MAT4x3,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            int = INT,
+            int_vec2 = INT_VEC2,
+            int_vec3 = INT_VEC3,
+            int_vec4 = INT_VEC4,
+            unsigned_int = UNSIGNED_INT,
+            unsigned_int_vec2 = UNSIGNED_INT_VEC2,
+            unsigned_int_vec3 = UNSIGNED_INT_VEC3,
+            unsigned_int_vec4 = UNSIGNED_INT_VEC4,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            double = DOUBLE,
+            double_vec2 = DOUBLE_VEC2,
+            double_vec3 = DOUBLE_VEC3,
+            double_vec4 = DOUBLE_VEC4,
+            double_mat2 = DOUBLE_MAT2,
+            double_mat3 = DOUBLE_MAT3,
+            double_mat4 = DOUBLE_MAT4,
+            double_mat2x3 = DOUBLE_MAT2x3,
+            double_mat2x4 = DOUBLE_MAT2x4,
+            double_mat3x2 = DOUBLE_MAT3x2,
+            double_mat3x4 = DOUBLE_MAT3x4,
+            double_mat4x2 = DOUBLE_MAT4x2,
+            double_mat4x3 = DOUBLE_MAT4x3,
+        };
+
+        pub const UniformType = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 2.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            float = FLOAT,
+            float_vec2 = FLOAT_VEC2,
+            float_vec3 = FLOAT_VEC3,
+            float_vec4 = FLOAT_VEC4,
+            int = INT,
+            int_vec2 = INT_VEC2,
+            int_vec3 = INT_VEC3,
+            int_vec4 = INT_VEC4,
+            bool = BOOL,
+            bool_vec2 = BOOL_VEC2,
+            bool_vec3 = BOOL_VEC3,
+            bool_vec4 = BOOL_VEC4,
+            float_mat2 = FLOAT_MAT2,
+            float_mat3 = FLOAT_MAT3,
+            float_mat4 = FLOAT_MAT4,
+            sampler_1d = SAMPLER_1D,
+            sampler_2d = SAMPLER_2D,
+            sampler_3d = SAMPLER_3D,
+            sampler_cube = SAMPLER_CUBE,
+            sampler_1d_shadow = SAMPLER_1D_SHADOW,
+            sampler_2d_shadow = SAMPLER_2D_SHADOW,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 2.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            float_mat2x3 = FLOAT_MAT2x3,
+            float_mat2x4 = FLOAT_MAT2x4,
+            float_mat3x2 = FLOAT_MAT3x2,
+            float_mat3x4 = FLOAT_MAT3x4,
+            float_mat4x2 = FLOAT_MAT4x2,
+            float_mat4x3 = FLOAT_MAT4x3,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            sampler_1d_array = SAMPLER_1D_ARRAY,
+            sampler_2d_array = SAMPLER_2D_ARRAY,
+            sampler_1d_array_shadow = SAMPLER_1D_ARRAY_SHADOW,
+            sampler_2d_array_shadow = SAMPLER_2D_ARRAY_SHADOW,
+            sampler_cube_shadow = SAMPLER_CUBE_SHADOW,
+            int_sampler_1d = INT_SAMPLER_1D,
+            int_sampler_2d = INT_SAMPLER_2D,
+            int_sampler_3d = INT_SAMPLER_3D,
+            int_sampler_cube = INT_SAMPLER_CUBE,
+            int_sampler_1d_array = INT_SAMPLER_1D_ARRAY,
+            int_sampler_2d_array = INT_SAMPLER_2D_ARRAY,
+            unsigned_int = UNSIGNED_INT,
+            unsigned_int_vec2 = UNSIGNED_INT_VEC2,
+            unsigned_int_vec3 = UNSIGNED_INT_VEC3,
+            unsigned_int_vec4 = UNSIGNED_INT_VEC4,
+            unsigned_int_sampler_1d = UNSIGNED_INT_SAMPLER_1D,
+            unsigned_int_sampler_2d = UNSIGNED_INT_SAMPLER_2D,
+            unsigned_int_sampler_3d = UNSIGNED_INT_SAMPLER_3D,
+            unsigned_int_sampler_1d_array = UNSIGNED_INT_SAMPLER_1D_ARRAY,
+            unsigned_int_sampler_2d_array = UNSIGNED_INT_SAMPLER_2D_ARRAY,
+            unsigned_int_sampler_cube = UNSIGNED_INT_SAMPLER_CUBE,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            sampler_2d_rect = SAMPLER_2D_RECT,
+            sampler_2d_rect_shadow = SAMPLER_2D_RECT_SHADOW,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            sampler_2d_multisample = SAMPLER_2D_MULTISAMPLE,
+            sampler_2d_multisample_array = SAMPLER_2D_MULTISAMPLE_ARRAY,
+            sampler_buffer = SAMPLER_BUFFER,
+            int_sampler_2d_multisample = INT_SAMPLER_2D_MULTISAMPLE,
+            int_sampler_2d_multisample_array = INT_SAMPLER_2D_MULTISAMPLE_ARRAY,
+            int_sampler_buffer = INT_SAMPLER_BUFFER,
+            int_sampler_2d_rect = INT_SAMPLER_2D_RECT,
+            unsigned_int_sampler_2d_multisample = UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE,
+            unsigned_int_sampler_2d_multisample_array = UNSIGNED_INT_SAMPLER_2D_MULTISAMPLE_ARRAY,
+            unsigned_int_sampler_buffer = UNSIGNED_INT_SAMPLER_BUFFER,
+            unsigned_int_sampler_2d_rect = UNSIGNED_INT_SAMPLER_2D_RECT,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            double = DOUBLE,
+            double_vec2 = DOUBLE_VEC2,
+            double_vec3 = DOUBLE_VEC3,
+            double_vec4 = DOUBLE_VEC4,
+            double_mat2 = DOUBLE_MAT2,
+            double_mat3 = DOUBLE_MAT3,
+            double_mat4 = DOUBLE_MAT4,
+            double_mat2x3 = DOUBLE_MAT2x3,
+            double_mat2x4 = DOUBLE_MAT2x4,
+            double_mat3x2 = DOUBLE_MAT3x2,
+            double_mat3x4 = DOUBLE_MAT3x4,
+            double_mat4x2 = DOUBLE_MAT4x2,
+            double_mat4x3 = DOUBLE_MAT4x3,
+            sampler_cube_map_array = SAMPLER_CUBE_MAP_ARRAY,
+            sampler_cube_map_array_shadow = SAMPLER_CUBE_MAP_ARRAY_SHADOW,
+            int_sampler_cube_map_array = INT_SAMPLER_CUBE_MAP_ARRAY,
+            unsigned_int_sampler_cube_map_array = UNSIGNED_INT_SAMPLER_CUBE_MAP_ARRAY,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            image_1d = IMAGE_1D,
+            image_2d = IMAGE_2D,
+            image_3d = IMAGE_3D,
+            image_2d_rect = IMAGE_2D_RECT,
+            image_cube = IMAGE_CUBE,
+            image_buffer = IMAGE_BUFFER,
+            image_1d_array = IMAGE_1D_ARRAY,
+            image_2d_array = IMAGE_2D_ARRAY,
+            image_cube_map_array = IMAGE_CUBE_MAP_ARRAY,
+            image_2d_multisample = IMAGE_2D_MULTISAMPLE,
+            image_2d_multisample_array = IMAGE_2D_MULTISAMPLE_ARRAY,
+            int_image_1d = INT_IMAGE_1D,
+            int_image_2d = INT_IMAGE_2D,
+            int_image_3d = INT_IMAGE_3D,
+            int_image_2d_rect = INT_IMAGE_2D_RECT,
+            int_image_cube = INT_IMAGE_CUBE,
+            int_image_buffer = INT_IMAGE_BUFFER,
+            int_image_1d_array = INT_IMAGE_1D_ARRAY,
+            int_image_2d_array = INT_IMAGE_2D_ARRAY,
+            int_image_cube_map_array = INT_IMAGE_CUBE_MAP_ARRAY,
+            int_image_2d_multisample = INT_IMAGE_2D_MULTISAMPLE,
+            int_image_2d_multisample_array = INT_IMAGE_2D_MULTISAMPLE_ARRAY,
+            unsigned_int_image_1d = UNSIGNED_INT_IMAGE_1D,
+            unsigned_int_image_2d = UNSIGNED_INT_IMAGE_2D,
+            unsigned_int_image_3d = UNSIGNED_INT_IMAGE_3D,
+            unsigned_int_image_2d_rect = UNSIGNED_INT_IMAGE_2D_RECT,
+            unsigned_int_image_cube = UNSIGNED_INT_IMAGE_CUBE,
+            unsigned_int_image_buffer = UNSIGNED_INT_IMAGE_BUFFER,
+            unsigned_int_image_1d_array = UNSIGNED_INT_IMAGE_1D_ARRAY,
+            unsigned_int_image_2d_array = UNSIGNED_INT_IMAGE_2D_ARRAY,
+            unsigned_int_image_cube_map_array = UNSIGNED_INT_IMAGE_CUBE_MAP_ARRAY,
+            unsigned_int_image_2d_multisample = UNSIGNED_INT_IMAGE_2D_MULTISAMPLE,
+            unsigned_int_image_2d_multisample_array = UNSIGNED_INT_IMAGE_2D_MULTISAMPLE_ARRAY,
+            unsigned_int_atomic_counter = UNSIGNED_INT_ATOMIC_COUNTER,
+        };
+
+        pub const VertexAttribParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 2.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            vertex_attrib_array_enabled = VERTEX_ATTRIB_ARRAY_ENABLED,
+            vertex_attrib_array_size = VERTEX_ATTRIB_ARRAY_SIZE,
+            vertex_attrib_array_stride = VERTEX_ATTRIB_ARRAY_STRIDE,
+            vertex_attrib_array_type = VERTEX_ATTRIB_ARRAY_TYPE,
+            vertex_attrib_array_normalized = VERTEX_ATTRIB_ARRAY_NORMALIZED,
+            current_vertex_attrib = CURRENT_VERTEX_ATTRIB,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 2.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            vertex_attrib_array_buffer_binding = VERTEX_ATTRIB_ARRAY_BUFFER_BINDING,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            vertex_attrib_array_integer = VERTEX_ATTRIB_ARRAY_INTEGER,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            vertex_attrib_array_divisor = VERTEX_ATTRIB_ARRAY_DIVISOR,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            vertex_attrib_array_long = VERTEX_ATTRIB_ARRAY_LONG,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.4 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            vertex_attrib_binding = VERTEX_ATTRIB_BINDING,
+            vertex_attrib_relative_offset = VERTEX_ATTRIB_RELATIVE_OFFSET,
+        };
+
+        pub const VertexAttribPointerParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 2.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            vertex_attrib_array_pointer = VERTEX_ATTRIB_ARRAY_POINTER,
         };
 
         pub const VertexAttribType = enum(Enum) {
@@ -2523,13 +2838,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             bindings.blendColor(red, green, blue, alpha);
         }
 
-        pub fn blendEquation(mode: enum(Enum) {
-            func_add = FUNC_ADD,
-            func_subtract = FUNC_SUBTRACT,
-            func_reverse_subtract = FUNC_REVERSE_SUBTRACT,
-            min = MIN,
-            max = MAX,
-        }) void {
+        pub fn blendEquation(mode: BlendEquation) void {
             bindings.blendEquation(@intFromEnum(mode));
         }
 
@@ -2833,15 +3142,60 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const STENCIL_BACK_WRITEMASK = bindings.STENCIL_BACK_WRITEMASK;
 
         // pub var blendEquationSeparate: *const fn (modeRGB: Enum, modeAlpha: Enum) callconv(.c) void = undefined;
+        pub fn blendEquationSeparate(modeRGB: BlendEquation, modeAlpha: BlendEquation) void {
+            bindings.blendEquationSeparate(@intFromEnum(modeRGB), @intFromEnum(modeAlpha));
+        }
+
         // pub var drawBuffers: *const fn (n: Sizei, bufs: [*c]const Enum) callconv(.c) void = undefined;
+        pub fn drawBuffers(bufs: []const ColorBufferSingle) void {
+            bindings.drawBuffers(
+                @as(Sizei, @intCast(bufs.len)),
+                @ptrCast(bufs.ptr),
+            );
+        }
+
         // pub var stencilOpSeparate: *const fn (
         //     face: Enum,
         //     sfail: Enum,
         //     dpfail: Enum,
         //     dppass: Enum,
         // ) callconv(.c) void = undefined;
+        pub fn stencilOpSeparate(
+            face: Face,
+            sfail: StencilAction,
+            dpfail: StencilAction,
+            dppass: StencilAction,
+        ) void {
+            bindings.stencilOpSeparate(
+                @intFromEnum(face),
+                @intFromEnum(sfail),
+                @intFromEnum(dpfail),
+                @intFromEnum(dppass),
+            );
+        }
+
         // pub var stencilFuncSeparate: *const fn (face: Enum, func: Enum, ref: Int, mask: Uint) callconv(.c) void = undefined;
+        pub fn stencilFuncSeparate(
+            face: Face,
+            func: Func,
+            ref: i32,
+            mask: u32,
+        ) void {
+            bindings.stencilFuncSeparate(
+                @intFromEnum(face),
+                @intFromEnum(func),
+                @as(Int, @bitCast(ref)),
+                @as(Uint, @bitCast(mask)),
+            );
+        }
+
         // pub var stencilMaskSeparate: *const fn (face: Enum, mask: Uint) callconv(.c) void = undefined;
+        pub fn stencilMaskSeparate(face: Face, mask: u32) void {
+            bindings.stencilMaskSeparate(
+                @intFromEnum(face),
+                @as(Uint, @bitCast(mask)),
+            );
+        }
 
         // pub var attachShader: *const fn (program: Uint, shader: Uint) callconv(.c) void = undefined;
         pub fn attachShader(program: Program, shader: Shader) void {
@@ -2855,6 +3209,20 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     index: Uint,
         //     name: [*c]const Char,
         // ) callconv(.c) void = undefined;
+        pub fn bindAttribLocation(
+            program: Program,
+            location: VertexAttribLocation,
+            name: [:0]const u8,
+        ) void {
+            assert(program != .invalid);
+            // prefix 'gl_' is reserved and cannot be used
+            assert(!std.mem.startsWith(u8, name, "gl_"));
+            bindings.bindAttribLocation(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @ptrCast(name.ptr),
+            );
+        }
 
         // pub var compileShader: *const fn (shader: Uint) callconv(.c) void = undefined;
         pub fn compileShader(shader: Shader) void {
@@ -2893,7 +3261,16 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         // pub var detachShader: *const fn (program: Uint, shader: Uint) callconv(.c) void = undefined;
+        pub fn detachShader(program: Program, shader: Shader) void {
+            assert(program != .invalid);
+            assert(shader != .invalid);
+            bindings.detachShader(@intFromEnum(program), @intFromEnum(shader));
+        }
+
         // pub var disableVertexAttribArray: *const fn (index: Uint) callconv(.c) void = undefined;
+        pub fn disableVertexAttribArray(location: VertexAttribLocation) void {
+            bindings.disableVertexAttribArray(@intFromEnum(location));
+        }
 
         // pub var enableVertexAttribArray: *const fn (index: Uint) callconv(.c) void = undefined;
         pub fn enableVertexAttribArray(location: VertexAttribLocation) void {
@@ -2909,6 +3286,29 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     type: [*c]Enum,
         //     name: [*c]Char,
         // ) callconv(.c) void = undefined;
+        pub fn getActiveAttrib(
+            program: Program,
+            index: u32,
+            size: *i32,
+            attrib_type: *AttribType,
+            name_buf: [:0]u8,
+        ) [:0]const u8 {
+            assert(program != .invalid);
+            var length: i32 = undefined;
+            bindings.getActiveAttrib(
+                @intFromEnum(program),
+                @as(Uint, @bitCast(index)),
+                // includes null terminator
+                @as(Sizei, @intCast(name_buf.len + 1)),
+                // excludes null terminator
+                @as([*c]Sizei, @ptrCast(&length)),
+                @as([*c]Int, @ptrCast(size)),
+                @as([*c]Enum, @ptrCast(attrib_type)),
+                @ptrCast(name_buf.ptr),
+            );
+            return name_buf[0..@intCast(length) :0];
+        }
+
         // pub var getActiveUniform: *const fn (
         //     program: Uint,
         //     index: Uint,
@@ -2918,12 +3318,46 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     type: [*c]Enum,
         //     name: [*c]Char,
         // ) callconv(.c) Int = undefined;
+        pub fn getActiveUniform(
+            program: Program,
+            index: u32,
+            size: *i32,
+            attrib_type: *UniformType,
+            name_buf: [:0]u8,
+        ) [:0]const u8 {
+            assert(program != .invalid);
+            var length: i32 = undefined;
+            bindings.getActiveUniform(
+                @intFromEnum(program),
+                @as(Uint, @bitCast(index)),
+                // includes null terminator
+                @as(Sizei, @intCast(name_buf.len + 1)),
+                // excludes null terminator
+                @as([*c]Sizei, @ptrCast(&length)),
+                @as([*c]Int, @ptrCast(size)),
+                @as([*c]Enum, @ptrCast(attrib_type)),
+                @ptrCast(name_buf.ptr),
+            );
+            return name_buf[0..@intCast(length) :0];
+        }
+
         // pub var getAttachedShaders: *const fn (
         //     program: Uint,
         //     maxCount: Sizei,
         //     count: [*c]Sizei,
         //     shaders: [*c]Uint,
         // ) callconv(.c) void = undefined;
+        pub fn getAttachedShaders(program: Program, shaders: []Shader) []const Shader {
+            assert(program != .invalid);
+            var count: i32 = undefined;
+            bindings.getAttachedShaders(
+                @intFromEnum(program),
+                @as(Sizei, @intCast(shaders.len)),
+                @as([*c]Sizei, @ptrCast(&count)),
+                @ptrCast(shaders.ptr),
+            );
+            return shaders[0..@intCast(count)];
+        }
 
         // pub var getAttribLocation: *const fn (program: Uint, name: [*c]const Char) callconv(.c) Int = undefined;
         pub fn getAttribLocation(program: Program, name: [:0]const u8) ?VertexAttribLocation {
@@ -2933,41 +3367,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         // pub var getProgramiv: *const fn (program: Uint, pname: Enum, params: [*c]Int) callconv(.c) void = undefined;
-        pub fn getProgramiv(
-            program: Program,
-            parameter: enum(Enum) {
-                //----------------------------------------------------------------------------------
-                // OpenGL 2.0 (Core Profile)
-                //----------------------------------------------------------------------------------
-                delete_status = DELETE_STATUS,
-                link_status = LINK_STATUS,
-                validate_status = VALIDATE_STATUS,
-                info_log_length = INFO_LOG_LENGTH,
-                attached_shaders = ATTACHED_SHADERS,
-                active_attributes = ACTIVE_ATTRIBUTES,
-                active_attribute_max_length = ACTIVE_ATTRIBUTE_MAX_LENGTH,
-                active_uniforms = ACTIVE_UNIFORMS,
-                active_uniform_blocks = ACTIVE_UNIFORM_BLOCKS,
-                active_uniform_block_max_name_length = ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH,
-                active_uniform_max_length = ACTIVE_UNIFORM_MAX_LENGTH,
-                //----------------------------------------------------------------------------------
-                // OpenGL 3.0 (Core Profile)
-                //----------------------------------------------------------------------------------
-                transform_feedback_buffer_mode = TRANSFORM_FEEDBACK_BUFFER_MODE,
-                transform_feedback_varyings = TRANSFORM_FEEDBACK_VARYINGS,
-                transform_feedback_varying_max_length = TRANSFORM_FEEDBACK_VARYING_MAX_LENGTH,
-                //----------------------------------------------------------------------------------
-                // OpenGL 3.2 (Core Profile)
-                //----------------------------------------------------------------------------------
-                geometry_vertices_out = GEOMETRY_VERTICES_OUT,
-                geometry_input_type = GEOMETRY_INPUT_TYPE,
-                geometry_output_type = GEOMETRY_OUTPUT_TYPE,
-                //----------------------------------------------------------------------------------
-                // OpenGL 4.1 (Core Profile)
-                //----------------------------------------------------------------------------------
-                program_binary_length = PROGRAM_BINARY_LENGTH,
-            },
-        ) Int {
+        pub fn getProgramiv(program: Program, parameter: ProgramParameter) Int {
             assert(program != Program.invalid);
             var value: Int = undefined;
             bindings.getProgramiv(@intFromEnum(program), @intFromEnum(parameter), &value);
@@ -3028,6 +3428,19 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     length: [*c]Sizei,
         //     source: [*c]Char,
         // ) callconv(.c) void = undefined;
+        pub fn getShaderSource(shader: Shader, source: [:0]u8) [:0]const u8 {
+            assert(shader != Shader.invalid);
+            var length: i32 = undefined;
+            bindings.getShaderSource(
+                @intFromEnum(shader),
+                // includes null terminator
+                @as(Sizei, @intCast(source.len + 1)),
+                // excludes null terminator
+                @as([*c]Sizei, @ptrCast(&length)),
+                @ptrCast(source.ptr),
+            );
+            return source[0..@intCast(length) :0];
+        }
 
         // pub var getUniformLocation: *const fn (program: Uint, name: [*c]const Char) callconv(.c) Int = undefined;
         pub fn getUniformLocation(program: Program, name: [:0]const u8) ?UniformLocation {
@@ -3038,17 +3451,92 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         // pub var getUniformfv: *const fn (program: Uint, location: Int, params: [*c]Float) callconv(.c) void = undefined;
+        pub fn getUniformfv(program: Program, location: UniformLocation, params: []f32) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.getUniformfv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getUniformiv: *const fn (program: Uint, location: Int, params: [*c]Int) callconv(.c) void = undefined;
+        pub fn getUniformiv(program: Program, location: UniformLocation, params: []i32) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.getUniformiv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getVertexAttribdv: *const fn (index: Uint, pname: Enum, params: [*c]Double) callconv(.c) void = undefined;
+        pub fn getVertexAttribdv(
+            location: VertexAttribLocation,
+            pname: VertexAttribParameter,
+            params: []f64,
+        ) void {
+            bindings.getVertexAttribdv(
+                @intFromEnum(location),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getVertexAttribfv: *const fn (index: Uint, pname: Enum, params: [*c]Float) callconv(.c) void = undefined;
+        pub fn getVertexAttribfv(
+            location: VertexAttribLocation,
+            pname: VertexAttribParameter,
+            params: []f32,
+        ) void {
+            bindings.getVertexAttribfv(
+                @intFromEnum(location),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getVertexAttribiv: *const fn (index: Uint, pname: Enum, params: [*c]Int) callconv(.c) void = undefined;
+        pub fn getVertexAttribiv(
+            location: VertexAttribLocation,
+            pname: VertexAttribParameter,
+            params: []i32,
+        ) void {
+            bindings.getVertexAttribiv(
+                @intFromEnum(location),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getVertexAttribPointerv: *const fn (
         //     index: Uint,
         //     pname: Enum,
         //     pointer: [*c]?*anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn getVertexAttribPointerv(
+            location: VertexAttribLocation,
+            pname: VertexAttribPointerParameter,
+            pointer: **allowzero anyopaque,
+        ) void {
+            bindings.getVertexAttribPointerv(
+                @intFromEnum(location),
+                @intFromEnum(pname),
+                @ptrCast(pointer),
+            );
+        }
+
         // pub var isProgram: *const fn (program: Uint) callconv(.c) Boolean = undefined;
+        pub fn isProgram(program: Program) bool {
+            return bindings.isProgram(@intFromEnum(program)) == TRUE;
+        }
+
         // pub var isShader: *const fn (shader: Uint) callconv(.c) Boolean = undefined;
+        pub fn isShader(shader: Shader) bool {
+            return bindings.isShader(@intFromEnum(shader)) == TRUE;
+        }
 
         // pub var linkProgram: *const fn (program: Uint) callconv(.c) void = undefined;
         pub fn linkProgram(program: Program) void {
@@ -3127,11 +3615,13 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(location != UniformLocation.invalid);
             bindings.uniform2i(@intFromEnum(location), v0, v1);
         }
+
         // pub var uniform3i: *const fn (location: Int, v0: Int, v1: Int, v2: Int) callconv(.c) void = undefined;
         pub fn uniform3i(location: UniformLocation, v0: i32, v1: i32, v2: i32) void {
             assert(location != UniformLocation.invalid);
             bindings.uniform3i(@intFromEnum(location), v0, v1, v2);
         }
+
         // pub var uniform4i: *const fn (
         //     location: Int,
         //     v0: Int,
@@ -3143,42 +3633,170 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(location != UniformLocation.invalid);
             bindings.uniform4i(@intFromEnum(location), v0, v1, v2, v3);
         }
+
         // pub var uniform1fv: *const fn (
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn uniform1fv(location: UniformLocation, count: u32, value: []const f32) void {
+            assert(location != .invalid);
+            assert(value.len == count);
+            bindings.uniform1fv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniform2fv: *const fn (
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn uniform2fv(location: UniformLocation, count: u32, value: []const f32) void {
+            const vec_size = 2;
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.uniform2fv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniform3fv: *const fn (
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn uniform3fv(location: UniformLocation, count: u32, value: []const f32) void {
+            const vec_size = 3;
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.uniform3fv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniform4fv: *const fn (
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn uniform4fv(location: UniformLocation, count: u32, value: []const f32) void {
+            const vec_size = 4;
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.uniform4fv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniform1iv: *const fn (location: Int, count: Sizei, value: [*c]const Int) callconv(.c) void = undefined;
+        pub fn uniform1iv(location: UniformLocation, count: u32, value: []const i32) void {
+            assert(location != .invalid);
+            assert(value.len == count);
+            bindings.uniform1iv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniform2iv: *const fn (location: Int, count: Sizei, value: [*c]const Int) callconv(.c) void = undefined;
+        pub fn uniform2iv(location: UniformLocation, count: u32, value: []const i32) void {
+            const vec_size = 2;
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.uniform2iv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniform3iv: *const fn (location: Int, count: Sizei, value: [*c]const Int) callconv(.c) void = undefined;
+        pub fn uniform3iv(location: UniformLocation, count: u32, value: []const i32) void {
+            const vec_size = 3;
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.uniform3iv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniform4iv: *const fn (location: Int, count: Sizei, value: [*c]const Int) callconv(.c) void = undefined;
+        pub fn uniform4iv(location: UniformLocation, count: u32, value: []const i32) void {
+            const vec_size = 4;
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.uniform4iv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix2fv: *const fn (
         //     location: Int,
         //     count: Sizei,
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn uniformMatrix2fv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 2 * 2;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix2fv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix3fv: *const fn (
         //     location: Int,
         //     count: Sizei,
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn uniformMatrix3fv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 3 * 3;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix3fv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
 
         // pub var uniformMatrix4fv: *const fn (
         //     location: Int,
@@ -3189,40 +3807,131 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub fn uniformMatrix4fv(
             location: UniformLocation,
             count: u32,
-            transpose: Boolean,
-            value: [*]const f32,
+            transpose: bool,
+            value: []const f32,
         ) void {
-            assert(location != UniformLocation.invalid);
+            const mat_size = 4 * 4;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
             bindings.uniformMatrix4fv(
                 @intFromEnum(location),
                 @as(Sizei, @bitCast(count)),
-                transpose,
-                value,
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
             );
         }
 
         // pub var validateProgram: *const fn (program: Uint) callconv(.c) void = undefined;
+        pub fn validateProgram(program: Program) void {
+            bindings.validateProgram(@intFromEnum(program));
+        }
+
         // pub var vertexAttrib1d: *const fn (index: Uint, x: Double) callconv(.c) void = undefined;
+        pub fn vertexAttrib1d(location: VertexAttribLocation, x: f64) void {
+            bindings.vertexAttrib1d(@intFromEnum(location), x);
+        }
+
         // pub var vertexAttrib1dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
+        pub fn vertexAttrib1dv(location: VertexAttribLocation, v: []const f64) void {
+            bindings.vertexAttrib1dv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib1f: *const fn (index: Uint, x: Float) callconv(.c) void = undefined;
+        pub fn vertexAttrib1f(location: VertexAttribLocation, x: f32) void {
+            bindings.vertexAttrib1f(@intFromEnum(location), x);
+        }
+
         // pub var vertexAttrib1fv: *const fn (index: Uint, v: [*c]const Float) callconv(.c) void = undefined;
+        pub fn vertexAttrib1fv(location: VertexAttribLocation, v: []const f32) void {
+            bindings.vertexAttrib1fv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib1s: *const fn (index: Uint, x: Short) callconv(.c) void = undefined;
+        pub fn vertexAttrib1s(location: VertexAttribLocation, x: i16) void {
+            bindings.vertexAttrib1s(@intFromEnum(location), x);
+        }
+
         // pub var vertexAttrib1sv: *const fn (index: Uint, v: [*c]const Short) callconv(.c) void = undefined;
+        pub fn vertexAttrib1sv(location: VertexAttribLocation, v: []const i16) void {
+            bindings.vertexAttrib1sv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib2d: *const fn (index: Uint, x: Double, y: Double) callconv(.c) void = undefined;
+        pub fn vertexAttrib2d(location: VertexAttribLocation, x: f64, y: f64) void {
+            bindings.vertexAttrib2d(@intFromEnum(location), x, y);
+        }
+
         // pub var vertexAttrib2dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
+        pub fn vertexAttrib2dv(location: VertexAttribLocation, v: []const f64) void {
+            bindings.vertexAttrib2dv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib2f: *const fn (index: Uint, x: Float, y: Float) callconv(.c) void = undefined;
+        pub fn vertexAttrib2f(location: VertexAttribLocation, x: f32, y: f32) void {
+            bindings.vertexAttrib2f(@intFromEnum(location), x, y);
+        }
+
         // pub var vertexAttrib2fv: *const fn (index: Uint, v: [*c]const Float) callconv(.c) void = undefined;
+        pub fn vertexAttrib2fv(location: VertexAttribLocation, v: []const f32) void {
+            bindings.vertexAttrib2fv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib2s: *const fn (index: Uint, x: Short, y: Short) callconv(.c) void = undefined;
+        pub fn vertexAttrib2s(location: VertexAttribLocation, x: i16, y: i16) void {
+            bindings.vertexAttrib2s(@intFromEnum(location), x, y);
+        }
+
         // pub var vertexAttrib2sv: *const fn (index: Uint, v: [*c]const Short) callconv(.c) void = undefined;
+        pub fn vertexAttrib2sv(location: VertexAttribLocation, v: []const i16) void {
+            bindings.vertexAttrib2sv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib3d: *const fn (index: Uint, x: Double, y: Double, z: Double) callconv(.c) void = undefined;
+        pub fn vertexAttrib3d(location: VertexAttribLocation, x: f64, y: f64, z: f64) void {
+            bindings.vertexAttrib3d(@intFromEnum(location), x, y, z);
+        }
+
         // pub var vertexAttrib3dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
+        pub fn vertexAttrib3dv(location: VertexAttribLocation, v: []const f64) void {
+            bindings.vertexAttrib3dv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib3f: *const fn (index: Uint, x: Float, y: Float, z: Float) callconv(.c) void = undefined;
+        pub fn vertexAttrib3f(location: VertexAttribLocation, x: f32, y: f32, z: f32) void {
+            bindings.vertexAttrib3f(@intFromEnum(location), x, y, z);
+        }
+
         // pub var vertexAttrib3fv: *const fn (index: Uint, v: [*c]const Float) callconv(.c) void = undefined;
+        pub fn vertexAttrib3fv(location: VertexAttribLocation, v: []const f32) void {
+            bindings.vertexAttrib3fv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib3s: *const fn (index: Uint, x: Short, y: Short, z: Short) callconv(.c) void = undefined;
+        pub fn vertexAttrib3s(location: VertexAttribLocation, x: i16, y: i16, z: i16) void {
+            bindings.vertexAttrib3s(@intFromEnum(location), x, y, z);
+        }
+
         // pub var vertexAttrib3sv: *const fn (index: Uint, v: [*c]const Short) callconv(.c) void = undefined;
+        pub fn vertexAttrib3sv(location: VertexAttribLocation, v: []const i16) void {
+            bindings.vertexAttrib3sv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib4Nbv: *const fn (index: Uint, v: [*c]const Byte) callconv(.c) void = undefined;
+        pub fn vertexAttrib4Nbv(location: VertexAttribLocation, v: []const i8) void {
+            bindings.vertexAttrib4Nbv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib4Niv: *const fn (index: Uint, v: [*c]const Int) callconv(.c) void = undefined;
+        pub fn vertexAttrib4Niv(location: VertexAttribLocation, v: []const i32) void {
+            bindings.vertexAttrib4Niv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib4Nsv: *const fn (index: Uint, v: [*c]const Short) callconv(.c) void = undefined;
+        pub fn vertexAttrib4Nsv(location: VertexAttribLocation, v: []const i16) void {
+            bindings.vertexAttrib4Nsv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib4Nub: *const fn (
         //     index: Uint,
         //     x: Ubyte,
@@ -3230,10 +3939,42 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     z: Ubyte,
         //     w: Ubyte,
         // ) callconv(.c) void = undefined;
+        pub fn vertexAttrib4Nub(
+            location: VertexAttribLocation,
+            x: u8,
+            y: u8,
+            z: u8,
+            w: u8,
+        ) void {
+            bindings.vertexAttrib4Nub(
+                @intFromEnum(location),
+                x,
+                y,
+                z,
+                w,
+            );
+        }
+
         // pub var vertexAttrib4Nubv: *const fn (index: Uint, v: [*c]const Ubyte) callconv(.c) void = undefined;
+        pub fn vertexAttrib4Nubv(location: VertexAttribLocation, v: []const u8) void {
+            bindings.vertexAttrib4Nubv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib4Nuiv: *const fn (index: Uint, v: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn vertexAttrib4Nuiv(location: VertexAttribLocation, v: []const u32) void {
+            bindings.vertexAttrib4Nuiv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib4Nusv: *const fn (index: Uint, v: [*c]const Ushort) callconv(.c) void = undefined;
+        pub fn vertexAttrib4Nusv(location: VertexAttribLocation, v: []const u16) void {
+            bindings.vertexAttrib4Nusv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib4bv: *const fn (index: Uint, v: [*c]const Byte) callconv(.c) void = undefined;
+        pub fn vertexAttrib4bv(location: VertexAttribLocation, v: []const i8) void {
+            bindings.vertexAttrib4bv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib4d: *const fn (
         //     index: Uint,
         //     x: Double,
@@ -3241,7 +3982,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     z: Double,
         //     w: Double,
         // ) callconv(.c) void = undefined;
+        pub fn vertexAttrib4d(
+            location: VertexAttribLocation,
+            x: f64,
+            y: f64,
+            z: f64,
+            w: f64,
+        ) void {
+            bindings.vertexAttrib4d(
+                @intFromEnum(location),
+                x,
+                y,
+                z,
+                w,
+            );
+        }
+
         // pub var vertexAttrib4dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
+        pub fn vertexAttrib4dv(location: VertexAttribLocation, v: []const f64) void {
+            bindings.vertexAttrib4dv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib4f: *const fn (
         //     index: Uint,
         //     x: Float,
@@ -3249,8 +4010,32 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     z: Float,
         //     w: Float,
         // ) callconv(.c) void = undefined;
+        pub fn vertexAttrib4f(
+            location: VertexAttribLocation,
+            x: f32,
+            y: f32,
+            z: f32,
+            w: f32,
+        ) void {
+            bindings.vertexAttrib4f(
+                @intFromEnum(location),
+                x,
+                y,
+                z,
+                w,
+            );
+        }
+
         // pub var vertexAttrib4fv: *const fn (index: Uint, v: [*c]const Float) callconv(.c) void = undefined;
+        pub fn vertexAttrib4fv(location: VertexAttribLocation, v: []const f32) void {
+            bindings.vertexAttrib4fv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib4iv: *const fn (index: Uint, v: [*c]const Int) callconv(.c) void = undefined;
+        pub fn vertexAttrib4iv(location: VertexAttribLocation, v: []const i32) void {
+            bindings.vertexAttrib4iv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib4s: *const fn (
         //     index: Uint,
         //     x: Short,
@@ -3258,10 +4043,41 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     z: Short,
         //     w: Short,
         // ) callconv(.c) void = undefined;
+        pub fn vertexAttrib4s(
+            location: VertexAttribLocation,
+            x: i16,
+            y: i16,
+            z: i16,
+            w: i16,
+        ) void {
+            bindings.vertexAttrib4s(
+                @intFromEnum(location),
+                x,
+                y,
+                z,
+                w,
+            );
+        }
+
         // pub var vertexAttrib4sv: *const fn (index: Uint, v: [*c]const Short) callconv(.c) void = undefined;
+        pub fn vertexAttrib4sv(location: VertexAttribLocation, v: []const i16) void {
+            bindings.vertexAttrib4sv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib4ubv: *const fn (index: Uint, v: [*c]const Ubyte) callconv(.c) void = undefined;
+        pub fn vertexAttrib4ubv(location: VertexAttribLocation, v: []const u8) void {
+            bindings.vertexAttrib4ubv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib4uiv: *const fn (index: Uint, v: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn vertexAttrib4uiv(location: VertexAttribLocation, v: []const u32) void {
+            bindings.vertexAttrib4uiv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttrib4usv: *const fn (index: Uint, v: [*c]const Ushort) callconv(.c) void = undefined;
+        pub fn vertexAttrib4usv(location: VertexAttribLocation, v: []const u16) void {
+            bindings.vertexAttrib4usv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
 
         // pub var vertexAttribPointer: *const fn (
         //     index: Uint,
@@ -3317,36 +4133,143 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn uniformMatrix2x3fv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 2 * 3;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix2x3fv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix3x2fv: *const fn (
         //     location: Int,
         //     count: Sizei,
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn uniformMatrix3x2fv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 3 * 2;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix3x2fv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix2x4fv: *const fn (
         //     location: Int,
         //     count: Sizei,
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn uniformMatrix2x4fv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 2 * 4;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix2x4fv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix4x2fv: *const fn (
         //     location: Int,
         //     count: Sizei,
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn uniformMatrix4x2fv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 4 * 2;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix4x2fv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix3x4fv: *const fn (
         //     location: Int,
         //     count: Sizei,
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn uniformMatrix3x4fv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 3 * 4;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix3x4fv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix4x3fv: *const fn (
         //     location: Int,
         //     count: Sizei,
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn uniformMatrix4x3fv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 4 * 3;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix4x3fv(
+                @intFromEnum(location),
+                @as(Sizei, @bitCast(count)),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
 
         //------------------------------------------------------------------------------------------
         //
