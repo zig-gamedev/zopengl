@@ -3824,6 +3824,7 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var validateProgram: *const fn (program: Uint) callconv(.c) void = undefined;
         pub fn validateProgram(program: Program) void {
+            assert(program != .invalid);
             bindings.validateProgram(@intFromEnum(program));
         }
 
