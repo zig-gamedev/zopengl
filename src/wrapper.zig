@@ -49,6 +49,8 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         pub const VertexAttribLocation = enum(Uint) { _ };
 
+        pub const Sampler = enum(Uint) { invalid = 0, _ };
+
         pub const Error = enum(Enum) {
             //--------------------------------------------------------------------------------------
             // OpenGL 1.0 (Core Profile)
@@ -521,6 +523,42 @@ pub fn Wrap(comptime bindings: anytype) type {
             color_attachment31 = COLOR_ATTACHMENT31,
         };
 
+        pub const ColorMask = packed struct(Bitfield) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            // DEPTH_BUFFER_BIT = 0x0100 // 9th bit
+            // STENCIL_BUFFER_BIT = 0x400 // 11th bit
+            // COLOR_BUFFER_BIT = 0x4000 // 15th bit
+
+            /// DO NOT WRITE
+            pad1: u8 = 0,
+            depth: bool = false,
+            /// DO NOT WRITE
+            pad2: u1 = 0,
+            stencil: bool = false,
+            /// DO NOT WRITE
+            pad3: u3 = 0,
+            color: bool = false,
+            /// DO NOT WRITE
+            pad4: u17 = 0,
+
+            comptime {
+                assert(@as(Bitfield, @bitCast(ColorMask{ .depth = true })) == DEPTH_BUFFER_BIT);
+                assert(@as(Bitfield, @bitCast(ColorMask{ .stencil = true })) == STENCIL_BUFFER_BIT);
+                assert(@as(Bitfield, @bitCast(ColorMask{ .color = true })) == COLOR_BUFFER_BIT);
+            }
+        };
+
+        const DrawIndicesType = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            unsigned_byte = UNSIGNED_BYTE,
+            unsigned_short = UNSIGNED_SHORT,
+            unsigned_int = UNSIGNED_INT,
+        };
+
         pub const FramebufferTarget = enum(Enum) {
             //--------------------------------------------------------------------------------------
             // OpenGL 3.0 (Core Profile)
@@ -532,17 +570,53 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         pub const FramebufferAttachment = enum(Enum) {
             //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            color_attachment0 = COLOR_ATTACHMENT0,
+            color_attachment1 = COLOR_ATTACHMENT1,
+            color_attachment2 = COLOR_ATTACHMENT2,
+            color_attachment3 = COLOR_ATTACHMENT3,
+            color_attachment4 = COLOR_ATTACHMENT4,
+            color_attachment5 = COLOR_ATTACHMENT5,
+            color_attachment6 = COLOR_ATTACHMENT6,
+            color_attachment7 = COLOR_ATTACHMENT7,
+            color_attachment8 = COLOR_ATTACHMENT8,
+            color_attachment9 = COLOR_ATTACHMENT9,
+            color_attachment10 = COLOR_ATTACHMENT10,
+            color_attachment11 = COLOR_ATTACHMENT11,
+            color_attachment12 = COLOR_ATTACHMENT12,
+            color_attachment13 = COLOR_ATTACHMENT13,
+            color_attachment14 = COLOR_ATTACHMENT14,
+            color_attachment15 = COLOR_ATTACHMENT15,
+            color_attachment16 = COLOR_ATTACHMENT16,
+            color_attachment17 = COLOR_ATTACHMENT17,
+            color_attachment18 = COLOR_ATTACHMENT18,
+            color_attachment19 = COLOR_ATTACHMENT19,
+            color_attachment20 = COLOR_ATTACHMENT20,
+            color_attachment21 = COLOR_ATTACHMENT21,
+            color_attachment22 = COLOR_ATTACHMENT22,
+            color_attachment23 = COLOR_ATTACHMENT23,
+            color_attachment24 = COLOR_ATTACHMENT24,
+            color_attachment25 = COLOR_ATTACHMENT25,
+            color_attachment26 = COLOR_ATTACHMENT26,
+            color_attachment27 = COLOR_ATTACHMENT27,
+            color_attachment28 = COLOR_ATTACHMENT28,
+            color_attachment29 = COLOR_ATTACHMENT29,
+            color_attachment30 = COLOR_ATTACHMENT30,
+            color_attachment31 = COLOR_ATTACHMENT31,
+            depth_attachment = DEPTH_ATTACHMENT,
+            stencil_attachment = STENCIL_ATTACHMENT,
+            depth_stencil_attachment = DEPTH_STENCIL_ATTACHMENT,
+        };
+
+        pub const FramebufferAttachmentDefault = enum(Enum) {
+            //--------------------------------------------------------------------------------------
             // OpenGL 1.0 (Core Profile)
             //--------------------------------------------------------------------------------------
             front_left = FRONT_LEFT,
             front_right = FRONT_RIGHT,
             back_left = BACK_LEFT,
             back_right = BACK_RIGHT,
-            left = LEFT,
-            right = RIGHT,
-            front = FRONT,
-            back = BACK,
-            front_and_back = FRONT_AND_BACK,
             depth = DEPTH,
             stencil = STENCIL,
             //--------------------------------------------------------------------------------------
@@ -1544,6 +1618,23 @@ pub fn Wrap(comptime bindings: anytype) type {
             copy_write_buffer = COPY_WRITE_BUFFER,
             texture_buffer = TEXTURE_BUFFER,
             uniform_buffer = UNIFORM_BUFFER,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            draw_indirect_buffer = DRAW_INDIRECT_BUFFER,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            atomic_counter_buffer = ATOMIC_COUNTER_BUFFER,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            dispatch_indirect_buffer = DISPATCH_INDIRECT_BUFFER,
+            shader_storage_buffer = SHADER_STORAGE_BUFFER,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.4 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            query_buffer = QUERY_BUFFER,
         };
 
         pub const Access = enum(Enum) {
@@ -1641,6 +1732,15 @@ pub fn Wrap(comptime bindings: anytype) type {
             patches = PATCHES,
         };
 
+        pub const PrimitiveTypeBasic = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            points = POINTS,
+            lines = LINES,
+            triangles = TRIANGLES,
+        };
+
         pub const Face = enum(Enum) {
             //--------------------------------------------------------------------------------------
             // OpenGL 1.0 (Core Profile)
@@ -1648,6 +1748,436 @@ pub fn Wrap(comptime bindings: anytype) type {
             front = FRONT,
             back = BACK,
             front_and_back = FRONT_AND_BACK,
+        };
+
+        pub const IndexedBoolParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            color_writemask = COLOR_WRITEMASK,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            image_binding_layered = IMAGE_BINDING_LAYERED,
+        };
+
+        pub const IndexedInt32Parameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            blend_src_rgb = BLEND_SRC_RGB,
+            blend_src_alpha = BLEND_SRC_ALPHA,
+            blend_dst_rgb = BLEND_DST_RGB,
+            blend_dst_alpha = BLEND_DST_ALPHA,
+            scissor_box = SCISSOR_BOX,
+            blend_equation_rgb = BLEND_EQUATION_RGB,
+            blend_equation_alpha = BLEND_EQUATION_ALPHA,
+            transform_feedback_buffer_binding = TRANSFORM_FEEDBACK_BUFFER_BINDING,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            uniform_buffer_binding = UNIFORM_BUFFER_BINDING,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            sample_mask_value = SAMPLE_MASK_VALUE,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            atomic_counter_buffer_binding = ATOMIC_COUNTER_BUFFER_BINDING,
+            image_binding_name = IMAGE_BINDING_NAME,
+            image_binding_level = IMAGE_BINDING_LEVEL,
+            image_binding_layer = IMAGE_BINDING_LAYER,
+            image_binding_access = IMAGE_BINDING_ACCESS,
+            image_binding_format = IMAGE_BINDING_FORMAT,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            vertex_binding_stride = VERTEX_BINDING_STRIDE,
+            vertex_binding_divisor = VERTEX_BINDING_DIVISOR,
+            vertex_binding_buffer = VERTEX_BINDING_BUFFER,
+            shader_storage_buffer_binding = SHADER_STORAGE_BUFFER_BINDING,
+            max_compute_work_group_count = MAX_COMPUTE_WORK_GROUP_COUNT,
+            max_compute_work_group_size = MAX_COMPUTE_WORK_GROUP_SIZE,
+        };
+
+        pub const IndexedCapability = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            blend = BLEND,
+            scissor_test = SCISSOR_TEST,
+        };
+
+        pub const TransformFeedbackBufferMode = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            interleaved_attribs = INTERLEAVED_ATTRIBS,
+            separate_attribs = SEPARATE_ATTRIBS,
+        };
+
+        pub const ClampColorTarget = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            clamp_read_color = CLAMP_READ_COLOR,
+        };
+
+        pub const ClampColor = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            true = TRUE,
+            false = FALSE,
+            fixed_only = FIXED_ONLY,
+        };
+
+        pub const ConditionalRenderMode = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            query_wait = QUERY_WAIT,
+            query_no_wait = QUERY_NO_WAIT,
+            query_by_region_wait = QUERY_BY_REGION_WAIT,
+            query_by_region_no_wait = QUERY_BY_REGION_NO_WAIT,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            query_wait_inverted = QUERY_WAIT_INVERTED,
+            query_no_wait_inverted = QUERY_NO_WAIT_INVERTED,
+            query_by_region_wait_inverted = QUERY_BY_REGION_WAIT_INVERTED,
+            query_by_region_no_wait_inverted = QUERY_BY_REGION_NO_WAIT_INVERTED,
+        };
+
+        pub const ClearBuffer = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            color = COLOR,
+            depth = DEPTH,
+            stencil = STENCIL,
+        };
+
+        pub const ClearBufferDepthStencil = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            depth_stencil = DEPTH_STENCIL,
+        };
+
+        pub const RenderbufferParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            renderbuffer_width = RENDERBUFFER_WIDTH,
+            renderbuffer_height = RENDERBUFFER_HEIGHT,
+            renderbuffer_internal_format = RENDERBUFFER_INTERNAL_FORMAT,
+            renderbuffer_red_size = RENDERBUFFER_RED_SIZE,
+            renderbuffer_green_size = RENDERBUFFER_GREEN_SIZE,
+            renderbuffer_blue_size = RENDERBUFFER_BLUE_SIZE,
+            renderbuffer_alpha_size = RENDERBUFFER_ALPHA_SIZE,
+            renderbuffer_depth_size = RENDERBUFFER_DEPTH_SIZE,
+            renderbuffer_stencil_size = RENDERBUFFER_STENCIL_SIZE,
+            renderbuffer_samples = RENDERBUFFER_SAMPLES,
+        };
+
+        pub const Filter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            nearest = NEAREST,
+            linear = LINEAR,
+        };
+
+        pub const MappedBufferAccess = packed struct(Bitfield) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            // MAP_READ_BIT = 0x0001 // 1st bit
+            // MAP_WRITE_BIT = 0x0002 // 2nd bit
+            // MAP_INVALIDATE_RANGE_BIT = 0x0004 // 3rd bit
+            // MAP_INVALIDATE_BUFFER_BIT = 0x0008 // 4th bit
+            // MAP_FLUSH_EXPLICIT_BIT = 0x0010 // 5th bit
+            // MAP_UNSYNCHRONIZED_BIT = 0x0020 // 6th bit
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.4 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            // MAP_PERSISTENT_BIT = 0x0040 // 7th bit
+            // MAP_COHERENT_BIT = 0x0080 // 8th bit
+
+            map_read: bool = false,
+            map_write: bool = false,
+            map_invalidate_range: bool = false,
+            map_invalidate_buffer: bool = false,
+            map_flush_explicit: bool = false,
+            map_unsynchronized: bool = false,
+            map_persistent: bool = false,
+            map_coherent: bool = false,
+
+            /// DO NOT WRITE
+            pad: u24 = 0,
+
+            // confirmation that memory layout is correct
+            comptime {
+                assert(@as(Bitfield, @bitCast(MappedBufferAccess{ .map_read = true })) == MAP_READ_BIT);
+                assert(@as(Bitfield, @bitCast(MappedBufferAccess{ .map_write = true })) == MAP_WRITE_BIT);
+                assert(@as(Bitfield, @bitCast(MappedBufferAccess{ .map_invalidate_range = true })) == MAP_INVALIDATE_RANGE_BIT);
+                assert(@as(Bitfield, @bitCast(MappedBufferAccess{ .map_invalidate_buffer = true })) == MAP_INVALIDATE_BUFFER_BIT);
+                assert(@as(Bitfield, @bitCast(MappedBufferAccess{ .map_flush_explicit = true })) == MAP_FLUSH_EXPLICIT_BIT);
+                assert(@as(Bitfield, @bitCast(MappedBufferAccess{ .map_unsynchronized = true })) == MAP_UNSYNCHRONIZED_BIT);
+                assert(@as(Bitfield, @bitCast(MappedBufferAccess{ .map_persistent = true })) == MAP_PERSISTENT_BIT);
+                assert(@as(Bitfield, @bitCast(MappedBufferAccess{ .map_coherent = true })) == MAP_COHERENT_BIT);
+            }
+        };
+
+        pub const TexBufferTarget = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            texture_buffer = TEXTURE_BUFFER,
+        };
+
+        pub const TextureInternalFormat = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            r8 = R8,
+            r16 = R16,
+            r16f = R16F,
+            r32f = R32F,
+            r8i = R8I,
+            r16i = R16I,
+            r32i = R32I,
+            r8ui = R8UI,
+            r16ui = R16UI,
+            r32ui = R32UI,
+            rg8 = RG8,
+            rg16 = RG16,
+            rg16f = RG16F,
+            rg32f = RG32F,
+            rg8i = RG8I,
+            rg16i = RG16I,
+            rg32i = RG32I,
+            rg8ui = RG8UI,
+            rg16ui = RG16UI,
+            rg32ui = RG32UI,
+            rgb32f = RGB32F,
+            rgb32i = RGB32I,
+            rgb32ui = RGB32UI,
+            rgba8 = RGBA8,
+            rgba16 = RGBA16,
+            rgba16f = RGBA16F,
+            rgba32f = RGBA32F,
+            rgba8i = RGBA8I,
+            rgba16i = RGBA16I,
+            rgba32i = RGBA32I,
+            rgba8ui = RGBA8UI,
+            rgba16ui = RGBA16UI,
+            rgba32ui = RGBA32UI,
+        };
+        const UniformParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            uniform_type = UNIFORM_TYPE,
+            uniform_size = UNIFORM_SIZE,
+            uniform_name_length = UNIFORM_NAME_LENGTH,
+            uniform_block_index = UNIFORM_BLOCK_INDEX,
+            uniform_offset = UNIFORM_OFFSET,
+            uniform_array_stride = UNIFORM_ARRAY_STRIDE,
+            uniform_matrix_stride = UNIFORM_MATRIX_STRIDE,
+            uniform_is_row_major = UNIFORM_IS_ROW_MAJOR,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            uniform_atomic_counter_buffer_index = UNIFORM_ATOMIC_COUNTER_BUFFER_INDEX,
+        };
+
+        const UniformBlockParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            uniform_block_binding = UNIFORM_BLOCK_BINDING,
+            uniform_block_data_size = UNIFORM_BLOCK_DATA_SIZE,
+            uniform_block_name_length = UNIFORM_BLOCK_NAME_LENGTH,
+            uniform_block_active_uniforms = UNIFORM_BLOCK_ACTIVE_UNIFORMS,
+            uniform_block_active_uniform_indices = UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES,
+            uniform_block_referenced_by_vertex_shader = UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER,
+            uniform_block_referenced_by_fragment_shader = UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            uniform_block_referenced_by_geometry_shader = UNIFORM_BLOCK_REFERENCED_BY_GEOMETRY_SHADER,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            uniform_block_referenced_by_tess_control_shader = UNIFORM_BLOCK_REFERENCED_BY_TESS_CONTROL_SHADER,
+            uniform_block_referenced_by_tess_evaluation_shader = UNIFORM_BLOCK_REFERENCED_BY_TESS_EVALUATION_SHADER,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            uniform_block_referenced_by_compute_shader = UNIFORM_BLOCK_REFERENCED_BY_COMPUTE_SHADER,
+        };
+
+        pub const VertexProvokeMode = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            first_vertex_convention = FIRST_VERTEX_CONVENTION,
+            last_vertex_convention = LAST_VERTEX_CONVENTION,
+        };
+
+        pub const SyncCondition = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            sync_gpu_commands_complete = SYNC_GPU_COMMANDS_COMPLETE,
+        };
+
+        pub const WaitSyncFlags = packed struct(Bitfield) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            // SYNC_FLUSH_COMMANDS_BIT = = 0x0001 // 1st bit
+
+            sync_flush_commands: bool = false,
+
+            /// DO NOT WRITE
+            pad: u31 = 0,
+
+            // confirmation that memory layout is correct
+            comptime {
+                assert(@as(Bitfield, @bitCast(WaitSyncFlags{ .sync_flush_commands = true })) == SYNC_FLUSH_COMMANDS_BIT);
+            }
+        };
+
+        pub const WaitSyncResult = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            already_signaled = ALREADY_SIGNALED,
+            timeout_expired = TIMEOUT_EXPIRED,
+            condition_satisfied = CONDITION_SATISFIED,
+            // this value is reported as an WaitSyncError instead
+            // wait_failed = WAIT_FAILED,
+        };
+
+        pub const WaitSyncError = error{
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            Failed,
+        };
+
+        pub const WaitTimeout = enum(Uint64) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            timeout_ignored = TIMEOUT_IGNORED,
+        };
+
+        pub const Int64Parameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            max_server_wait_timeout = MAX_SERVER_WAIT_TIMEOUT,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            max_element_index = MAX_ELEMENT_INDEX,
+            max_shader_storage_block_size = MAX_SHADER_STORAGE_BLOCK_SIZE,
+        };
+
+        pub const SyncParameter = enum(Enum) {
+            object_type = OBJECT_TYPE,
+            sync_status = SYNC_STATUS,
+            sync_condition = SYNC_CONDITION,
+            sync_flags = SYNC_FLAGS,
+        };
+
+        pub const IndexedInt64Parameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            uniform_buffer_start = UNIFORM_BUFFER_START,
+            uniform_buffer_size = UNIFORM_BUFFER_SIZE,
+            transform_feedback_buffer_start = TRANSFORM_FEEDBACK_BUFFER_START,
+            transform_feedback_buffer_size = TRANSFORM_FEEDBACK_BUFFER_SIZE,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            atomic_counter_buffer_start = ATOMIC_COUNTER_BUFFER_START,
+            atomic_counter_buffer_size = ATOMIC_COUNTER_BUFFER_SIZE,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            vertex_binding_offset = VERTEX_BINDING_OFFSET,
+            shader_storage_buffer_start = SHADER_STORAGE_BUFFER_START,
+            shader_storage_buffer_size = SHADER_STORAGE_BUFFER_SIZE,
+        };
+
+        pub const TexImage2dMultisampleTarget = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            texture_2d_multisample = TEXTURE_2D_MULTISAMPLE,
+            proxy_texture_2d_multisample = PROXY_TEXTURE_2D_MULTISAMPLE,
+        };
+
+        pub const TexImage3dMultisampleTarget = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            texture_2d_multisample_array = TEXTURE_2D_MULTISAMPLE_ARRAY,
+            proxy_texture_2d_multisample_array = PROXY_TEXTURE_2D_MULTISAMPLE_ARRAY,
+        };
+
+        pub const MultisampleParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            sample_position = SAMPLE_POSITION,
+        };
+
+        pub const SamplerParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            texture_wrap_s = TEXTURE_WRAP_S,
+            texture_wrap_t = TEXTURE_WRAP_T,
+            texture_wrap_r = TEXTURE_WRAP_R,
+            texture_min_filter = TEXTURE_MIN_FILTER,
+            texture_mag_filter = TEXTURE_MAG_FILTER,
+            texture_border_color = TEXTURE_BORDER_COLOR,
+            texture_min_lod = TEXTURE_MIN_LOD,
+            texture_max_lod = TEXTURE_MAX_LOD,
+            texture_lod_bias = TEXTURE_LOD_BIAS,
+            texture_compare_mode = TEXTURE_COMPARE_MODE,
+            texture_compare_func = TEXTURE_COMPARE_FUNC,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.6 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            texture_max_anisotropy = TEXTURE_MAX_ANISOTROPY,
+        };
+
+        pub const QueryCounterTarget = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            timestamp = TIMESTAMP,
+        };
+
+        pub const VertexAttribPackedType = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            INT_2_10_10_10_REV,
+            UNSIGNED_INT_2_10_10_10_REV,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.4 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            UNSIGNED_INT_10F_11F_11F_REV,
         };
 
         pub const ShaderPrecisionFormat = enum(Enum) {
@@ -2013,20 +2543,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             bindings.drawBuffer(@intFromEnum(buf));
         }
 
-        pub fn clear(mask: packed struct(Bitfield) {
-            comptime {
-                assert(@clz(@bitReverse(@as(Bitfield, DEPTH_BUFFER_BIT))) == @bitOffsetOf(@This(), "depth"));
-                assert(@clz(@bitReverse(@as(Bitfield, STENCIL_BUFFER_BIT))) == @bitOffsetOf(@This(), "stencil"));
-                assert(@clz(@bitReverse(@as(Bitfield, COLOR_BUFFER_BIT))) == @bitOffsetOf(@This(), "color"));
-            }
-            __unused1: u8 = 0,
-            depth: bool = false,
-            __unused2: u1 = 0,
-            stencil: bool = false,
-            __unused3: u3 = 0,
-            color: bool = false,
-            __unused4: u17 = 0,
-        }) void {
+        pub fn clear(mask: ColorMask) void {
             bindings.clear(@bitCast(mask));
         }
 
@@ -2282,11 +2799,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub fn drawElements(
             mode: PrimitiveType,
             length: u32,
-            index_type: enum(Enum) {
-                unsigned_byte = UNSIGNED_BYTE,
-                unsigned_short = UNSIGNED_SHORT,
-                unsigned_int = UNSIGNED_INT,
-            },
+            index_type: DrawIndicesType,
             indices: u32, //offset in buffer
         ) void {
             bindings.drawElements(@intFromEnum(mode), @intCast(length), @intFromEnum(index_type), @ptrFromInt(indices));
@@ -2813,7 +3326,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             bindings.multiDrawArrays(@intFromEnum(prim_type), first.ptr, @ptrCast(count.ptr), @intCast(first.len));
         }
 
-        pub fn multiDrawElements(prim_type: PrimitiveType, count: []const u32, index_type: VertexAttribType, indices: []const ?*const anyopaque) void {
+        pub fn multiDrawElements(prim_type: PrimitiveType, count: []const u32, index_type: DrawIndicesType, indices: []const ?*const anyopaque) void {
             assert(count.len == indices.len);
             bindings.multiDrawElements(@intFromEnum(prim_type), @ptrCast(count.ptr), @intFromEnum(index_type), indices.ptr, @intCast(count.len));
         }
@@ -4518,13 +5031,81 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     b: Boolean,
         //     a: Boolean,
         // ) callconv(.c) void = undefined;
+        pub fn colorMaski(
+            index: u32,
+            r: bool,
+            g: bool,
+            b: bool,
+            a: bool,
+        ) void {
+            bindings.colorMaski(
+                @bitCast(index),
+                @intFromBool(r),
+                @intFromBool(g),
+                @intFromBool(b),
+                @intFromBool(a),
+            );
+        }
+
         // pub var getBooleani_v: *const fn (target: Enum, index: Uint, data: [*c]Boolean) callconv(.c) void = undefined;
+        pub fn getBooleani_v(
+            target: IndexedBoolParameter,
+            index: u32,
+            data: []bool,
+        ) void {
+            bindings.getBooleani_v(
+                @intFromEnum(target),
+                @bitCast(index),
+                @ptrCast(data.ptr),
+            );
+        }
+
         // pub var getIntegeri_v: *const fn (target: Enum, index: Uint, data: [*c]Int) callconv(.c) void = undefined;
+        pub fn getIntegeri_v(
+            target: IndexedInt32Parameter,
+            index: u32,
+            data: []i32,
+        ) void {
+            bindings.getIntegeri_v(
+                @intFromEnum(target),
+                @bitCast(index),
+                @ptrCast(data.ptr),
+            );
+        }
+
         // pub var enablei: *const fn (target: Enum, index: Uint) callconv(.c) void = undefined;
+        pub fn enablei(target: IndexedCapability, index: u32) void {
+            bindings.enablei(
+                @intFromEnum(target),
+                @bitCast(index),
+            );
+        }
+
         // pub var disablei: *const fn (target: Enum, index: Uint) callconv(.c) void = undefined;
+        pub fn disablei(target: IndexedCapability, index: u32) void {
+            bindings.disablei(
+                @intFromEnum(target),
+                @bitCast(index),
+            );
+        }
+
         // pub var isEnabledi: *const fn (target: Enum, index: Uint) callconv(.c) Boolean = undefined;
+        pub fn isEnabledi(target: IndexedCapability, index: u32) bool {
+            return bindings.isEnabledi(
+                @intFromEnum(target),
+                @bitCast(index),
+            ) == TRUE;
+        }
+
         // pub var beginTransformFeedback: *const fn (primitiveMode: Enum) callconv(.c) void = undefined;
+        pub fn beginTransformFeedback(primitiveMode: PrimitiveTypeBasic) void {
+            bindings.beginTransformFeedback(@intFromEnum(primitiveMode));
+        }
+
         // pub var endTransformFeedback: *const fn () callconv(.c) void = undefined;
+        pub fn endTransformFeedback() void {
+            bindings.endTransformFeedback();
+        }
 
         // pub var bindBufferRange: *const fn (
         //     target: Enum,
@@ -4533,7 +5114,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     offset: Intptr,
         //     size: Sizeiptr,
         // ) callconv(.c) void = undefined;
-        pub fn bindbufferRange(
+        pub fn bindBufferRange(
             target: IndexedBufferTarget,
             index: Uint,
             buffer: Buffer,
@@ -4554,6 +5135,20 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     varyings: [*c]const [*c]const Char,
         //     bufferMode: Enum,
         // ) callconv(.c) void = undefined;
+        pub fn transformFeedbackVaryings(
+            program: Program,
+            varyings: []const [:0]const u8,
+            bufferMode: TransformFeedbackBufferMode,
+        ) void {
+            assert(program != .invalid);
+            bindings.transformFeedbackVaryings(
+                @intFromEnum(program),
+                @intCast(varyings.len),
+                @ptrCast(varyings.ptr),
+                @intFromEnum(bufferMode),
+            );
+        }
+
         // pub var getTransformFeedbackVarying: *const fn (
         //     program: Uint,
         //     index: Uint,
@@ -4563,9 +5158,50 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     type: [*c]Enum,
         //     name: [*c]Char,
         // ) callconv(.c) void = undefined;
+        pub fn getTransformFeedbackVarying(
+            program: Program,
+            index: u32,
+            size: *i32,
+            varying_type: *AttribType,
+            name_buf: [:0]u8,
+        ) [:0]const u8 {
+            assert(program != .invalid);
+            var length: i32 = undefined;
+            bindings.getTransformFeedbackVarying(
+                @intFromEnum(program),
+                @bitCast(index),
+                // includes null terminator
+                @intCast(name_buf.len + 1),
+                // excludes null terminator
+                @ptrCast(&length),
+                @ptrCast(size),
+                @ptrCast(varying_type),
+                @ptrCast(name_buf.ptr),
+            );
+            return name_buf[0..@intCast(length) :0];
+        }
+
         // pub var clampColor: *const fn (target: Enum, clamp: Enum) callconv(.c) void = undefined;
+        pub fn clampColor(target: ClampColorTarget, clamp: ClampColor) void {
+            bindings.clampColor(@intFromEnum(target), @intFromEnum(clamp));
+        }
+
         // pub var beginConditionalRender: *const fn (id: Uint, mode: Enum) callconv(.c) void = undefined;
+        pub fn beginConditionalRender(
+            id: Query,
+            mode: ConditionalRenderMode,
+        ) void {
+            bindings.beginConditionalRender(
+                @intFromEnum(id),
+                @intFromEnum(mode),
+            );
+        }
+
         // pub var endConditionalRender: *const fn () callconv(.c) void = undefined;
+        pub fn endConditionalRender() void {
+            bindings.endConditionalRender();
+        }
+
         // pub var vertexAttribIPointer: *const fn (
         //     index: Uint,
         //     size: Int,
@@ -4573,68 +5209,467 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     stride: Sizei,
         //     pointer: ?*const anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn vertexAttribIPointer(
+            location: VertexAttribLocation,
+            size: u32,
+            attrib_type: VertexAttribType,
+            stride: u32,
+            offset: usize,
+        ) void {
+            bindings.vertexAttribIPointer(
+                @intFromEnum(location),
+                @bitCast(size),
+                @intFromEnum(attrib_type),
+                @bitCast(stride),
+                @ptrFromInt(offset),
+            );
+        }
+
         // pub var getVertexAttribIiv: *const fn (index: Uint, pname: Enum, params: [*c]Int) callconv(.c) void = undefined;
+        pub fn getVertexAttribIiv(
+            location: VertexAttribLocation,
+            pname: VertexAttribParameter,
+            params: []i32,
+        ) void {
+            bindings.getVertexAttribIiv(
+                @intFromEnum(location),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getVertexAttribIuiv: *const fn (index: Uint, pname: Enum, params: [*c]Uint) callconv(.c) void = undefined;
+        pub fn getVertexAttribIuiv(
+            location: VertexAttribLocation,
+            pname: VertexAttribParameter,
+            params: []u32,
+        ) void {
+            bindings.getVertexAttribIuiv(
+                @intFromEnum(location),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var vertexAttribI1i: *const fn (index: Uint, x: Int) callconv(.c) void = undefined;
+        pub fn vertexAttribI1i(location: VertexAttribLocation, x: i32) void {
+            bindings.vertexAttribI1i(
+                @intFromEnum(location),
+                @bitCast(x),
+            );
+        }
+
         // pub var vertexAttribI2i: *const fn (index: Uint, x: Int, y: Int) callconv(.c) void = undefined;
+        pub fn vertexAttribI2i(location: VertexAttribLocation, x: i32, y: i32) void {
+            bindings.vertexAttribI2i(
+                @intFromEnum(location),
+                @bitCast(x),
+                @bitCast(y),
+            );
+        }
+
         // pub var vertexAttribI3i: *const fn (index: Uint, x: Int, y: Int, z: Int) callconv(.c) void = undefined;
+        pub fn vertexAttribI3i(
+            location: VertexAttribLocation,
+            x: i32,
+            y: i32,
+            z: i32,
+        ) void {
+            bindings.vertexAttribI3i(
+                @intFromEnum(location),
+                @bitCast(x),
+                @bitCast(y),
+                @bitCast(z),
+            );
+        }
+
         // pub var vertexAttribI4i: *const fn (index: Uint, x: Int, y: Int, z: Int, w: Int) callconv(.c) void = undefined;
+        pub fn vertexAttribI4i(
+            location: VertexAttribLocation,
+            x: i32,
+            y: i32,
+            z: i32,
+            w: i32,
+        ) void {
+            bindings.vertexAttribI4i(
+                @intFromEnum(location),
+                @bitCast(x),
+                @bitCast(y),
+                @bitCast(z),
+                @bitCast(w),
+            );
+        }
+
         // pub var vertexAttribI1ui: *const fn (index: Uint, x: Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribI1ui(location: VertexAttribLocation, x: u32) void {
+            bindings.vertexAttribI1ui(
+                @intFromEnum(location),
+                @bitCast(x),
+            );
+        }
+
         // pub var vertexAttribI2ui: *const fn (index: Uint, x: Uint, y: Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribI2ui(location: VertexAttribLocation, x: u32, y: u32) void {
+            bindings.vertexAttribI2ui(
+                @intFromEnum(location),
+                @bitCast(x),
+                @bitCast(y),
+            );
+        }
+
         // pub var vertexAttribI3ui: *const fn (index: Uint, x: Uint, y: Uint, z: Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribI3ui(
+            location: VertexAttribLocation,
+            x: u32,
+            y: u32,
+            z: u32,
+        ) void {
+            bindings.vertexAttribI3ui(
+                @intFromEnum(location),
+                @bitCast(x),
+                @bitCast(y),
+                @bitCast(z),
+            );
+        }
+
         // pub var vertexAttribI4ui: *const fn (index: Uint, x: Uint, y: Uint, z: Uint, w: Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribI4ui(
+            location: VertexAttribLocation,
+            x: u32,
+            y: u32,
+            z: u32,
+            w: u32,
+        ) void {
+            bindings.vertexAttribI4ui(
+                @intFromEnum(location),
+                @bitCast(x),
+                @bitCast(y),
+                @bitCast(z),
+                @bitCast(w),
+            );
+        }
+
         // pub var vertexAttribI1iv: *const fn (index: Uint, v: [*c]const Int) callconv(.c) void = undefined;
+        pub fn vertexAttribI1iv(location: VertexAttribLocation, v: []const i32) void {
+            bindings.vertexAttribI1iv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttribI2iv: *const fn (index: Uint, v: [*c]const Int) callconv(.c) void = undefined;
+        pub fn vertexAttribI2iv(location: VertexAttribLocation, v: []const i32) void {
+            bindings.vertexAttribI2iv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttribI3iv: *const fn (index: Uint, v: [*c]const Int) callconv(.c) void = undefined;
+        pub fn vertexAttribI3iv(location: VertexAttribLocation, v: []const i32) void {
+            bindings.vertexAttribI3iv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttribI4iv: *const fn (index: Uint, v: [*c]const Int) callconv(.c) void = undefined;
+        pub fn vertexAttribI4iv(location: VertexAttribLocation, v: []const i32) void {
+            bindings.vertexAttribI4iv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttribI1uiv: *const fn (index: Uint, v: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribI1uiv(location: VertexAttribLocation, v: []const u32) void {
+            bindings.vertexAttribI1uiv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttribI2uiv: *const fn (index: Uint, v: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribI2uiv(location: VertexAttribLocation, v: []const u32) void {
+            bindings.vertexAttribI2uiv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttribI3uiv: *const fn (index: Uint, v: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribI3uiv(location: VertexAttribLocation, v: []const u32) void {
+            bindings.vertexAttribI3uiv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttribI4uiv: *const fn (index: Uint, v: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribI4uiv(location: VertexAttribLocation, v: []const u32) void {
+            bindings.vertexAttribI4uiv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttribI4bv: *const fn (index: Uint, v: [*c]const Byte) callconv(.c) void = undefined;
+        pub fn vertexAttribI4bv(location: VertexAttribLocation, v: []const i8) void {
+            bindings.vertexAttribI4bv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttribI4sv: *const fn (index: Uint, v: [*c]const Short) callconv(.c) void = undefined;
+        pub fn vertexAttribI4sv(location: VertexAttribLocation, v: []const i16) void {
+            bindings.vertexAttribI4sv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttribI4ubv: *const fn (index: Uint, v: [*c]const Ubyte) callconv(.c) void = undefined;
+        pub fn vertexAttribI4ubv(location: VertexAttribLocation, v: []const u8) void {
+            bindings.vertexAttribI4ubv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttribI4usv: *const fn (index: Uint, v: [*c]const Ushort) callconv(.c) void = undefined;
+        pub fn vertexAttribI4usv(location: VertexAttribLocation, v: []const u16) void {
+            bindings.vertexAttribI4usv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var getUniformuiv: *const fn (program: Uint, location: Int, params: [*c]Uint) callconv(.c) void = undefined;
+        pub fn getUniformuiv(program: Program, location: UniformLocation, params: []u32) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.getUniformuiv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var bindFragDataLocation: *const fn (
         //     program: Uint,
         //     color: Uint,
         //     name: [*c]const Char,
         // ) callconv(.c) void = undefined;
+        pub fn bindFragDataLocation(program: Program, color: u32, name: [:0]const u8) void {
+            assert(program != .invalid);
+            // prefix 'gl_' is reserved and cannot be used
+            assert(!std.mem.startsWith(u8, name, "gl_"));
+            bindings.bindFragDataLocation(
+                @intFromEnum(program),
+                @bitCast(color),
+                @ptrCast(name.ptr),
+            );
+        }
+
         // pub var getFragDataLocation: *const fn (program: Uint, name: [*c]const Char) callconv(.c) Int = undefined;
+        pub fn getFragDataLocation(program: Program, name: [:0]const u8) i32 {
+            assert(program != .invalid);
+            return bindings.getFragDataLocation(
+                @intFromEnum(program),
+                @ptrCast(name.ptr),
+            );
+        }
+
         // pub var uniform1ui: *const fn (location: Int, v0: Uint) callconv(.c) void = undefined;
+        pub fn uniform1ui(location: UniformLocation, v0: u32) void {
+            assert(location != .invalid);
+            bindings.uniform1ui(
+                @intFromEnum(location),
+                @bitCast(v0),
+            );
+        }
+
         // pub var uniform2ui: *const fn (location: Int, v0: Uint, v1: Uint) callconv(.c) void = undefined;
+        pub fn uniform2ui(location: UniformLocation, v0: u32, v1: u32) void {
+            assert(location != .invalid);
+            bindings.uniform2ui(
+                @intFromEnum(location),
+                @bitCast(v0),
+                @bitCast(v1),
+            );
+        }
+
         // pub var uniform3ui: *const fn (location: Int, v0: Uint, v1: Uint, v2: Uint) callconv(.c) void = undefined;
+        pub fn uniform3ui(
+            location: UniformLocation,
+            v0: u32,
+            v1: u32,
+            v2: u32,
+        ) void {
+            assert(location != .invalid);
+            bindings.uniform3ui(
+                @intFromEnum(location),
+                @bitCast(v0),
+                @bitCast(v1),
+                @bitCast(v2),
+            );
+        }
+
         // pub var uniform4ui: *const fn (location: Int, v0: Uint, v1: Uint, v2: Uint, v3: Uint) callconv(.c) void = undefined;
+        pub fn uniform4ui(
+            location: UniformLocation,
+            v0: u32,
+            v1: u32,
+            v2: u32,
+            v3: u32,
+        ) void {
+            assert(location != .invalid);
+            bindings.uniform4ui(
+                @intFromEnum(location),
+                @bitCast(v0),
+                @bitCast(v1),
+                @bitCast(v2),
+                @bitCast(v3),
+            );
+        }
+
         // pub var uniform1uiv: *const fn (location: Int, count: Sizei, value: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn uniform1uiv(location: UniformLocation, count: u32, value: []const u32) void {
+            assert(location != .invalid);
+            assert(value.len == count);
+            bindings.uniform1uiv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniform2uiv: *const fn (location: Int, count: Sizei, value: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn uniform2uiv(location: UniformLocation, count: u32, value: []const u32) void {
+            const vec_size = 2;
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.uniform2uiv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniform3uiv: *const fn (location: Int, count: Sizei, value: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn uniform3uiv(location: UniformLocation, count: u32, value: []const u32) void {
+            const vec_size = 3;
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.uniform3uiv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniform4uiv: *const fn (location: Int, count: Sizei, value: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn uniform4uiv(location: UniformLocation, count: u32, value: []const u32) void {
+            const vec_size = 4;
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.uniform4uiv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var texParameterIiv: *const fn (target: Enum, pname: Enum, params: [*c]const Int) callconv(.c) void = undefined;
+        pub fn texParameterIiv(
+            target: TextureTarget,
+            pname: TexParameter,
+            params: []const i32,
+        ) void {
+            bindings.texParameterIiv(
+                @intFromEnum(target),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var texParameterIuiv: *const fn (
         //     target: Enum,
         //     pname: Enum,
         //     params: [*c]const Uint,
         // ) callconv(.c) void = undefined;
+        pub fn texParameterIuiv(
+            target: TextureTarget,
+            pname: TexParameter,
+            params: []const u32,
+        ) void {
+            bindings.texParameterIuiv(
+                @intFromEnum(target),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getTexParameterIiv: *const fn (target: Enum, pname: Enum, params: [*c]Int) callconv(.c) void = undefined;
+        pub fn getTexParameterIiv(
+            target: TextureTarget,
+            pname: GetTexParameter,
+            params: []i32,
+        ) void {
+            bindings.getTexParameterIiv(
+                @intFromEnum(target),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getTexParameterIuiv: *const fn (target: Enum, pname: Enum, params: [*c]Uint) callconv(.c) void = undefined;
+        pub fn getTexParameterIuiv(
+            target: TextureTarget,
+            pname: GetTexParameter,
+            params: []u32,
+        ) void {
+            bindings.getTexParameterIuiv(
+                @intFromEnum(target),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var clearBufferiv: *const fn (buffer: Enum, drawbuffer: Int, value: [*c]const Int) callconv(.c) void = undefined;
+        pub fn clearBufferiv(
+            buffer: ClearBuffer,
+            drawbuffer: i32,
+            value: []const i32,
+        ) void {
+            bindings.clearBufferiv(
+                @intFromEnum(buffer),
+                @bitCast(drawbuffer),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var clearBufferuiv: *const fn (
         //     buffer: Enum,
         //     drawbuffer: Int,
         //     value: [*c]const Uint,
         // ) callconv(.c) void = undefined;
+        pub fn clearBufferuiv(
+            buffer: ClearBuffer,
+            drawbuffer: i32,
+            value: []const u32,
+        ) void {
+            bindings.clearBufferuiv(
+                @intFromEnum(buffer),
+                @bitCast(drawbuffer),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var clearBufferfv: *const fn (
         //     buffer: Enum,
         //     drawbuffer: Int,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn clearBufferfv(
+            buffer: ClearBuffer,
+            drawbuffer: i32,
+            value: []const f32,
+        ) void {
+            bindings.clearBufferfv(
+                @intFromEnum(buffer),
+                @bitCast(drawbuffer),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var clearBufferfi: *const fn (
         //     buffer: Enum,
         //     drawbuffer: Int,
         //     depth: Float,
         //     stencil: Int,
         // ) callconv(.c) void = undefined;
+        pub fn clearBufferfi(
+            buffer: ClearBufferDepthStencil,
+            drawbuffer: i32,
+            depth: f32,
+            stencil: i32,
+        ) void {
+            bindings.clearBufferfi(
+                @intFromEnum(buffer),
+                @bitCast(drawbuffer),
+                depth,
+                stencil,
+            );
+        }
 
         // pub var getStringi: *const fn (name: Enum, index: Uint) callconv(.c) [*c]const Ubyte = undefined;
         pub fn getStringi(name: StringParamName, index: Uint) [*:0]const u8 {
@@ -4692,6 +5727,17 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     pname: Enum,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getRenderbufferParameteriv(
+            target: RenderbufferTarget,
+            pname: RenderbufferParameter,
+            params: []i32,
+        ) void {
+            bindings.getRenderbufferParameteriv(
+                @intFromEnum(target),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
 
         // pub var isFramebuffer: *const fn (framebuffer: Uint) callconv(.c) Boolean = undefined;
         pub fn isFramebuffer(framebuffer: Framebuffer) bool {
@@ -4735,6 +5781,21 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     texture: Uint,
         //     level: Int,
         // ) callconv(.c) void = undefined;
+        pub fn framebufferTexture1D(
+            target: FramebufferTarget,
+            attachment: FramebufferAttachment,
+            textarget: TextureTarget,
+            texture: Texture,
+            level: i32,
+        ) void {
+            bindings.framebufferTexture1D(
+                @intFromEnum(target),
+                @intFromEnum(attachment),
+                @intFromEnum(textarget),
+                @intFromEnum(texture),
+                @bitCast(level),
+            );
+        }
 
         // pub var framebufferTexture2D: *const fn (
         //     target: Enum,
@@ -4767,6 +5828,23 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     level: Int,
         //     zoffset: Int,
         // ) callconv(.c) void = undefined;
+        pub fn framebufferTexture3D(
+            target: FramebufferTarget,
+            attachment: FramebufferAttachment,
+            textarget: TextureTarget,
+            texture: Texture,
+            level: i32,
+            zoffset: i32,
+        ) void {
+            bindings.framebufferTexture3D(
+                @intFromEnum(target),
+                @intFromEnum(attachment),
+                @intFromEnum(textarget),
+                @intFromEnum(texture),
+                @bitCast(level),
+                @bitCast(zoffset),
+            );
+        }
 
         // pub var framebufferRenderbuffer: *const fn (
         //     target: Enum,
@@ -4796,7 +5874,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         // ) callconv(.c) void = undefined;
         pub fn getFramebufferAttachmentParameteriv(
             target: FramebufferTarget,
-            attachment: FramebufferAttachment,
+            attachment: FramebufferAttachmentDefault,
             pname: FramebufferAttachmentParameter,
         ) Int {
             var result: Int = undefined;
@@ -4826,6 +5904,32 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     mask: Bitfield,
         //     filter: Enum,
         // ) callconv(.c) void = undefined;
+        pub fn blitFramebuffer(
+            srcX0: i32,
+            srcY0: i32,
+            srcX1: i32,
+            srcY1: i32,
+            dstX0: i32,
+            dstY0: i32,
+            dstX1: i32,
+            dstY1: i32,
+            mask: ColorMask,
+            filter: Filter,
+        ) void {
+            bindings.blitFramebuffer(
+                @bitCast(srcX0),
+                @bitCast(srcY0),
+                @bitCast(srcX1),
+                @bitCast(srcY1),
+                @bitCast(dstX0),
+                @bitCast(dstY0),
+                @bitCast(dstX1),
+                @bitCast(dstY1),
+                @bitCast(mask),
+                @intFromEnum(filter),
+            );
+        }
+
         // pub var renderbufferStorageMultisample: *const fn (
         //     target: Enum,
         //     samples: Sizei,
@@ -4833,6 +5937,22 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     width: Sizei,
         //     height: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn renderbufferStorageMultisample(
+            target: RenderbufferTarget,
+            samples: u32,
+            internalformat: InternalFormat,
+            width: u32,
+            height: u32,
+        ) void {
+            bindings.renderbufferStorageMultisample(
+                @intFromEnum(target),
+                @bitCast(samples),
+                @intFromEnum(internalformat),
+                @bitCast(width),
+                @bitCast(height),
+            );
+        }
+
         // pub var framebufferTextureLayer: *const fn (
         //     target: Enum,
         //     attachment: Enum,
@@ -4840,17 +5960,62 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     level: Int,
         //     layer: Int,
         // ) callconv(.c) void = undefined;
+        pub fn framebufferTextureLayer(
+            target: FramebufferTarget,
+            attachment: FramebufferAttachment,
+            texture: Texture,
+            level: i32,
+            layer: i32,
+        ) void {
+            bindings.framebufferTextureLayer(
+                @intFromEnum(target),
+                @intFromEnum(attachment),
+                @intFromEnum(texture),
+                @bitCast(level),
+                @bitCast(layer),
+            );
+        }
+
         // pub var mapBufferRange: *const fn (
         //     target: Enum,
         //     offset: Intptr,
         //     length: Sizeiptr,
         //     access: Bitfield,
         // ) callconv(.c) ?*anyopaque = undefined;
+        pub fn mapBufferRange(
+            target: BufferTarget,
+            offset: usize,
+            length: usize,
+            access: MappedBufferAccess,
+        ) ?[*]u8 {
+            assert(length == 0);
+            assert(!(!access.map_read and !access.map_write));
+            assert(!(access.map_read and (access.map_invalidate_range or access.map_invalidate_buffer or access.map_unsynchronized)));
+            assert(!(access.map_flush_explicit and !access.map_write));
+            return @ptrCast(bindings.mapBufferRange(
+                @intFromEnum(target),
+                @bitCast(offset),
+                @bitCast(length),
+                @bitCast(access),
+            ));
+        }
+
         // pub var flushMappedBufferRange: *const fn (
         //     target: Enum,
         //     offset: Intptr,
         //     length: Sizeiptr,
         // ) callconv(.c) void = undefined;
+        pub fn flushMappedBufferRange(
+            target: BufferTarget,
+            offset: usize,
+            length: usize,
+        ) void {
+            bindings.flushMappedBufferRange(
+                @intFromEnum(target),
+                @bitCast(offset),
+                @bitCast(length),
+            );
+        }
 
         // pub var bindVertexArray: *const fn (array: Uint) callconv(.c) void = undefined;
         pub fn bindVertexArray(array: VertexArrayObject) void {
@@ -4951,6 +6116,20 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     count: Sizei,
         //     instancecount: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn drawArraysInstanced(
+            mode: PrimitiveType,
+            first: i32,
+            count: i32,
+            instancecount: i32,
+        ) void {
+            bindings.drawArraysInstanced(
+                @intFromEnum(mode),
+                @bitCast(first),
+                @bitCast(count),
+                @bitCast(instancecount),
+            );
+        }
+
         // pub var drawElementsInstanced: *const fn (
         //     mode: Enum,
         //     count: Sizei,
@@ -4958,8 +6137,40 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     indices: ?*const anyopaque,
         //     instancecount: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn drawElementsInstanced(
+            mode: PrimitiveType,
+            count: i32,
+            index_type: DrawIndicesType,
+            offset: usize, // offset into bound element array buffer
+            instancecount: i32,
+        ) void {
+            bindings.drawElementsInstanced(
+                @intFromEnum(mode),
+                @bitCast(count),
+                @intFromEnum(index_type),
+                @ptrFromInt(offset),
+                @bitCast(instancecount),
+            );
+        }
+
         // pub var texBuffer: *const fn (target: Enum, internalformat: Enum, buffer: Uint) callconv(.c) void = undefined;
+        pub fn texBuffer(
+            target: TexBufferTarget,
+            internalformat: TextureInternalFormat,
+            buffer: Buffer,
+        ) void {
+            bindings.texBuffer(
+                @intFromEnum(target),
+                @intFromEnum(internalformat),
+                @intFromEnum(buffer),
+            );
+        }
+
         // pub var primitiveRestartIndex: *const fn (index: Uint) callconv(.c) void = undefined;
+        pub fn primitiveRestartIndex(index: u32) void {
+            bindings.primitiveRestartIndex(@bitCast(index));
+        }
+
         // pub var copyBufferSubData: *const fn (
         //     readTarget: Enum,
         //     writeTarget: Enum,
@@ -4967,12 +6178,43 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     writeOffset: Intptr,
         //     size: Sizeiptr,
         // ) callconv(.c) void = undefined;
+        pub fn copyBufferSubData(
+            readTarget: BufferTarget,
+            writeTarget: BufferTarget,
+            readOffset: usize,
+            writeOffset: usize,
+            size: usize,
+        ) void {
+            bindings.copyBufferSubData(
+                @intFromEnum(readTarget),
+                @intFromEnum(writeTarget),
+                @bitCast(readOffset),
+                @bitCast(writeOffset),
+                @bitCast(size),
+            );
+        }
+
         // pub var getUniformIndices: *const fn (
         //     program: Uint,
         //     uniformCount: Sizei,
         //     uniformNames: [*c]const [*c]const Char,
         //     uniformIndices: [*c]Uint,
         // ) callconv(.c) void = undefined;
+        pub fn getUniformIndices(
+            program: Program,
+            uniformNames: []const [*:0]const u8,
+            uniformIndices: []u32,
+        ) void {
+            assert(program != .invalid);
+            assert(uniformNames.len == uniformIndices.len);
+            bindings.getUniformIndices(
+                @intFromEnum(program),
+                @intCast(uniformNames.len),
+                @ptrCast(uniformNames.ptr),
+                @ptrCast(uniformIndices.ptr),
+            );
+        }
+
         // pub var getActiveUniformsiv: *const fn (
         //     program: Uint,
         //     uniformCount: Sizei,
@@ -4980,6 +6222,23 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     pname: Enum,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getActiveUniformsiv(
+            program: Program,
+            uniform_indices: []const u32,
+            pname: UniformParameter,
+            params: []i32,
+        ) void {
+            assert(program != .invalid);
+            assert(uniform_indices.len == params.len);
+            bindings.getActiveUniformsiv(
+                @intFromEnum(program),
+                @intCast(uniform_indices.len),
+                @ptrCast(uniform_indices.ptr),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getActiveUniformName: *const fn (
         //     program: Uint,
         //     uniformIndex: Uint,
@@ -4987,16 +6246,61 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     length: [*c]Sizei,
         //     uniformName: [*c]Char,
         // ) callconv(.c) void = undefined;
+        pub fn getActiveUniformName(
+            program: Program,
+            uniform_index: u32,
+            uniform_name_buf: [:0]u8,
+        ) [:0]const u8 {
+            assert(program != .invalid);
+            var length: i32 = undefined;
+            bindings.getActiveUniformName(
+                @intFromEnum(program),
+                @bitCast(uniform_index),
+                // includes null terminator
+                @intCast(uniform_name_buf.len + 1),
+                // excludes null terminator
+                @ptrCast(&length),
+                @ptrCast(uniform_name_buf.ptr),
+            );
+            return uniform_name_buf[0..@intCast(length) :0];
+        }
+
         // pub var getUniformBlockIndex: *const fn (
         //     program: Uint,
         //     uniformBlockName: [*c]const Char,
         // ) callconv(.c) Uint = undefined;
+        pub fn getUniformBlockIndex(
+            program: Program,
+            uniformBlockName: [:0]const u8,
+        ) u32 {
+            assert(program != .invalid);
+            return @bitCast(bindings.getUniformBlockIndex(
+                @intFromEnum(program),
+                @ptrCast(uniformBlockName.ptr),
+            ));
+        }
+
         // pub var getActiveUniformBlockiv: *const fn (
         //     program: Uint,
         //     uniformBlockIndex: Uint,
         //     pname: Enum,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getActiveUniformBlockiv(
+            program: Program,
+            uniformBlockIndex: u32,
+            pname: UniformBlockParameter,
+            params: []i32,
+        ) void {
+            assert(program != .invalid);
+            bindings.getActiveUniformBlockiv(
+                @intFromEnum(program),
+                @bitCast(uniformBlockIndex),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getActiveUniformBlockName: *const fn (
         //     program: Uint,
         //     uniformBlockIndex: Uint,
@@ -5004,11 +6308,43 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     length: [*c]Sizei,
         //     uniformBlockName: [*c]Char,
         // ) callconv(.c) void = undefined;
+        pub fn getActiveUniformBlockName(
+            program: Program,
+            uniform_block_index: u32,
+            uniform_block_name_buf: [:0]u8,
+        ) [:0]const u8 {
+            assert(program != .invalid);
+            var length: i32 = undefined;
+            bindings.getActiveUniformBlockName(
+                @intFromEnum(program),
+                @bitCast(uniform_block_index),
+                // includes null terminator
+                @intCast(uniform_block_name_buf.len + 1),
+                // excludes null terminator
+                @ptrCast(&length),
+                @ptrCast(uniform_block_name_buf.ptr),
+            );
+            return uniform_block_name_buf[0..@intCast(length) :0];
+        }
+
         // pub var uniformBlockBinding: *const fn (
         //     program: Uint,
         //     uniformBlockIndex: Uint,
         //     uniformBlockBinding: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn uniformBlockBinding(
+            program: Program,
+            // parameter names adjusted to avoid shadowing
+            uniform_block_index: u32,
+            uniform_block_binding: u32,
+        ) void {
+            assert(program != .invalid);
+            bindings.uniformBlockBinding(
+                @intFromEnum(program),
+                @bitCast(uniform_block_index),
+                @bitCast(uniform_block_binding),
+            );
+        }
 
         //------------------------------------------------------------------------------------------
         //
@@ -5091,6 +6427,22 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     indices: ?*const anyopaque,
         //     basevertex: Int,
         // ) callconv(.c) void = undefined;
+        pub fn drawElementsBaseVertex(
+            mode: PrimitiveType,
+            count: i32,
+            index_type: DrawIndicesType,
+            offset: usize, // offset into bound element array buffer
+            basevertex: i32,
+        ) void {
+            bindings.drawElementsBaseVertex(
+                @intFromEnum(mode),
+                @bitCast(count),
+                @intFromEnum(index_type),
+                @ptrFromInt(offset),
+                @bitCast(basevertex),
+            );
+        }
+
         // pub var drawRangeElementsBaseVertex: *const fn (
         //     mode: Enum,
         //     start: Uint,
@@ -5100,6 +6452,26 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     indices: ?*const anyopaque,
         //     basevertex: Int,
         // ) callconv(.c) void = undefined;
+        pub fn drawRangeElementsBaseVertex(
+            mode: PrimitiveType,
+            start: u32,
+            end: u32,
+            count: i32,
+            index_type: DrawIndicesType,
+            offset: usize, // offset into bound element array buffer
+            basevertex: i32,
+        ) void {
+            bindings.drawRangeElementsBaseVertex(
+                @intFromEnum(mode),
+                @bitCast(start),
+                @bitCast(end),
+                @bitCast(count),
+                @intFromEnum(index_type),
+                @ptrFromInt(offset),
+                @bitCast(basevertex),
+            );
+        }
+
         // pub var drawElementsInstancedBaseVertex: *const fn (
         //     mode: Enum,
         //     count: Sizei,
@@ -5108,6 +6480,24 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     instancecount: Sizei,
         //     basevertex: Int,
         // ) callconv(.c) void = undefined;
+        pub fn drawElementsInstancedBaseVertex(
+            mode: PrimitiveType,
+            count: i32,
+            index_type: DrawIndicesType,
+            offset: usize, // offset into bound element array buffer
+            instancecount: i32,
+            basevertex: i32,
+        ) void {
+            bindings.drawElementsInstancedBaseVertex(
+                @intFromEnum(mode),
+                @bitCast(count),
+                @intFromEnum(index_type),
+                @ptrFromInt(offset),
+                @bitCast(instancecount),
+                @bitCast(basevertex),
+            );
+        }
+
         // pub var multiDrawElementsBaseVertex: *const fn (
         //     mode: Enum,
         //     count: [*c]const Sizei,
@@ -5116,21 +6506,79 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     drawcount: Sizei,
         //     basevertex: [*c]const Int,
         // ) callconv(.c) void = undefined;
+        pub fn multiDrawElementsBaseVertex(
+            mode: PrimitiveType,
+            counts: []const i32,
+            index_type: DrawIndicesType,
+            offsets: []const usize, // offsets into bound element array buffer
+            drawcount: i32,
+            basevertex: []const i32,
+        ) void {
+            assert(counts.len == drawcount);
+            assert(offsets.len == drawcount);
+            bindings.multiDrawElementsBaseVertex(
+                @intFromEnum(mode),
+                @ptrCast(counts.ptr),
+                @intFromEnum(index_type),
+                @ptrCast(offsets.ptr),
+                @bitCast(drawcount),
+                @ptrCast(basevertex.ptr),
+            );
+        }
+
         // pub var provokingVertex: *const fn (mode: Enum) callconv(.c) void = undefined;
+        pub fn provokingVertex(mode: VertexProvokeMode) void {
+            bindings.provokingVertex(@intFromEnum(mode));
+        }
+
         // pub var fenceSync: *const fn (condition: Enum, flags: Bitfield) callconv(.c) Sync = undefined;
+        pub fn fenceSync(
+            condition: SyncCondition,
+            // only valid flags value is zero
+        ) Sync {
+            return bindings.fenceSync(@intFromEnum(condition), 0);
+        }
+
         // pub var isSync: *const fn (sync: Sync) callconv(.c) Boolean = undefined;
+        pub fn isSync(sync: Sync) bool {
+            return bindings.isSync(sync) == TRUE;
+        }
+
         // pub var deleteSync: *const fn (sync: Sync) callconv(.c) void = undefined;
+        pub fn deleteSync(sync: Sync) void {
+            bindings.deleteSync(sync);
+        }
+
         // pub var clientWaitSync: *const fn (sync: Sync, flags: Bitfield, timeout: Uint64) callconv(.c) Enum = undefined;
+        pub fn clientWaitSync(
+            sync: Sync,
+            flags: WaitSyncFlags,
+            timeout_nanos: u64,
+        ) WaitSyncError!WaitSyncResult {
+            const wait_result = bindings.clientWaitSync(
+                sync,
+                @bitCast(flags),
+                timeout_nanos,
+            );
+            if (wait_result == WAIT_FAILED)
+                return WaitSyncError.Failed;
+            return @enumFromInt(wait_result);
+        }
+
         // pub var waitSync: *const fn (sync: Sync, flags: Bitfield, timeout: Uint64) callconv(.c) void = undefined;
+        pub fn waitSync(
+            sync: Sync,
+            timeout: WaitTimeout,
+        ) void {
+            bindings.waitSync(
+                sync,
+                0, // only valid flags value is zero
+                @intFromEnum(timeout),
+            );
+        }
 
         // pub var getInteger64v: *const fn (pname: Enum, data: [*c]Int64) callconv(.c) void = undefined;
-        pub fn getInteger64v(pname: meta.mergeEnums(.{
-            ParamName,
-            enum(Enum) {
-                ATOMIC_COUNTER_BUFFER_START,
-                ATOMIC_COUNTER_BUFFER_SIZE,
-            },
-        }), ptr: [*]Int64) void {
+        pub fn getInteger64v(pname: ParamName, ptr: [*]Int64) void {
             bindings.getInteger64v(@intFromEnum(pname), ptr);
         }
 
@@ -5141,18 +6589,68 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     length: [*c]Sizei,
         //     values: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getSynciv(
+            sync: Sync,
+            pname: SyncParameter,
+            value_buf: []i32,
+        ) []const i32 {
+            var length: i32 = undefined;
+            bindings.getSynciv(
+                sync,
+                @intFromEnum(pname),
+                @intCast(value_buf.len),
+                @ptrCast(&length),
+                @ptrCast(value_buf.ptr),
+            );
+            return value_buf[0..@intCast(length)];
+        }
+
         // pub var getInteger64i_v: *const fn (target: Enum, index: Uint, data: [*c]Int64) callconv(.c) void = undefined;
+        pub fn getInteger64i_v(target: IndexedInt64Parameter, index: u32, data: []i64) void {
+            bindings.getInteger64i_v(
+                @intFromEnum(target),
+                @bitCast(index),
+                @ptrCast(data.ptr),
+            );
+        }
+
         // pub var getBufferParameteri64v: *const fn (
         //     target: Enum,
         //     pname: Enum,
         //     params: [*c]Int64,
         // ) callconv(.c) void = undefined;
+        pub fn getBufferParameteri64v(
+            target: BufferTarget,
+            pname: BufferParameter,
+            params: []i64,
+        ) void {
+            bindings.getBufferParameteri64v(
+                @intFromEnum(target),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var framebufferTexture: *const fn (
         //     target: Enum,
         //     attachment: Enum,
         //     texture: Uint,
         //     level: Int,
         // ) callconv(.c) void = undefined;
+        pub fn framebufferTexture(
+            target: FramebufferTarget,
+            attachment: FramebufferAttachment,
+            texture: Texture,
+            level: i32,
+        ) void {
+            bindings.framebufferTexture(
+                @intFromEnum(target),
+                @intFromEnum(attachment),
+                @intFromEnum(texture),
+                @bitCast(level),
+            );
+        }
+
         // pub var texImage2DMultisample: *const fn (
         //     target: Enum,
         //     samples: Sizei,
@@ -5161,6 +6659,24 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     height: Sizei,
         //     fixedsamplelocations: Boolean,
         // ) callconv(.c) void = undefined;
+        pub fn texImage2DMultisample(
+            target: TexImage2dMultisampleTarget,
+            samples: i32,
+            internalformat: InternalFormat,
+            width: i32,
+            height: i32,
+            fixedsamplelocations: bool,
+        ) void {
+            bindings.texImage2DMultisample(
+                @intFromEnum(target),
+                @bitCast(samples),
+                @intFromEnum(internalformat),
+                @bitCast(width),
+                @bitCast(height),
+                @intFromBool(fixedsamplelocations),
+            );
+        }
+
         // pub var texImage3DMultisample: *const fn (
         //     target: Enum,
         //     samples: Sizei,
@@ -5170,8 +6686,48 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     depth: Sizei,
         //     fixedsamplelocations: Boolean,
         // ) callconv(.c) void = undefined;
+        pub fn texImage3DMultisample(
+            target: TexImage3dMultisampleTarget,
+            samples: i32,
+            internalformat: InternalFormat,
+            width: i32,
+            height: i32,
+            depth: i32,
+            fixedsamplelocations: bool,
+        ) void {
+            bindings.texImage3DMultisample(
+                @intFromEnum(target),
+                @bitCast(samples),
+                @intFromEnum(internalformat),
+                @bitCast(width),
+                @bitCast(height),
+                @bitCast(depth),
+                @intFromBool(fixedsamplelocations),
+            );
+        }
+
         // pub var getMultisamplefv: *const fn (pname: Enum, index: Uint, val: [*c]Float) callconv(.c) void = undefined;
+        pub fn getMultisamplefv(
+            pname: MultisampleParameter,
+            index: u32,
+            val: []f32,
+        ) void {
+            bindings.getMultisamplefv(
+                @intFromEnum(pname),
+                @bitCast(index),
+                @ptrCast(val.ptr),
+            );
+        }
+
         // pub var sampleMaski: *const fn (maskNumber: Uint, mask: Bitfield) callconv(.c) void = undefined;
+        // mask bits are interpreted, but there are no
+        // concrete enum values bits correspond to
+        pub fn sampleMaski(maskNumber: u32, mask: u32) void {
+            bindings.sampleMaski(
+                @bitCast(maskNumber),
+                @bitCast(mask),
+            );
+        }
 
         //------------------------------------------------------------------------------------------
         //
@@ -5201,67 +6757,392 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     index: Uint,
         //     name: [*c]const Char,
         // ) callconv(.c) void = undefined;
+        pub fn bindFragDataLocationIndexed(
+            program: Program,
+            colorNumber: u32,
+            index: u32,
+            name: [:0]const u8,
+        ) void {
+            assert(program != .invalid);
+            // prefix 'gl_' is reserved and cannot be used
+            assert(!std.mem.startsWith(u8, name, "gl_"));
+            bindings.bindFragDataLocationIndexed(
+                @intFromEnum(program),
+                @bitCast(colorNumber),
+                @bitCast(index),
+                @ptrCast(name.ptr),
+            );
+        }
+
         // pub var getFragDataIndex: *const fn (program: Uint, name: [*c]const Char) callconv(.c) Int = undefined;
+        pub fn getFragDataIndex(
+            program: Program,
+            name: [:0]const u8,
+        ) i32 {
+            assert(program != .invalid);
+            return @bitCast(bindings.getFragDataIndex(
+                @intFromEnum(program),
+                @ptrCast(name.ptr),
+            ));
+        }
+
         // pub var genSamplers: *const fn (count: Sizei, samplers: [*c]Uint) callconv(.c) void = undefined;
+        pub fn genSampler(ptr: *Sampler) void {
+            bindings.genSamplers(1, @ptrCast(ptr));
+        }
+        pub fn genSamplers(samplers: []Sampler) void {
+            bindings.genSamplers(@intCast(samplers.len), @ptrCast(samplers.ptr));
+        }
+
         // pub var deleteSamplers: *const fn (count: Sizei, samplers: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn deleteSampler(ptr: *const Sampler) void {
+            bindings.deleteSamplers(1, @ptrCast(ptr));
+        }
+        pub fn deleteSamplers(samplers: []const Sampler) void {
+            bindings.deleteSamplers(@intCast(samplers.len), @ptrCast(samplers.ptr));
+        }
+
         // pub var isSampler: *const fn (sampler: Uint) callconv(.c) Boolean = undefined;
+        pub fn isSampler(sampler: Sampler) bool {
+            return bindings.isSampler(@intFromEnum(sampler)) == TRUE;
+        }
+
         // pub var bindSampler: *const fn (unit: Uint, sampler: Uint) callconv(.c) void = undefined;
+        pub fn bindSampler(unit: u32, sampler: Sampler) void {
+            bindings.bindSampler(
+                @bitCast(unit),
+                @intFromEnum(sampler),
+            );
+        }
+
         // pub var samplerParameteri: *const fn (sampler: Uint, pname: Enum, param: Int) callconv(.c) void = undefined;
+        pub fn samplerParameteri(
+            sampler: Sampler,
+            pname: SamplerParameter,
+            param: i32,
+        ) void {
+            bindings.samplerParameteri(
+                @intFromEnum(sampler),
+                @intFromEnum(pname),
+                @bitCast(param),
+            );
+        }
+
         // pub var samplerParameteriv: *const fn (
         //     sampler: Uint,
         //     pname: Enum,
         //     param: [*c]const Int,
         // ) callconv(.c) void = undefined;
+        pub fn samplerParameteriv(
+            sampler: Sampler,
+            pname: SamplerParameter,
+            param: []const i32,
+        ) void {
+            bindings.samplerParameteriv(
+                @intFromEnum(sampler),
+                @intFromEnum(pname),
+                @ptrCast(param.ptr),
+            );
+        }
+
         // pub var samplerParameterf: *const fn (sampler: Uint, pname: Enum, param: Float) callconv(.c) void = undefined;
+        pub fn samplerParameterf(
+            sampler: Sampler,
+            pname: SamplerParameter,
+            param: f32,
+        ) void {
+            bindings.samplerParameterf(
+                @intFromEnum(sampler),
+                @intFromEnum(pname),
+                param,
+            );
+        }
+
         // pub var samplerParameterfv: *const fn (
         //     sampler: Uint,
         //     pname: Enum,
         //     param: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn samplerParameterfv(
+            sampler: Sampler,
+            pname: SamplerParameter,
+            param: []const f32,
+        ) void {
+            bindings.samplerParameterfv(
+                @intFromEnum(sampler),
+                @intFromEnum(pname),
+                @ptrCast(param.ptr),
+            );
+        }
+
         // pub var samplerParameterIiv: *const fn (
         //     sampler: Uint,
         //     pname: Enum,
         //     param: [*c]const Int,
         // ) callconv(.c) void = undefined;
+        pub fn samplerParameterIiv(
+            sampler: Sampler,
+            pname: SamplerParameter,
+            param: []const i32,
+        ) void {
+            bindings.samplerParameterIiv(
+                @intFromEnum(sampler),
+                @intFromEnum(pname),
+                @ptrCast(param.ptr),
+            );
+        }
+
         // pub var samplerParameterIuiv: *const fn (
         //     sampler: Uint,
         //     pname: Enum,
         //     param: [*c]const Uint,
         // ) callconv(.c) void = undefined;
+        pub fn samplerParameterIuiv(
+            sampler: Sampler,
+            pname: SamplerParameter,
+            param: []const u32,
+        ) void {
+            bindings.samplerParameterIuiv(
+                @intFromEnum(sampler),
+                @intFromEnum(pname),
+                @ptrCast(param.ptr),
+            );
+        }
+
         // pub var getSamplerParameteriv: *const fn (
         //     sampler: Uint,
         //     pname: Enum,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getSamplerParameteriv(
+            sampler: Sampler,
+            pname: SamplerParameter,
+            params: []i32,
+        ) void {
+            bindings.getSamplerParameteriv(
+                @intFromEnum(sampler),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getSamplerParameterIiv: *const fn (
         //     sampler: Uint,
         //     pname: Enum,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getSamplerParameterIiv(
+            sampler: Sampler,
+            pname: SamplerParameter,
+            params: []i32,
+        ) void {
+            bindings.getSamplerParameterIiv(
+                @intFromEnum(sampler),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getSamplerParameterfv: *const fn (
         //     sampler: Uint,
         //     pname: Enum,
         //     params: [*c]Float,
         // ) callconv(.c) void = undefined;
+        pub fn getSamplerParameterfv(
+            sampler: Sampler,
+            pname: SamplerParameter,
+            params: []f32,
+        ) void {
+            bindings.getSamplerParameterfv(
+                @intFromEnum(sampler),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getSamplerParameterIuiv: *const fn (
         //     sampler: Uint,
         //     pname: Enum,
         //     params: [*c]Uint,
         // ) callconv(.c) void = undefined;
-        // pub var queryCounter: *const fn (id: Uint, target: Enum) callconv(.c) void = undefined;
-        // pub var getQueryObjecti64v: *const fn (id: Uint, pname: Enum, params: [*c]Int64) callconv(.c) void = undefined;
-        // pub var getQueryObjectui64v: *const fn (id: Uint, pname: Enum, params: [*c]Uint64) callconv(.c) void = undefined;
-        // pub var vertexAttribDivisor: *const fn (index: Uint, divisor: Uint) callconv(.c) void = undefined;
-        // pub var vertexAttribP1ui: *const fn (index: Uint, type: Enum, normalized: Boolean, value: Uint) callconv(.c) void = undefined;
-        // pub var vertexAttribP1uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: [*c]const Uint) callconv(.c) void = undefined;
-        // pub var vertexAttribP2ui: *const fn (index: Uint, type: Enum, normalized: Boolean, value: Uint) callconv(.c) void = undefined;
-        // pub var vertexAttribP2uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: [*c]const Uint) callconv(.c) void = undefined;
-        // pub var vertexAttribP3ui: *const fn (index: Uint, type: Enum, normalized: Boolean, value: Uint) callconv(.c) void = undefined;
-        // pub var vertexAttribP3uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: [*c]const Uint) callconv(.c) void = undefined;
-        // pub var vertexAttribP4ui: *const fn (index: Uint, type: Enum, normalized: Boolean, value: Uint) callconv(.c) void = undefined;
-        // pub var vertexAttribP4uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn getSamplerParameterIuiv(
+            sampler: Sampler,
+            pname: SamplerParameter,
+            params: []u32,
+        ) void {
+            bindings.getSamplerParameterIuiv(
+                @intFromEnum(sampler),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
 
-        // TODO: where do these belong?
+        // pub var queryCounter: *const fn (id: Uint, target: Enum) callconv(.c) void = undefined;
+        pub fn queryCounter(query: Query, target: QueryCounterTarget) void {
+            bindings.queryCounter(
+                @intFromEnum(query),
+                @intFromEnum(target),
+            );
+        }
+
+        // pub var getQueryObjecti64v: *const fn (id: Uint, pname: Enum, params: [*c]Int64) callconv(.c) void = undefined;
+        pub fn getQueryObjecti64v(
+            query: Query,
+            pname: QueryObjectParameter,
+            params: []i64,
+        ) void {
+            bindings.getQueryObjecti64v(
+                @intFromEnum(query),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
+        // pub var getQueryObjectui64v: *const fn (id: Uint, pname: Enum, params: [*c]Uint64) callconv(.c) void = undefined;
+        pub fn getQueryObjectui64v(
+            query: Query,
+            pname: QueryObjectParameter,
+            params: []u64,
+        ) void {
+            bindings.getQueryObjectui64v(
+                @intFromEnum(query),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
+        // pub var vertexAttribDivisor: *const fn (index: Uint, divisor: Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribDivisor(
+            location: VertexAttribLocation,
+            divisor: u32,
+        ) void {
+            bindings.vertexAttribDivisor(
+                @intFromEnum(location),
+                @bitCast(divisor),
+            );
+        }
+
+        // pub var vertexAttribP1ui: *const fn (index: Uint, type: Enum, normalized: Boolean, value: Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribP1ui(
+            location: VertexAttribLocation,
+            packed_type: VertexAttribPackedType,
+            normalized: bool,
+            value: u32,
+        ) void {
+            bindings.vertexAttribP1ui(
+                @intFromEnum(location),
+                @intFromEnum(packed_type),
+                @intFromBool(normalized),
+                @bitCast(value),
+            );
+        }
+
+        // pub var vertexAttribP1uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribP1uiv(
+            location: VertexAttribLocation,
+            packed_type: VertexAttribPackedType,
+            normalized: bool,
+            value: []const u32,
+        ) void {
+            bindings.vertexAttribP1uiv(
+                @intFromEnum(location),
+                @intFromEnum(packed_type),
+                @intFromBool(normalized),
+                @ptrCast(value.ptr),
+            );
+        }
+
+        // pub var vertexAttribP2ui: *const fn (index: Uint, type: Enum, normalized: Boolean, value: Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribP2ui(
+            location: VertexAttribLocation,
+            packed_type: VertexAttribPackedType,
+            normalized: bool,
+            value: u32,
+        ) void {
+            bindings.vertexAttribP2ui(
+                @intFromEnum(location),
+                @intFromEnum(packed_type),
+                @intFromBool(normalized),
+                @bitCast(value),
+            );
+        }
+
+        // pub var vertexAttribP2uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribP2uiv(
+            location: VertexAttribLocation,
+            packed_type: VertexAttribPackedType,
+            normalized: bool,
+            value: []const u32,
+        ) void {
+            bindings.vertexAttribP2uiv(
+                @intFromEnum(location),
+                @intFromEnum(packed_type),
+                @intFromBool(normalized),
+                @ptrCast(value.ptr),
+            );
+        }
+
+        // pub var vertexAttribP3ui: *const fn (index: Uint, type: Enum, normalized: Boolean, value: Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribP3ui(
+            location: VertexAttribLocation,
+            packed_type: VertexAttribPackedType,
+            normalized: bool,
+            value: u32,
+        ) void {
+            bindings.vertexAttribP3ui(
+                @intFromEnum(location),
+                @intFromEnum(packed_type),
+                @intFromBool(normalized),
+                @bitCast(value),
+            );
+        }
+
+        // pub var vertexAttribP3uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribP3uiv(
+            location: VertexAttribLocation,
+            packed_type: VertexAttribPackedType,
+            normalized: bool,
+            value: []const u32,
+        ) void {
+            bindings.vertexAttribP3uiv(
+                @intFromEnum(location),
+                @intFromEnum(packed_type),
+                @intFromBool(normalized),
+                @ptrCast(value.ptr),
+            );
+        }
+
+        // pub var vertexAttribP4ui: *const fn (index: Uint, type: Enum, normalized: Boolean, value: Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribP4ui(
+            location: VertexAttribLocation,
+            packed_type: VertexAttribPackedType,
+            normalized: bool,
+            value: u32,
+        ) void {
+            bindings.vertexAttribP4ui(
+                @intFromEnum(location),
+                @intFromEnum(packed_type),
+                @intFromBool(normalized),
+                @bitCast(value),
+            );
+        }
+
+        // pub var vertexAttribP4uiv: *const fn (index: Uint, type: Enum, normalized: Boolean, value: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn vertexAttribP4uiv(
+            location: VertexAttribLocation,
+            packed_type: VertexAttribPackedType,
+            normalized: bool,
+            value: []const u32,
+        ) void {
+            bindings.vertexAttribP4uiv(
+                @intFromEnum(location),
+                @intFromEnum(packed_type),
+                @intFromBool(normalized),
+                @ptrCast(value.ptr),
+            );
+        }
+
+        // TODO: where do these belong? these are part of OpenGL 3.3 (Compatibility Profile)
         // pub var vertexP2ui: *const fn (type: Enum, value: Uint) callconv(.c) void = undefined;
         // pub var vertexP2uiv: *const fn (type: Enum, value: *const Uint) callconv(.c) void = undefined;
         // pub var vertexP3ui: *const fn (type: Enum, value: Uint) callconv(.c) void = undefined;
@@ -7647,7 +9528,7 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         pub fn multiDrawElementsIndirectCount(
             mode: PrimitiveType,
-            index_type: enum(Enum) { unsigned_byte = UNSIGNED_BYTE, unsigned_short = UNSIGNED_SHORT, unsigned_int = UNSIGNED_INT },
+            index_type: DrawIndicesType,
             indirect: *const anyopaque,
             drawcount: Intptr,
             maxdrawcount: u32,
