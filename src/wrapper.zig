@@ -51,6 +51,10 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         pub const Sampler = enum(Uint) { invalid = 0, _ };
 
+        pub const TransformFeedback = enum(Uint) { invalid = 0, _ };
+
+        pub const ProgramPipeline = enum(Uint) { invalid = 0, _ };
+
         pub const Error = enum(Enum) {
             //--------------------------------------------------------------------------------------
             // OpenGL 1.0 (Core Profile)
@@ -417,13 +421,22 @@ pub fn Wrap(comptime bindings: anytype) type {
             one_minus_src_alpha = ONE_MINUS_SRC_ALPHA,
             dst_alpha = DST_ALPHA,
             one_minus_dst_alpha = ONE_MINUS_DST_ALPHA,
+            /// can only be used for 'sfactor'/'src' color and alpha parameters, before OpenGL 3.3
+            src_alpha_saturate = SRC_ALPHA_SATURATE,
             //--------------------------------------------------------------------------------------
-            // OpenGL 1.4 (Core Profile)
+            // OpenGL 1.2 (Core Profile)
             //--------------------------------------------------------------------------------------
             constant_color = CONSTANT_COLOR,
             one_minus_constant_color = ONE_MINUS_CONSTANT_COLOR,
             constant_alpha = CONSTANT_ALPHA,
             one_minus_constant_alpha = ONE_MINUS_CONSTANT_ALPHA,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            src1_color = SRC1_COLOR,
+            one_minus_src1_color = ONE_MINUS_SRC1_COLOR,
+            src1_alpha = SRC1_ALPHA,
+            one_minus_src1_alpha = ONE_MINUS_SRC1_ALPHA,
         };
 
         pub const ColorBuffer = enum(Enum) {
@@ -527,9 +540,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             //--------------------------------------------------------------------------------------
             // OpenGL 1.0 (Core Profile)
             //--------------------------------------------------------------------------------------
-            // DEPTH_BUFFER_BIT = 0x0100 // 9th bit
-            // STENCIL_BUFFER_BIT = 0x400 // 11th bit
-            // COLOR_BUFFER_BIT = 0x4000 // 15th bit
+            // DEPTH_BUFFER_BIT   = 0x00000100 // 9th bit
+            // STENCIL_BUFFER_BIT = 0x00000400 // 11th bit
+            // COLOR_BUFFER_BIT   = 0x00004000 // 15th bit
 
             /// DO NOT WRITE
             pad1: u8 = 0,
@@ -742,6 +755,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             compute = COMPUTE_SHADER,
         };
 
+        pub const ShaderTypeBasic = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 2.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            vertex = VERTEX_SHADER,
+            fragment = FRAGMENT_SHADER,
+        };
+
         pub const ProgramParameter = enum(Enum) {
             //----------------------------------------------------------------------------------
             // OpenGL 2.0 (Core Profile)
@@ -773,6 +794,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             // OpenGL 4.1 (Core Profile)
             //----------------------------------------------------------------------------------
             program_binary_length = PROGRAM_BINARY_LENGTH,
+            program_separable = PROGRAM_SEPARABLE,
+            program_binary_retrievable_hint = PROGRAM_BINARY_RETRIEVABLE_HINT,
         };
 
         pub const ShaderParameter = enum(Enum) {
@@ -1146,6 +1169,66 @@ pub fn Wrap(comptime bindings: anytype) type {
             texture_cube_map_array = TEXTURE_CUBE_MAP_ARRAY,
         };
 
+        pub const TexImage1DTarget = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            texture_1d = TEXTURE_1D,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            proxy_texture_1d = PROXY_TEXTURE_1D,
+        };
+
+        pub const TexImage2DTarget = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            texture_2d = TEXTURE_2D,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            proxy_texture_2d = PROXY_TEXTURE_2D,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            texture_cube_map_positive_x = TEXTURE_CUBE_MAP_POSITIVE_X,
+            texture_cube_map_negative_x = TEXTURE_CUBE_MAP_NEGATIVE_X,
+            texture_cube_map_positive_y = TEXTURE_CUBE_MAP_POSITIVE_Y,
+            texture_cube_map_negative_y = TEXTURE_CUBE_MAP_NEGATIVE_Y,
+            texture_cube_map_positive_z = TEXTURE_CUBE_MAP_POSITIVE_Z,
+            texture_cube_map_negative_z = TEXTURE_CUBE_MAP_NEGATIVE_Z,
+            proxy_texture_cube_map = PROXY_TEXTURE_CUBE_MAP,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            texture_1d_array = TEXTURE_1D_ARRAY,
+            proxy_texture_1d_array = PROXY_TEXTURE_1D_ARRAY,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            texture_rectangle = TEXTURE_RECTANGLE,
+            proxy_texture_rectangle = PROXY_TEXTURE_RECTANGLE,
+        };
+
+        pub const TexImage3DTarget = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            texture_3d = TEXTURE_3D,
+            proxy_texture_3d = PROXY_TEXTURE_3D,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            texture_2d_array = TEXTURE_2D_ARRAY,
+            proxy_texture_2d_array = PROXY_TEXTURE_2D_ARRAY,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            texture_cube_map_array = TEXTURE_CUBE_MAP_ARRAY,
+            proxy_texture_cube_map_array = PROXY_TEXTURE_CUBE_MAP_ARRAY,
+        };
+
         pub const TexLevelTarget = enum(Enum) {
             //--------------------------------------------------------------------------------------
             // OpenGL 1.0 (Core Profile)
@@ -1389,8 +1472,11 @@ pub fn Wrap(comptime bindings: anytype) type {
             //--------------------------------------------------------------------------------------
             // OpenGL 3.0 (Core Profile)
             //--------------------------------------------------------------------------------------
+            half_float = HALF_FLOAT,
+            unsigned_int_24_8 = UNSIGNED_INT_24_8,
             unsigned_int_10f_11f_11f_rev = UNSIGNED_INT_10F_11F_11F_REV,
             unsigned_int_5_9_9_9_rev = UNSIGNED_INT_5_9_9_9_REV,
+            float_32_unsigned_int_24_8_rev = FLOAT_32_UNSIGNED_INT_24_8_REV,
         };
 
         pub const TexParameter = enum(Enum) {
@@ -1572,6 +1658,28 @@ pub fn Wrap(comptime bindings: anytype) type {
             any_samples_passed_conservative = ANY_SAMPLES_PASSED_CONSERVATIVE,
         };
 
+        pub const QueryTargetWithTimestamp = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 1.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            samples_passed = SAMPLES_PASSED,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            primitives_generated = PRIMITIVES_GENERATED,
+            transform_feedback_primitives_written = TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            any_samples_passed = ANY_SAMPLES_PASSED,
+            time_elapsed = TIME_ELAPSED,
+            timestamp = TIMESTAMP,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            any_samples_passed_conservative = ANY_SAMPLES_PASSED_CONSERVATIVE,
+        };
+
         pub const QueryParameter = enum(Enum) {
             //--------------------------------------------------------------------------------------
             // OpenGL 1.5 (Core Profile)
@@ -1635,6 +1743,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             // OpenGL 4.4 (Core Profile)
             //--------------------------------------------------------------------------------------
             query_buffer = QUERY_BUFFER,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.6 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            parameter_buffer = PARAMETER_BUFFER,
         };
 
         pub const Access = enum(Enum) {
@@ -1850,6 +1962,18 @@ pub fn Wrap(comptime bindings: anytype) type {
             query_by_region_no_wait_inverted = QUERY_BY_REGION_NO_WAIT_INVERTED,
         };
 
+        pub const VertexAttribIntegerType = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 3.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            byte = BYTE,
+            short = SHORT,
+            int = INT,
+            unsigned_byte = UNSIGNED_BYTE,
+            unsigned_short = UNSIGNED_SHORT,
+            unsigned_int = UNSIGNED_INT,
+        };
+
         pub const ClearBuffer = enum(Enum) {
             //--------------------------------------------------------------------------------------
             // OpenGL 3.0 (Core Profile)
@@ -1894,17 +2018,17 @@ pub fn Wrap(comptime bindings: anytype) type {
             //--------------------------------------------------------------------------------------
             // OpenGL 3.0 (Core Profile)
             //--------------------------------------------------------------------------------------
-            // MAP_READ_BIT = 0x0001 // 1st bit
-            // MAP_WRITE_BIT = 0x0002 // 2nd bit
-            // MAP_INVALIDATE_RANGE_BIT = 0x0004 // 3rd bit
-            // MAP_INVALIDATE_BUFFER_BIT = 0x0008 // 4th bit
-            // MAP_FLUSH_EXPLICIT_BIT = 0x0010 // 5th bit
-            // MAP_UNSYNCHRONIZED_BIT = 0x0020 // 6th bit
+            // MAP_READ_BIT              = 0x00000001 // 1st bit
+            // MAP_WRITE_BIT             = 0x00000002 // 2nd bit
+            // MAP_INVALIDATE_RANGE_BIT  = 0x00000004 // 3rd bit
+            // MAP_INVALIDATE_BUFFER_BIT = 0x00000008 // 4th bit
+            // MAP_FLUSH_EXPLICIT_BIT    = 0x00000010 // 5th bit
+            // MAP_UNSYNCHRONIZED_BIT    = 0x00000020 // 6th bit
             //--------------------------------------------------------------------------------------
             // OpenGL 4.4 (Core Profile)
             //--------------------------------------------------------------------------------------
-            // MAP_PERSISTENT_BIT = 0x0040 // 7th bit
-            // MAP_COHERENT_BIT = 0x0080 // 8th bit
+            // MAP_PERSISTENT_BIT        = 0x00000040 // 7th bit
+            // MAP_COHERENT_BIT          = 0x00000080 // 8th bit
 
             map_read: bool = false,
             map_write: bool = false,
@@ -1976,6 +2100,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             rgba16ui = RGBA16UI,
             rgba32ui = RGBA32UI,
         };
+
         const UniformParameter = enum(Enum) {
             //--------------------------------------------------------------------------------------
             // OpenGL 3.1 (Core Profile)
@@ -2039,7 +2164,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             //--------------------------------------------------------------------------------------
             // OpenGL 3.2 (Core Profile)
             //--------------------------------------------------------------------------------------
-            // SYNC_FLUSH_COMMANDS_BIT = = 0x0001 // 1st bit
+            // SYNC_FLUSH_COMMANDS_BIT = 0x00000001 // 1st bit
 
             sync_flush_commands: bool = false,
 
@@ -2117,7 +2242,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             shader_storage_buffer_size = SHADER_STORAGE_BUFFER_SIZE,
         };
 
-        pub const TexImage2dMultisampleTarget = enum(Enum) {
+        pub const TexImage2DMultisampleTarget = enum(Enum) {
             //--------------------------------------------------------------------------------------
             // OpenGL 3.2 (Core Profile)
             //--------------------------------------------------------------------------------------
@@ -2125,7 +2250,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             proxy_texture_2d_multisample = PROXY_TEXTURE_2D_MULTISAMPLE,
         };
 
-        pub const TexImage3dMultisampleTarget = enum(Enum) {
+        pub const TexImage3DMultisampleTarget = enum(Enum) {
             //--------------------------------------------------------------------------------------
             // OpenGL 3.2 (Core Profile)
             //--------------------------------------------------------------------------------------
@@ -2172,12 +2297,84 @@ pub fn Wrap(comptime bindings: anytype) type {
             //--------------------------------------------------------------------------------------
             // OpenGL 3.3 (Core Profile)
             //--------------------------------------------------------------------------------------
-            INT_2_10_10_10_REV,
-            UNSIGNED_INT_2_10_10_10_REV,
+            int_2_10_10_10_rev = INT_2_10_10_10_REV,
+            unsigned_int_2_10_10_10_rev = UNSIGNED_INT_2_10_10_10_REV,
             //--------------------------------------------------------------------------------------
             // OpenGL 4.4 (Core Profile)
             //--------------------------------------------------------------------------------------
-            UNSIGNED_INT_10F_11F_11F_REV,
+            unsigned_int_10f_11f_11f_rev = UNSIGNED_INT_10F_11F_11F_REV,
+        };
+
+        pub const DrawArraysIndirectCommand = extern struct {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            count: u32,
+            instance_count: u32,
+            first: u32,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            /// must be zero if used before OpenGL 4.2
+            base_instance: u32 = 0,
+        };
+
+        pub const DrawElementsIndirectCommand = extern struct {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            count: u32,
+            instance_count: u32,
+            first_index: u32,
+            base_vertex: i32,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            /// must be zero if used before OpenGL 4.2
+            base_instance: u32 = 0,
+        };
+
+        pub const SubroutineUniformParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            num_compatible_subroutines = NUM_COMPATIBLE_SUBROUTINES,
+            compatible_subroutines = COMPATIBLE_SUBROUTINES,
+            uniform_size = UNIFORM_SIZE,
+            uniform_name_length = UNIFORM_NAME_LENGTH,
+        };
+
+        pub const ProgramStageParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            active_subroutine_uniform_locations = ACTIVE_SUBROUTINE_UNIFORM_LOCATIONS,
+            active_subroutine_uniforms = ACTIVE_SUBROUTINE_UNIFORMS,
+            active_subroutines = ACTIVE_SUBROUTINES,
+            active_subroutine_uniform_max_length = ACTIVE_SUBROUTINE_UNIFORM_MAX_LENGTH,
+            active_subroutine_max_length = ACTIVE_SUBROUTINE_MAX_LENGTH,
+        };
+
+        pub const PatchIntegerParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            patch_vertices = PATCH_VERTICES,
+        };
+
+        pub const PatchFloatParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            patch_default_outer_level = PATCH_DEFAULT_OUTER_LEVEL,
+            patch_default_inner_level = PATCH_DEFAULT_INNER_LEVEL,
+        };
+
+        pub const TransformFeedbackTarget = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.0 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            transform_feedback = TRANSFORM_FEEDBACK,
         };
 
         pub const ShaderPrecisionFormat = enum(Enum) {
@@ -2190,6 +2387,755 @@ pub fn Wrap(comptime bindings: anytype) type {
             low_int = LOW_INT,
             medium_int = MEDIUM_INT,
             high_int = HIGH_INT,
+        };
+
+        pub const ShaderBinaryFormat = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            // some shader binary formats are vendor specific (non-exaustive enum)
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.6 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            shader_binary_format_spir_v = SHADER_BINARY_FORMAT_SPIR_V,
+            _,
+        };
+
+        pub const ProgramBinaryFormat = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            // program binary formats are vendor specific (non-exaustive enum)
+            _,
+        };
+
+        pub const ProgramParameterModifiable = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            program_separable = PROGRAM_SEPARABLE,
+        };
+
+        pub const UsedProgramStages = packed struct(Bitfield) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            // VERTEX_SHADER_BIT          = 0x00000001 // 1st bit
+            // FRAGMENT_SHADER_BIT        = 0x00000002 // 2nd bit
+            // GEOMETRY_SHADER_BIT        = 0x00000004 // 3rd bit
+            // TESS_CONTROL_SHADER_BIT    = 0x00000008 // 4th bit
+            // TESS_EVALUATION_SHADER_BIT = 0x00000010 // 5th bit
+            // ALL_SHADER_BITS            = 0xFFFFFFFF // implemented using all() function
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            // COMPUTE_SHADER_BIT         = 0x00000020 // 6th bit
+
+            vertex_shader: bool = false,
+            fragment_shader: bool = false,
+            geometry_shader: bool = false,
+            tess_control_shader: bool = false,
+            tess_evaluation_shader: bool = false,
+            compute_shader: bool = false,
+
+            /// DO NOT WRITE
+            pad: u26 = 0,
+
+            pub fn all() UsedProgramStages {
+                return @bitCast(
+                    @as(Bitfield, ALL_SHADER_BITS),
+                );
+            }
+
+            // confirmation that memory layout is correct
+            comptime {
+                assert(@as(Bitfield, @bitCast(UsedProgramStages{ .vertex_shader = true })) == VERTEX_SHADER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedProgramStages{ .fragment_shader = true })) == FRAGMENT_SHADER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedProgramStages{ .geometry_shader = true })) == GEOMETRY_SHADER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedProgramStages{ .tess_control_shader = true })) == TESS_CONTROL_SHADER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedProgramStages{ .tess_evaluation_shader = true })) == TESS_EVALUATION_SHADER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedProgramStages{ .compute_shader = true })) == COMPUTE_SHADER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedProgramStages.all())) == ALL_SHADER_BITS);
+            }
+        };
+
+        pub const ProgramPipelineParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            active_program = ACTIVE_PROGRAM,
+            vertex_shader = VERTEX_SHADER,
+            fragment_shader = FRAGMENT_SHADER,
+            geometry_shader = GEOMETRY_SHADER,
+            tess_control_shader = TESS_CONTROL_SHADER,
+            tess_evaluation_shader = TESS_EVALUATION_SHADER,
+            info_log_length = INFO_LOG_LENGTH,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            validate_status = VALIDATE_STATUS,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            compute_shader = COMPUTE_SHADER,
+        };
+
+        pub const VertexAttribDoubleType = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            double = DOUBLE,
+        };
+
+        pub const VertexAttribDoubleParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            current_vertex_attrib = CURRENT_VERTEX_ATTRIB,
+        };
+
+        pub const IndexedFloatParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            viewport = VIEWPORT,
+        };
+
+        pub const IndexedDoubleParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.1 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            depth_range = DEPTH_RANGE,
+        };
+
+        pub const InternalFormatTarget = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            renderbuffer = RENDERBUFFER,
+            texture_2d_multisample = TEXTURE_2D_MULTISAMPLE,
+            texture_2d_multisample_array = TEXTURE_2D_MULTISAMPLE_ARRAY,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            texture_1d = TEXTURE_1D,
+            texture_1d_array = TEXTURE_1D_ARRAY,
+            texture_2d = TEXTURE_2D,
+            texture_2d_array = TEXTURE_2D_ARRAY,
+            texture_3d = TEXTURE_3D,
+            texture_buffer = TEXTURE_BUFFER,
+            texture_cube_map = TEXTURE_CUBE_MAP,
+            texture_cube_map_array = TEXTURE_CUBE_MAP_ARRAY,
+            texture_rectangle = TEXTURE_RECTANGLE,
+        };
+
+        pub const InternalFormatAny = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            red = RED,
+            rg = RG,
+            rgb = RGB,
+            rgba = RGBA,
+            depth_component = DEPTH_COMPONENT,
+            stencil_index = STENCIL_INDEX,
+            r3_g3_b2 = R3_G3_B2,
+            rgb4 = RGB4,
+            rgb5 = RGB5,
+            rgb8 = RGB8,
+            rgb10 = RGB10,
+            rgb12 = RGB12,
+            rgb16 = RGB16,
+            rgba2 = RGBA2,
+            rgba4 = RGBA4,
+            rgb5_a1 = RGB5_A1,
+            rgba8 = RGBA8,
+            rgb10_a2 = RGB10_A2,
+            rgba12 = RGBA12,
+            rgba16 = RGBA16,
+            bgr = BGR,
+            bgra = BGRA,
+            depth_component16 = DEPTH_COMPONENT16,
+            depth_component24 = DEPTH_COMPONENT24,
+            depth_component32 = DEPTH_COMPONENT32,
+            srgb8 = SRGB8,
+            srgb8_alpha8 = SRGB8_ALPHA8,
+            red_integer = RED_INTEGER,
+            rg_integer = RG_INTEGER,
+            rgb_integer = RGB_INTEGER,
+            bgr_integer = BGR_INTEGER,
+            rgba_integer = RGBA_INTEGER,
+            bgra_integer = BGRA_INTEGER,
+            r8 = R8,
+            r16 = R16,
+            rg8 = RG8,
+            rg16 = RG16,
+            r16f = R16F,
+            rg16f = RG16F,
+            rgb16f = RGB16F,
+            rgba16f = RGBA16F,
+            r32f = R32F,
+            rg32f = RG32F,
+            rgb32f = RGB32F,
+            rgba32f = RGBA32F,
+            r11f_g11f_b10f = R11F_G11F_B10F,
+            rgb9_e5 = RGB9_E5,
+            r8i = R8I,
+            r8ui = R8UI,
+            r16i = R16I,
+            r16ui = R16UI,
+            r32i = R32I,
+            r32ui = R32UI,
+            rg8i = RG8I,
+            rg8ui = RG8UI,
+            rg16i = RG16I,
+            rg16ui = RG16UI,
+            rg32i = RG32I,
+            rg32ui = RG32UI,
+            rgb8i = RGB8I,
+            rgb8ui = RGB8UI,
+            rgb16i = RGB16I,
+            rgb16ui = RGB16UI,
+            rgb32i = RGB32I,
+            rgb32ui = RGB32UI,
+            rgba8i = RGBA8I,
+            rgba8ui = RGBA8UI,
+            rgba16i = RGBA16I,
+            rgba16ui = RGBA16UI,
+            rgba32i = RGBA32I,
+            rgba32ui = RGBA32UI,
+            depth_component32f = DEPTH_COMPONENT32F,
+            depth24_stencil8 = DEPTH24_STENCIL8,
+            depth32f_stencil8 = DEPTH32F_STENCIL8,
+            r8_snorm = R8_SNORM,
+            r16_snorm = R16_SNORM,
+            rg8_snorm = RG8_SNORM,
+            rg16_snorm = RG16_SNORM,
+            rgb8_snorm = RGB8_SNORM,
+            rgb16_snorm = RGB16_SNORM,
+            rgba8_snorm = RGBA8_SNORM,
+            rgba16_snorm = RGBA16_SNORM,
+            rgb10_a2ui = RGB10_A2UI,
+            rgb565 = RGB565,
+            compressed_rgba_bptc_unorm = COMPRESSED_RGBA_BPTC_UNORM,
+            compressed_srgb_alpha_bptc_unorm = COMPRESSED_SRGB_ALPHA_BPTC_UNORM,
+            compressed_rgb_bptc_signed_float = COMPRESSED_RGB_BPTC_SIGNED_FLOAT,
+            compressed_rgb_bptc_unsigned_float = COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT,
+            // for getInternalformat*v specification states that any value can
+            // be passed as 'internalformat' parameter which vendors might use
+            // for their own formats not listed in the OpenGL specification
+            _,
+        };
+
+        pub const InternalFormatParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            num_sample_counts = NUM_SAMPLE_COUNTS,
+            samples = SAMPLES,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            internalformat_preferred = INTERNALFORMAT_PREFERRED,
+            internalformat_red_size = INTERNALFORMAT_RED_SIZE,
+            internalformat_green_size = INTERNALFORMAT_GREEN_SIZE,
+            internalformat_blue_size = INTERNALFORMAT_BLUE_SIZE,
+            internalformat_alpha_size = INTERNALFORMAT_ALPHA_SIZE,
+            internalformat_depth_size = INTERNALFORMAT_DEPTH_SIZE,
+            internalformat_stencil_size = INTERNALFORMAT_STENCIL_SIZE,
+            internalformat_shared_size = INTERNALFORMAT_SHARED_SIZE,
+            internalformat_red_type = INTERNALFORMAT_RED_TYPE,
+            internalformat_green_type = INTERNALFORMAT_GREEN_TYPE,
+            internalformat_blue_type = INTERNALFORMAT_BLUE_TYPE,
+            internalformat_alpha_type = INTERNALFORMAT_ALPHA_TYPE,
+            internalformat_depth_type = INTERNALFORMAT_DEPTH_TYPE,
+            internalformat_stencil_type = INTERNALFORMAT_STENCIL_TYPE,
+            max_width = MAX_WIDTH,
+            max_height = MAX_HEIGHT,
+            max_depth = MAX_DEPTH,
+            max_layers = MAX_LAYERS,
+            max_combined_dimensions = MAX_COMBINED_DIMENSIONS,
+            color_components = COLOR_COMPONENTS,
+            depth_components = DEPTH_COMPONENTS,
+            stencil_components = STENCIL_COMPONENTS,
+            color_renderable = COLOR_RENDERABLE,
+            depth_renderable = DEPTH_RENDERABLE,
+            stencil_renderable = STENCIL_RENDERABLE,
+            framebuffer_renderable = FRAMEBUFFER_RENDERABLE,
+            framebuffer_renderable_layered = FRAMEBUFFER_RENDERABLE_LAYERED,
+            framebuffer_blend = FRAMEBUFFER_BLEND,
+            read_pixels = READ_PIXELS,
+            read_pixels_format = READ_PIXELS_FORMAT,
+            read_pixels_type = READ_PIXELS_TYPE,
+            texture_image_format = TEXTURE_IMAGE_FORMAT,
+            texture_image_type = TEXTURE_IMAGE_TYPE,
+            get_texture_image_format = GET_TEXTURE_IMAGE_FORMAT,
+            get_texture_image_type = GET_TEXTURE_IMAGE_TYPE,
+            mipmap = MIPMAP,
+            manual_generate_mipmap = MANUAL_GENERATE_MIPMAP,
+            color_encoding = COLOR_ENCODING,
+            srgb_read = SRGB_READ,
+            srgb_write = SRGB_WRITE,
+            filter = FILTER,
+            vertex_texture = VERTEX_TEXTURE,
+            tess_control_texture = TESS_CONTROL_TEXTURE,
+            tess_evaluation_texture = TESS_EVALUATION_TEXTURE,
+            geometry_texture = GEOMETRY_TEXTURE,
+            fragment_texture = FRAGMENT_TEXTURE,
+            compute_texture = COMPUTE_TEXTURE,
+            texture_shadow = TEXTURE_SHADOW,
+            texture_gather = TEXTURE_GATHER,
+            texture_gather_shadow = TEXTURE_GATHER_SHADOW,
+            shader_image_load = SHADER_IMAGE_LOAD,
+            shader_image_store = SHADER_IMAGE_STORE,
+            shader_image_atomic = SHADER_IMAGE_ATOMIC,
+            image_texel_size = IMAGE_TEXEL_SIZE,
+            image_compatibility_class = IMAGE_COMPATIBILITY_CLASS,
+            image_pixel_format = IMAGE_PIXEL_FORMAT,
+            image_pixel_type = IMAGE_PIXEL_TYPE,
+            image_format_compatibility_type = IMAGE_FORMAT_COMPATIBILITY_TYPE,
+            simultaneous_texture_and_depth_test = SIMULTANEOUS_TEXTURE_AND_DEPTH_TEST,
+            simultaneous_texture_and_stencil_test = SIMULTANEOUS_TEXTURE_AND_STENCIL_TEST,
+            simultaneous_texture_and_depth_write = SIMULTANEOUS_TEXTURE_AND_DEPTH_WRITE,
+            simultaneous_texture_and_stencil_write = SIMULTANEOUS_TEXTURE_AND_STENCIL_WRITE,
+            texture_compressed = TEXTURE_COMPRESSED,
+            texture_compressed_block_width = TEXTURE_COMPRESSED_BLOCK_WIDTH,
+            texture_compressed_block_height = TEXTURE_COMPRESSED_BLOCK_HEIGHT,
+            texture_compressed_block_size = TEXTURE_COMPRESSED_BLOCK_SIZE,
+            clear_buffer = CLEAR_BUFFER,
+            texture_view = TEXTURE_VIEW,
+            view_compatibility_class = VIEW_COMPATIBILITY_CLASS,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.4 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            clear_texture = CLEAR_TEXTURE,
+        };
+
+        pub const AtomicCounterBufferParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            atomic_counter_buffer_binding = ATOMIC_COUNTER_BUFFER_BINDING,
+            atomic_counter_buffer_data_size = ATOMIC_COUNTER_BUFFER_DATA_SIZE,
+            atomic_counter_buffer_active_atomic_counters = ATOMIC_COUNTER_BUFFER_ACTIVE_ATOMIC_COUNTERS,
+            atomic_counter_buffer_active_atomic_counter_indices = ATOMIC_COUNTER_BUFFER_ACTIVE_ATOMIC_COUNTER_INDICES,
+            atomic_counter_buffer_referenced_by_vertex_shader = ATOMIC_COUNTER_BUFFER_REFERENCED_BY_VERTEX_SHADER,
+            atomic_counter_buffer_referenced_by_tess_control_shader = ATOMIC_COUNTER_BUFFER_REFERENCED_BY_TESS_CONTROL_SHADER,
+            atomic_counter_buffer_referenced_by_tess_evaluation_shader = ATOMIC_COUNTER_BUFFER_REFERENCED_BY_TESS_EVALUATION_SHADER,
+            atomic_counter_buffer_referenced_by_geometry_shader = ATOMIC_COUNTER_BUFFER_REFERENCED_BY_GEOMETRY_SHADER,
+            atomic_counter_buffer_referenced_by_fragment_shader = ATOMIC_COUNTER_BUFFER_REFERENCED_BY_FRAGMENT_SHADER,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            atomic_counter_buffer_referenced_by_compute_shader = ATOMIC_COUNTER_BUFFER_REFERENCED_BY_COMPUTE_SHADER,
+        };
+
+        pub const ImageUnitFormat = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            rgba32f = RGBA32F,
+            rgba16f = RGBA16F,
+            rg32f = RG32F,
+            rg16f = RG16F,
+            r11f_g11f_b10f = R11F_G11F_B10F,
+            r32f = R32F,
+            r16f = R16F,
+            rgba32ui = RGBA32UI,
+            rgba16ui = RGBA16UI,
+            rgb10_a2ui = RGB10_A2UI,
+            rgba8ui = RGBA8UI,
+            rg32ui = RG32UI,
+            rg16ui = RG16UI,
+            rg8ui = RG8UI,
+            r32ui = R32UI,
+            r16ui = R16UI,
+            r8ui = R8UI,
+            rgba32i = RGBA32I,
+            rgba16i = RGBA16I,
+            rgba8i = RGBA8I,
+            rg32i = RG32I,
+            rg16i = RG16I,
+            rg8i = RG8I,
+            r32i = R32I,
+            r16i = R16I,
+            r8i = R8I,
+            rgba16 = RGBA16,
+            rgb10_a2 = RGB10_A2,
+            rgba8 = RGBA8,
+            rg16 = RG16,
+            rg8 = RG8,
+            r16 = R16,
+            r8 = R8,
+            rgba16_snorm = RGBA16_SNORM,
+            rgba8_snorm = RGBA8_SNORM,
+            rg16_snorm = RG16_SNORM,
+            rg8_snorm = RG8_SNORM,
+            r16_snorm = R16_SNORM,
+            r8_snorm = R8_SNORM,
+        };
+
+        pub const UsedBarriers = packed struct(Bitfield) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.2 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            // VERTEX_ATTRIB_ARRAY_BARRIER_BIT  = 0x00000001 // 1st bit
+            // ELEMENT_ARRAY_BARRIER_BIT        = 0x00000002 // 2nd bit
+            // UNIFORM_BARRIER_BIT              = 0x00000004 // 3rd bit
+            // TEXTURE_FETCH_BARRIER_BIT        = 0x00000008 // 4th bit
+            // SHADER_IMAGE_ACCESS_BARRIER_BIT  = 0x00000020 // 6th bit
+            // COMMAND_BARRIER_BIT              = 0x00000040 // 7th bit
+            // PIXEL_BUFFER_BARRIER_BIT         = 0x00000080 // 8th bit
+            // TEXTURE_UPDATE_BARRIER_BIT       = 0x00000100 // 9th bit
+            // BUFFER_UPDATE_BARRIER_BIT        = 0x00000200 // 10th bit
+            // FRAMEBUFFER_BARRIER_BIT          = 0x00000400 // 11th bit
+            // TRANSFORM_FEEDBACK_BARRIER_BIT   = 0x00000800 // 12th bit
+            // ATOMIC_COUNTER_BARRIER_BIT       = 0x00001000 // 13th bit
+            // ALL_BARRIER_BITS                 = 0xFFFFFFFF // implemented using all() function
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            // SHADER_STORAGE_BARRIER_BIT       = 0x00002000 // 14th bit
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.4 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            // CLIENT_MAPPED_BUFFER_BARRIER_BIT = 0x00004000 // 15th bit
+            // QUERY_BUFFER_BARRIER_BIT         = 0x00008000 // 16th bit
+
+            vertex_attrib_array_barrier: bool = false,
+            element_array_barrier: bool = false,
+            uniform_barrier: bool = false,
+            texture_fetch_barrier: bool = false,
+
+            /// DO NOT WRITE
+            pad1: u1 = 0,
+
+            shader_image_access_barrier: bool = false,
+            command_barrier: bool = false,
+            pixel_buffer_barrier: bool = false,
+            texture_update_barrier: bool = false,
+            buffer_update_barrier: bool = false,
+            framebuffer_barrier: bool = false,
+            transform_feedback_barrier: bool = false,
+            atomic_counter_barrier: bool = false,
+            shader_storage_barrier: bool = false,
+            client_mapped_buffer_barrier: bool = false,
+            query_buffer_barrier: bool = false,
+
+            /// DO NOT WRITE
+            pad2: u16 = 0,
+
+            pub fn all() UsedBarriers {
+                return @bitCast(
+                    @as(Bitfield, ALL_BARRIER_BITS),
+                );
+            }
+
+            // confirmation that memory layout is correct
+            comptime {
+                assert(@as(Bitfield, @bitCast(UsedBarriers{ .vertex_attrib_array_barrier = true })) == VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedBarriers{ .element_array_barrier = true })) == ELEMENT_ARRAY_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedBarriers{ .uniform_barrier = true })) == UNIFORM_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedBarriers{ .texture_fetch_barrier = true })) == TEXTURE_FETCH_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedBarriers{ .shader_image_access_barrier = true })) == SHADER_IMAGE_ACCESS_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedBarriers{ .command_barrier = true })) == COMMAND_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedBarriers{ .pixel_buffer_barrier = true })) == PIXEL_BUFFER_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedBarriers{ .texture_update_barrier = true })) == TEXTURE_UPDATE_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedBarriers{ .buffer_update_barrier = true })) == BUFFER_UPDATE_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedBarriers{ .framebuffer_barrier = true })) == FRAMEBUFFER_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedBarriers{ .transform_feedback_barrier = true })) == TRANSFORM_FEEDBACK_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedBarriers{ .atomic_counter_barrier = true })) == ATOMIC_COUNTER_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedBarriers{ .shader_storage_barrier = true })) == SHADER_STORAGE_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedBarriers{ .client_mapped_buffer_barrier = true })) == CLIENT_MAPPED_BUFFER_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedBarriers{ .query_buffer_barrier = true })) == QUERY_BUFFER_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedBarriers.all())) == ALL_BARRIER_BITS);
+            }
+        };
+
+        pub const CopyImageTextureTarget = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            texture_1d = TEXTURE_1D,
+            texture_2d = TEXTURE_2D,
+            texture_3d = TEXTURE_3D,
+            texture_cube_map = TEXTURE_CUBE_MAP,
+            texture_1d_array = TEXTURE_1D_ARRAY,
+            texture_2d_array = TEXTURE_2D_ARRAY,
+            texture_rectangle = TEXTURE_RECTANGLE,
+            texture_2d_multisample = TEXTURE_2D_MULTISAMPLE,
+            texture_2d_multisample_array = TEXTURE_2D_MULTISAMPLE_ARRAY,
+            texture_cube_map_array = TEXTURE_CUBE_MAP_ARRAY,
+        };
+
+        pub const FramebufferParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            framebuffer_default_width = FRAMEBUFFER_DEFAULT_WIDTH,
+            framebuffer_default_height = FRAMEBUFFER_DEFAULT_HEIGHT,
+            framebuffer_default_layers = FRAMEBUFFER_DEFAULT_LAYERS,
+            framebuffer_default_samples = FRAMEBUFFER_DEFAULT_SAMPLES,
+            framebuffer_default_fixed_sample_locations = FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS,
+        };
+
+        pub const GetFramebufferParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            framebuffer_default_width = FRAMEBUFFER_DEFAULT_WIDTH,
+            framebuffer_default_height = FRAMEBUFFER_DEFAULT_HEIGHT,
+            framebuffer_default_layers = FRAMEBUFFER_DEFAULT_LAYERS,
+            framebuffer_default_samples = FRAMEBUFFER_DEFAULT_SAMPLES,
+            framebuffer_default_fixed_sample_locations = FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            doublebuffer = DOUBLEBUFFER,
+            implementation_color_read_format = IMPLEMENTATION_COLOR_READ_FORMAT,
+            implementation_color_read_type = IMPLEMENTATION_COLOR_READ_TYPE,
+            samples = SAMPLES,
+            sample_buffers = SAMPLE_BUFFERS,
+            stereo = STEREO,
+        };
+
+        pub const ProgramInterface = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            uniform = UNIFORM,
+            uniform_block = UNIFORM_BLOCK,
+            atomic_counter_buffer = ATOMIC_COUNTER_BUFFER,
+            program_input = PROGRAM_INPUT,
+            program_output = PROGRAM_OUTPUT,
+            vertex_subroutine = VERTEX_SUBROUTINE,
+            tess_control_subroutine = TESS_CONTROL_SUBROUTINE,
+            tess_evaluation_subroutine = TESS_EVALUATION_SUBROUTINE,
+            geometry_subroutine = GEOMETRY_SUBROUTINE,
+            fragment_subroutine = FRAGMENT_SUBROUTINE,
+            compute_subroutine = COMPUTE_SUBROUTINE,
+            vertex_subroutine_uniform = VERTEX_SUBROUTINE_UNIFORM,
+            tess_control_subroutine_uniform = TESS_CONTROL_SUBROUTINE_UNIFORM,
+            tess_evaluation_subroutine_uniform = TESS_EVALUATION_SUBROUTINE_UNIFORM,
+            geometry_subroutine_uniform = GEOMETRY_SUBROUTINE_UNIFORM,
+            fragment_subroutine_uniform = FRAGMENT_SUBROUTINE_UNIFORM,
+            compute_subroutine_uniform = COMPUTE_SUBROUTINE_UNIFORM,
+            transform_feedback_varying = TRANSFORM_FEEDBACK_VARYING,
+            buffer_variable = BUFFER_VARIABLE,
+            shader_storage_block = SHADER_STORAGE_BLOCK,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.4 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            transform_feedback_buffer = TRANSFORM_FEEDBACK_BUFFER,
+        };
+
+        pub const ProgramInterfaceParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            active_resources = ACTIVE_RESOURCES,
+            max_name_length = MAX_NAME_LENGTH,
+            max_num_active_variables = MAX_NUM_ACTIVE_VARIABLES,
+            max_num_compatible_subroutines = MAX_NUM_COMPATIBLE_SUBROUTINES,
+        };
+
+        pub const ProgramInterfaceWithName = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            uniform = UNIFORM,
+            uniform_block = UNIFORM_BLOCK,
+            program_input = PROGRAM_INPUT,
+            program_output = PROGRAM_OUTPUT,
+            vertex_subroutine = VERTEX_SUBROUTINE,
+            tess_control_subroutine = TESS_CONTROL_SUBROUTINE,
+            tess_evaluation_subroutine = TESS_EVALUATION_SUBROUTINE,
+            geometry_subroutine = GEOMETRY_SUBROUTINE,
+            fragment_subroutine = FRAGMENT_SUBROUTINE,
+            compute_subroutine = COMPUTE_SUBROUTINE,
+            vertex_subroutine_uniform = VERTEX_SUBROUTINE_UNIFORM,
+            tess_control_subroutine_uniform = TESS_CONTROL_SUBROUTINE_UNIFORM,
+            tess_evaluation_subroutine_uniform = TESS_EVALUATION_SUBROUTINE_UNIFORM,
+            geometry_subroutine_uniform = GEOMETRY_SUBROUTINE_UNIFORM,
+            fragment_subroutine_uniform = FRAGMENT_SUBROUTINE_UNIFORM,
+            compute_subroutine_uniform = COMPUTE_SUBROUTINE_UNIFORM,
+            transform_feedback_varying = TRANSFORM_FEEDBACK_VARYING,
+            buffer_variable = BUFFER_VARIABLE,
+            shader_storage_block = SHADER_STORAGE_BLOCK,
+        };
+
+        pub const ProgramResource = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            name_length = NAME_LENGTH,
+            type = TYPE,
+            array_size = ARRAY_SIZE,
+            offset = OFFSET,
+            block_index = BLOCK_INDEX,
+            array_stride = ARRAY_STRIDE,
+            matrix_stride = MATRIX_STRIDE,
+            is_row_major = IS_ROW_MAJOR,
+            atomic_counter_buffer_index = ATOMIC_COUNTER_BUFFER_INDEX,
+            buffer_binding = BUFFER_BINDING,
+            buffer_data_size = BUFFER_DATA_SIZE,
+            num_active_variables = NUM_ACTIVE_VARIABLES,
+            active_variables = ACTIVE_VARIABLES,
+            referenced_by_vertex_shader = REFERENCED_BY_VERTEX_SHADER,
+            referenced_by_tess_control_shader = REFERENCED_BY_TESS_CONTROL_SHADER,
+            referenced_by_tess_evaluation_shader = REFERENCED_BY_TESS_EVALUATION_SHADER,
+            referenced_by_geometry_shader = REFERENCED_BY_GEOMETRY_SHADER,
+            referenced_by_fragment_shader = REFERENCED_BY_FRAGMENT_SHADER,
+            referenced_by_compute_shader = REFERENCED_BY_COMPUTE_SHADER,
+            num_compatible_subroutines = NUM_COMPATIBLE_SUBROUTINES,
+            compatible_subroutines = COMPATIBLE_SUBROUTINES,
+            top_level_array_size = TOP_LEVEL_ARRAY_SIZE,
+            top_level_array_stride = TOP_LEVEL_ARRAY_STRIDE,
+            location = LOCATION,
+            location_index = LOCATION_INDEX,
+            is_per_patch = IS_PER_PATCH,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.4 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            location_component = LOCATION_COMPONENT,
+            transform_feedback_buffer_index = TRANSFORM_FEEDBACK_BUFFER_INDEX,
+            transform_feedback_buffer_stride = TRANSFORM_FEEDBACK_BUFFER_STRIDE,
+        };
+
+        pub const ProgramInterfaceWithLocation = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            uniform = UNIFORM,
+            program_input = PROGRAM_INPUT,
+            program_output = PROGRAM_OUTPUT,
+            vertex_subroutine_uniform = VERTEX_SUBROUTINE_UNIFORM,
+            tess_control_subroutine_uniform = TESS_CONTROL_SUBROUTINE_UNIFORM,
+            tess_evaluation_subroutine_uniform = TESS_EVALUATION_SUBROUTINE_UNIFORM,
+            geometry_subroutine_uniform = GEOMETRY_SUBROUTINE_UNIFORM,
+            fragment_subroutine_uniform = FRAGMENT_SUBROUTINE_UNIFORM,
+            compute_subroutine_uniform = COMPUTE_SUBROUTINE_UNIFORM,
+        };
+
+        pub const ProgramInterfaceWithLocationIndex = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            program_output = PROGRAM_OUTPUT,
+        };
+
+        pub const TextureViewInternalFormat = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            rgba32f = RGBA32F,
+            rgba32ui = RGBA32UI,
+            rgba32i = RGBA32I,
+            rgb32f = RGB32F,
+            rgb32ui = RGB32UI,
+            rgb32i = RGB32I,
+            rgba16f = RGBA16F,
+            rg32f = RG32F,
+            rgba16ui = RGBA16UI,
+            rg32ui = RG32UI,
+            rgba16i = RGBA16I,
+            rg32i = RG32I,
+            rgba16 = RGBA16,
+            rgba16_snorm = RGBA16_SNORM,
+            rg16f = RG16F,
+            r11f_g11f_b10f = R11F_G11F_B10F,
+            r32f = R32F,
+            rgb10_a2ui = RGB10_A2UI,
+            rgba8ui = RGBA8UI,
+            rg16ui = RG16UI,
+            r32ui = R32UI,
+            rgba8i = RGBA8I,
+            rg16i = RG16I,
+            r32i = R32I,
+            rgb10_a2 = RGB10_A2,
+            rgba8 = RGBA8,
+            rg16 = RG16,
+            rgba8_snorm = RGBA8_SNORM,
+            rg16_snorm = RG16_SNORM,
+            srgb8_alpha8 = SRGB8_ALPHA8,
+            rgb9_e5 = RGB9_E5,
+            rgb8 = RGB8,
+            rgb8_snorm = RGB8_SNORM,
+            srgb8 = SRGB8,
+            rgb8ui = RGB8UI,
+            r16f = R16F,
+            rg8ui = RG8UI,
+            r16ui = R16UI,
+            rg8i = RG8I,
+            r16i = R16I,
+            rg8 = RG8,
+            r16 = R16,
+            rg8_snorm = RG8_SNORM,
+            r16_snorm = R16_SNORM,
+            r8ui = R8UI,
+            r8i = R8I,
+            r8 = R8,
+            r8_snorm = R8_SNORM,
+            compressed_red_rgtc1 = COMPRESSED_RED_RGTC1,
+            compressed_signed_red_rgtc1 = COMPRESSED_SIGNED_RED_RGTC1,
+            compressed_rg_rgtc2 = COMPRESSED_RG_RGTC2,
+            compressed_signed_rg_rgtc2 = COMPRESSED_SIGNED_RG_RGTC2,
+            compressed_rgba_bptc_unorm = COMPRESSED_RGBA_BPTC_UNORM,
+            compressed_srgb_alpha_bptc_unorm = COMPRESSED_SRGB_ALPHA_BPTC_UNORM,
+            compressed_rgb_bptc_signed_float = COMPRESSED_RGB_BPTC_SIGNED_FLOAT,
+            compressed_rgb_bptc_unsigned_float = COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT,
+        };
+
+        pub const DebugSourceWithDontCare = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            api = DEBUG_SOURCE_API,
+            window_system = DEBUG_SOURCE_WINDOW_SYSTEM,
+            shader_compiler = DEBUG_SOURCE_SHADER_COMPILER,
+            third_party = DEBUG_SOURCE_THIRD_PARTY,
+            application = DEBUG_SOURCE_APPLICATION,
+            other = DEBUG_SOURCE_OTHER,
+            dont_care = DONT_CARE,
+        };
+
+        pub const DebugTypeWithDontCare = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            @"error" = DEBUG_TYPE_ERROR,
+            deprecated_behavior = DEBUG_TYPE_DEPRECATED_BEHAVIOR,
+            undefined_behavior = DEBUG_TYPE_UNDEFINED_BEHAVIOR,
+            portability = DEBUG_TYPE_PORTABILITY,
+            performance = DEBUG_TYPE_PERFORMANCE,
+            marker = DEBUG_TYPE_MARKER,
+            push_group = DEBUG_TYPE_PUSH_GROUP,
+            pop_group = DEBUG_TYPE_POP_GROUP,
+            other = DEBUG_TYPE_OTHER,
+            debug_severity_high = DEBUG_SEVERITY_HIGH,
+            debug_severity_medium = DEBUG_SEVERITY_MEDIUM,
+            debug_severity_low = DEBUG_SEVERITY_LOW,
+            debug_severity_notification = DEBUG_SEVERITY_NOTIFICATION,
+            dont_care = DONT_CARE,
+        };
+
+        pub const DebugSeverityWithDontCare = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            high = DEBUG_SEVERITY_HIGH,
+            medium = DEBUG_SEVERITY_MEDIUM,
+            low = DEBUG_SEVERITY_LOW,
+            notification = DEBUG_SEVERITY_NOTIFICATION,
+            dont_care = DONT_CARE,
+        };
+
+        pub const DebugSourceCustom = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            third_party = DEBUG_SOURCE_THIRD_PARTY,
+            application = DEBUG_SOURCE_APPLICATION,
         };
 
         pub const DebugSource = enum(Enum) {
@@ -2231,6 +3177,225 @@ pub fn Wrap(comptime bindings: anytype) type {
             medium = DEBUG_SEVERITY_MEDIUM,
             low = DEBUG_SEVERITY_LOW,
             notification = DEBUG_SEVERITY_NOTIFICATION,
+        };
+
+        pub const DebugObjectNamespace = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            buffer = BUFFER,
+            framebuffer = FRAMEBUFFER,
+            program_pipeline = PROGRAM_PIPELINE,
+            program = PROGRAM,
+            query = QUERY,
+            renderbuffer = RENDERBUFFER,
+            sampler = SAMPLER,
+            shader = SHADER,
+            texture = TEXTURE,
+            transform_feedback = TRANSFORM_FEEDBACK,
+            vertex_array = VERTEX_ARRAY,
+
+            pub fn fromType(comptime T: type) DebugObjectNamespace {
+                return switch (T) {
+                    inline Buffer => .buffer,
+                    inline Framebuffer => .framebuffer,
+                    inline ProgramPipeline => .program_pipeline,
+                    inline Program => .program,
+                    inline Query => .query,
+                    inline Renderbuffer => .renderbuffer,
+                    inline Sampler => .sampler,
+                    inline Shader => .shader,
+                    inline Texture => .textue,
+                    inline TransformFeedback => .transform_feedback,
+                    inline VertexArrayObject => .vertex_array,
+                    inline else => {
+                        @compileError("parameter 'T' must be Buffer, Framebuffer " ++
+                            "ProgramPipeline, Program, Query, Renderbuffer, Sampler " ++
+                            "Shader, Texture, TransformFeedback or VertexArrayObject");
+                    },
+                };
+            }
+        };
+
+        pub const DebugPointerParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.3 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            debug_callback_function = DEBUG_CALLBACK_FUNCTION,
+            debug_callback_user_param = DEBUG_CALLBACK_USER_PARAM,
+        };
+
+        pub const BufferStorageFlags = packed struct(Bitfield) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.4 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            // MAP_READ_BIT        = 0x00000001 // 1st bit
+            // MAP_WRITE_BIT       = 0x00000002 // 2nd bit
+            // MAP_PERSISTENT_BIT  = 0x00000040 // 7th bit
+            // MAP_COHERENT_BIT    = 0x00000080 // 8th bit
+            // DYNAMIC_STORAGE_BIT = 0x00000100 // 9th bit
+            // CLIENT_STORAGE_BIT  = 0x00000200 // 10th bit
+
+            map_read: bool = false,
+            map_write: bool = false,
+
+            /// DO NOT WRITE
+            pad1: u4 = 0,
+
+            map_persistent: bool = false,
+            map_coherent: bool = false,
+            dynamic_storage: bool = false,
+            client_storage: bool = false,
+
+            /// DO NOT WRITE
+            pad2: u22 = 0,
+
+            // confirmation that memory layout is correct
+            comptime {
+                assert(@as(Bitfield, @bitCast(BufferStorageFlags{ .map_read = true })) == MAP_READ_BIT);
+                assert(@as(Bitfield, @bitCast(BufferStorageFlags{ .map_write = true })) == MAP_WRITE_BIT);
+                assert(@as(Bitfield, @bitCast(BufferStorageFlags{ .map_persistent = true })) == MAP_PERSISTENT_BIT);
+                assert(@as(Bitfield, @bitCast(BufferStorageFlags{ .map_coherent = true })) == MAP_COHERENT_BIT);
+                assert(@as(Bitfield, @bitCast(BufferStorageFlags{ .dynamic_storage = true })) == DYNAMIC_STORAGE_BIT);
+                assert(@as(Bitfield, @bitCast(BufferStorageFlags{ .client_storage = true })) == CLIENT_STORAGE_BIT);
+            }
+        };
+
+        pub const ClipOrigin = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            lower_left = LOWER_LEFT,
+            upper_left = UPPER_LEFT,
+        };
+
+        pub const ClipDepth = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            negative_one_to_one = NEGATIVE_ONE_TO_ONE,
+            zero_to_one = ZERO_TO_ONE,
+        };
+
+        pub const TransformFeedbackIntegerParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            transform_feedback_paused = TRANSFORM_FEEDBACK_PAUSED,
+            transform_feedback_active = TRANSFORM_FEEDBACK_ACTIVE,
+        };
+
+        pub const IndexedTransformFeedbackIntegerParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            transform_feedback_buffer_binding = TRANSFORM_FEEDBACK_BUFFER_BINDING,
+        };
+
+        pub const IndexedTransformFeedbackInt64Parameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            transform_feedback_buffer_start = TRANSFORM_FEEDBACK_BUFFER_START,
+            transform_feedback_buffer_size = TRANSFORM_FEEDBACK_BUFFER_SIZE,
+        };
+
+        pub const VertexArrayIntegerParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            element_array_buffer_binding = ELEMENT_ARRAY_BUFFER_BINDING,
+        };
+
+        pub const IndexedVertexArrayIntegerParameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            vertex_attrib_array_enabled = VERTEX_ATTRIB_ARRAY_ENABLED,
+            vertex_attrib_array_size = VERTEX_ATTRIB_ARRAY_SIZE,
+            vertex_attrib_array_stride = VERTEX_ATTRIB_ARRAY_STRIDE,
+            vertex_attrib_array_type = VERTEX_ATTRIB_ARRAY_TYPE,
+            vertex_attrib_array_normalized = VERTEX_ATTRIB_ARRAY_NORMALIZED,
+            vertex_attrib_array_integer = VERTEX_ATTRIB_ARRAY_INTEGER,
+            vertex_attrib_array_long = VERTEX_ATTRIB_ARRAY_LONG,
+            vertex_attrib_array_divisor = VERTEX_ATTRIB_ARRAY_DIVISOR,
+            vertex_attrib_relative_offset = VERTEX_ATTRIB_RELATIVE_OFFSET,
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.6 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            vertex_attrib_array_buffer_binding = VERTEX_ATTRIB_ARRAY_BUFFER_BINDING,
+            vertex_binding_stride = VERTEX_BINDING_STRIDE,
+            vertex_binding_divisor = VERTEX_BINDING_DIVISOR,
+            vertex_binding_buffer = VERTEX_BINDING_BUFFER,
+        };
+
+        pub const IndexedVertexArrayInt64Parameter = enum(Enum) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            vertex_binding_offset = VERTEX_BINDING_OFFSET,
+        };
+
+        pub const UsedRegionBarriers = packed struct(Bitfield) {
+            //--------------------------------------------------------------------------------------
+            // OpenGL 4.5 (Core Profile)
+            //--------------------------------------------------------------------------------------
+            // UNIFORM_BARRIER_BIT              = 0x00000004 // 3rd bit
+            // TEXTURE_FETCH_BARRIER_BIT        = 0x00000008 // 4th bit
+            // SHADER_IMAGE_ACCESS_BARRIER_BIT  = 0x00000020 // 6th bit
+            // FRAMEBUFFER_BARRIER_BIT          = 0x00000400 // 11th bit
+            // ATOMIC_COUNTER_BARRIER_BIT       = 0x00001000 // 13th bit
+            // SHADER_STORAGE_BARRIER_BIT       = 0x00002000 // 14th bit
+            // ALL_BARRIER_BITS                 = 0xFFFFFFFF // implemented using all() function
+
+            /// DO NOT WRITE
+            pad1: u2 = 0,
+
+            uniform_barrier: bool = false,
+            texture_fetch_barrier: bool = false,
+
+            /// DO NOT WRITE
+            pad2: u1 = 0,
+
+            shader_image_access_barrier: bool = false,
+
+            /// DO NOT WRITE
+            pad3: u4 = 0,
+
+            framebuffer_barrier: bool = false,
+
+            /// DO NOT WRITE
+            pad4: u1 = 0,
+
+            atomic_counter_barrier: bool = false,
+            shader_storage_barrier: bool = false,
+
+            /// DO NOT WRITE
+            pad5: u18 = 0,
+
+            pub fn all() UsedRegionBarriers {
+                return @bitCast(
+                    @as(Bitfield, ALL_BARRIER_BITS),
+                );
+            }
+
+            // confirmation that memory layout is correct
+            comptime {
+                assert(@as(Bitfield, @bitCast(UsedRegionBarriers{ .uniform_barrier = true })) == UNIFORM_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedRegionBarriers{ .texture_fetch_barrier = true })) == TEXTURE_FETCH_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedRegionBarriers{ .shader_image_access_barrier = true })) == SHADER_IMAGE_ACCESS_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedRegionBarriers{ .framebuffer_barrier = true })) == FRAMEBUFFER_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedRegionBarriers{ .atomic_counter_barrier = true })) == ATOMIC_COUNTER_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedRegionBarriers{ .shader_storage_barrier = true })) == SHADER_STORAGE_BARRIER_BIT);
+                assert(@as(Bitfield, @bitCast(UsedRegionBarriers.all())) == ALL_BARRIER_BITS);
+            }
+        };
+
+        pub const GraphicsResetStatus = enum(Enum) {
+            no_error = NO_ERROR,
+            guilty_context_reset = GUILTY_CONTEXT_RESET,
+            innocent_context_reset = INNOCENT_CONTEXT_RESET,
+            unknown_context_reset = UNKNOWN_CONTEXT_RESET,
         };
 
         //------------------------------------------------------------------------------------------
@@ -2492,7 +3657,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn texImage1D(args: struct {
-            target: TexImageTarget,
+            target: TexImage1DTarget,
             level: u32,
             internal_format: InternalFormat,
             width: u32,
@@ -2515,7 +3680,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn texImage2D(args: struct {
-            target: TexImageTarget,
+            target: TexImage2DTarget,
             level: u32,
             internal_format: InternalFormat,
             width: u32,
@@ -2998,7 +4163,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn texImage3D(args: struct {
-            target: TexImageTarget,
+            target: TexImage3DTarget,
             level: i32 = 0,
             internal_format: InternalFormat,
             width: u32,
@@ -3425,12 +4590,7 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         // pub var getQueryiv: *const fn (target: Enum, pname: Enum, params: [*c]Int) callconv(.c) void = undefined;
         pub fn getQueryiv(
-            target: meta.mergeEnums(.{
-                QueryTarget,
-                enum(Enum) {
-                    timestamp = TIMESTAMP,
-                },
-            }),
+            target: QueryTargetWithTimestamp,
             pname: QueryParameter,
             params: []i32,
         ) void {
@@ -5212,7 +6372,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub fn vertexAttribIPointer(
             location: VertexAttribLocation,
             size: u32,
-            attrib_type: VertexAttribType,
+            attrib_type: VertexAttribIntegerType,
             stride: u32,
             offset: usize,
         ) void {
@@ -6660,7 +7820,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     fixedsamplelocations: Boolean,
         // ) callconv(.c) void = undefined;
         pub fn texImage2DMultisample(
-            target: TexImage2dMultisampleTarget,
+            target: TexImage2DMultisampleTarget,
             samples: i32,
             internalformat: InternalFormat,
             width: i32,
@@ -6687,7 +7847,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     fixedsamplelocations: Boolean,
         // ) callconv(.c) void = undefined;
         pub fn texImage3DMultisample(
-            target: TexImage3dMultisampleTarget,
+            target: TexImage3DMultisampleTarget,
             samples: i32,
             internalformat: InternalFormat,
             width: i32,
@@ -7257,55 +8417,595 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const TRANSFORM_FEEDBACK_BINDING = bindings.TRANSFORM_FEEDBACK_BINDING;
         pub const MAX_TRANSFORM_FEEDBACK_BUFFERS = bindings.MAX_TRANSFORM_FEEDBACK_BUFFERS;
 
-        pub const DrawArraysIndirectCommand = bindings.DrawArraysIndirectCommand;
-        pub const DrawElementsIndirectCommand = bindings.DrawElementsIndirectCommand;
-
         // pub var minSampleShading: *const fn (value: Float) callconv(.c) void = undefined;
+        pub fn minSampleShading(value: f32) void {
+            bindings.minSampleShading(value);
+        }
+
         // pub var blendEquationi: *const fn (buf: Uint, mode: Enum) callconv(.c) void = undefined;
+        pub fn blendEquationi(buf: u32, mode: BlendEquation) void {
+            bindings.blendEquationi(@bitCast(buf), @intFromEnum(mode));
+        }
+
         // pub var blendEquationSeparatei: *const fn (buf: Uint, modeRGB: Enum, modeAlpha: Enum) callconv(.c) void = undefined;
+        pub fn blendEquationSeparatei(
+            buf: u32,
+            modeRGB: BlendEquation,
+            modeAlpha: BlendEquation,
+        ) void {
+            bindings.blendEquationSeparatei(
+                @bitCast(buf),
+                @intFromEnum(modeRGB),
+                @intFromEnum(modeAlpha),
+            );
+        }
+
         // pub var blendFunci: *const fn (buf: Uint, src: Enum, dst: Enum) callconv(.c) void = undefined;
+        pub fn blendFunci(
+            buf: u32,
+            src: BlendFactor,
+            dst: BlendFactor,
+        ) void {
+            bindings.blendFunci(
+                @bitCast(buf),
+                @intFromEnum(src),
+                @intFromEnum(dst),
+            );
+        }
+
         // pub var blendFuncSeparatei: *const fn (buf: Uint, srcRGB: Enum, dstRGB: Enum, srcAlpha: Enum, dstAlpha: Enum) callconv(.c) void = undefined;
+        pub fn blendFuncSeparatei(
+            buf: u32,
+            srcRGB: BlendFactor,
+            dstRGB: BlendFactor,
+            srcAlpha: BlendFactor,
+            dstAlpha: BlendFactor,
+        ) void {
+            bindings.blendFuncSeparatei(
+                @bitCast(buf),
+                @intFromEnum(srcRGB),
+                @intFromEnum(dstRGB),
+                @intFromEnum(srcAlpha),
+                @intFromEnum(dstAlpha),
+            );
+        }
+
         // pub var drawArraysIndirect: *const fn (mode: Enum, indirect: [*c]const DrawArraysIndirectCommand) callconv(.c) void = undefined;
+        pub fn drawArraysIndirect(
+            mode: PrimitiveType,
+            indirect: *const DrawArraysIndirectCommand,
+        ) void {
+            bindings.drawArraysIndirect(
+                @intFromEnum(mode),
+                @ptrCast(indirect),
+            );
+        }
+
         // pub var drawElementsIndirect: *const fn (mode: Enum, type: Enum, indirect: [*c]const DrawElementsIndirectCommand) callconv(.c) void = undefined;
+        pub fn drawElementsIndirect(
+            mode: PrimitiveType,
+            index_type: DrawIndicesType,
+            indirect: *const DrawElementsIndirectCommand,
+        ) void {
+            bindings.drawElementsIndirect(
+                @intFromEnum(mode),
+                @intFromEnum(index_type),
+                @ptrCast(indirect),
+            );
+        }
+
         // pub var uniform1d: *const fn (location: Int, x: Double) callconv(.c) void = undefined;
+        pub fn uniform1d(location: UniformLocation, x: f64) void {
+            assert(location != .invalid);
+            bindings.uniform1d(@intFromEnum(location), x);
+        }
+
         // pub var uniform2d: *const fn (location: Int, x: Double, y: Double) callconv(.c) void = undefined;
+        pub fn uniform2d(location: UniformLocation, x: f64, y: f64) void {
+            assert(location != .invalid);
+            bindings.uniform2d(@intFromEnum(location), x, y);
+        }
+
         // pub var uniform3d: *const fn (location: Int, x: Double, y: Double, z: Double) callconv(.c) void = undefined;
+        pub fn uniform3d(location: UniformLocation, x: f64, y: f64, z: f64) void {
+            assert(location != .invalid);
+            bindings.uniform3d(@intFromEnum(location), x, y, z);
+        }
+
         // pub var uniform4d: *const fn (location: Int, x: Double, y: Double, z: Double, w: Double) callconv(.c) void = undefined;
+        pub fn uniform4d(location: UniformLocation, x: f64, y: f64, z: f64, w: f64) void {
+            assert(location != .invalid);
+            bindings.uniform4d(@intFromEnum(location), x, y, z, w);
+        }
+
         // pub var uniform1dv: *const fn (location: Int, count: Sizei, value: [*c]const Double) callconv(.c) void = undefined;
+        pub fn uniform1dv(location: UniformLocation, count: u32, value: []const f64) void {
+            assert(location != .invalid);
+            assert(value.len == count);
+            bindings.uniform1dv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniform2dv: *const fn (location: Int, count: Sizei, value: [*c]const Double) callconv(.c) void = undefined;
+        pub fn uniform2dv(location: UniformLocation, count: u32, value: []const f64) void {
+            const vec_size = 2;
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.uniform2dv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniform3dv: *const fn (location: Int, count: Sizei, value: [*c]const Double) callconv(.c) void = undefined;
+        pub fn uniform3dv(location: UniformLocation, count: u32, value: []const f64) void {
+            const vec_size = 3;
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.uniform3dv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniform4dv: *const fn (location: Int, count: Sizei, value: [*c]const Double) callconv(.c) void = undefined;
+        pub fn uniform4dv(location: UniformLocation, count: u32, value: []const f64) void {
+            const vec_size = 4;
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.uniform4dv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix2dv: *const fn (location: Int, count: Sizei, transpose: Boolean, value: [*c]const Double) callconv(.c) void = undefined;
+        pub fn uniformMatrix2dv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 2 * 2;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix2dv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix3dv: *const fn (location: Int, count: Sizei, transpose: Boolean, value: [*c]const Double) callconv(.c) void = undefined;
+        pub fn uniformMatrix3dv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 3 * 3;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix3dv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix4dv: *const fn (location: Int, count: Sizei, transpose: Boolean, value: [*c]const Double) callconv(.c) void = undefined;
+        pub fn uniformMatrix4dv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 4 * 4;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix4dv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix2x3dv: *const fn (location: Int, count: Sizei, transpose: Boolean, value: [*c]const Double) callconv(.c) void = undefined;
+        pub fn uniformMatrix2x3dv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 2 * 3;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix2x3dv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix2x4dv: *const fn (location: Int, count: Sizei, transpose: Boolean, value: [*c]const Double) callconv(.c) void = undefined;
+        pub fn uniformMatrix2x4dv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 2 * 4;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix2x4dv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix3x2dv: *const fn (location: Int, count: Sizei, transpose: Boolean, value: [*c]const Double) callconv(.c) void = undefined;
+        pub fn uniformMatrix3x2dv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 3 * 2;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix3x2dv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix3x4dv: *const fn (location: Int, count: Sizei, transpose: Boolean, value: [*c]const Double) callconv(.c) void = undefined;
+        pub fn uniformMatrix3x4dv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 3 * 4;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix3x4dv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix4x2dv: *const fn (location: Int, count: Sizei, transpose: Boolean, value: [*c]const Double) callconv(.c) void = undefined;
+        pub fn uniformMatrix4x2dv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 4 * 2;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix4x2dv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var uniformMatrix4x3dv: *const fn (location: Int, count: Sizei, transpose: Boolean, value: [*c]const Double) callconv(.c) void = undefined;
+        pub fn uniformMatrix4x3dv(
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 4 * 3;
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.uniformMatrix4x3dv(
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var getUniformdv: *const fn (program: Uint, location: Int, params: [*c]Double) callconv(.c) void = undefined;
+        pub fn getUniformdv(
+            program: Program,
+            location: UniformLocation,
+            params: []f64,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.getUniformdv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getSubroutineUniformLocation: *const fn (program: Uint, shadertype: Enum, name: [*c]const Char) callconv(.c) Int = undefined;
+        pub fn getSubroutineUniformLocation(
+            program: Program,
+            shadertype: ShaderType,
+            name: [:0]const u8,
+        ) UniformLocation {
+            assert(program != .invalid);
+            return @enumFromInt(bindings.getSubroutineUniformLocation(
+                @intFromEnum(program),
+                @intFromEnum(shadertype),
+                @ptrCast(name.ptr),
+            ));
+        }
+
         // pub var getSubroutineIndex: *const fn (program: Uint, shadertype: Enum, name: [*c]const Char) callconv(.c) Uint = undefined;
+        pub fn getSubroutineIndex(
+            program: Program,
+            shadertype: ShaderType,
+            name: [:0]const u8,
+        ) u32 {
+            assert(program != .invalid);
+            return @bitCast(bindings.getSubroutineIndex(
+                @intFromEnum(program),
+                @intFromEnum(shadertype),
+                @ptrCast(name.ptr),
+            ));
+        }
+
         // pub var getActiveSubroutineUniformiv: *const fn (program: Uint, shadertype: Enum, index: Uint, pname: Enum, values: [*c]Int) callconv(.c) void = undefined;
+        pub fn getActiveSubroutineUniformiv(
+            program: Program,
+            shadertype: ShaderType,
+            index: u32,
+            pname: SubroutineUniformParameter,
+            values: []i32,
+        ) void {
+            assert(program != .invalid);
+            bindings.getActiveSubroutineUniformiv(
+                @intFromEnum(program),
+                @intFromEnum(shadertype),
+                @bitCast(index),
+                @intFromEnum(pname),
+                @ptrCast(values.ptr),
+            );
+        }
+
         // pub var getActiveSubroutineUniformName: *const fn (program: Uint, shadertype: Enum, index: Uint, bufsize: Sizei, length: [*c]Sizei, name: [*c]Char) callconv(.c) void = undefined;
+        pub fn getActiveSubroutineUniformName(
+            program: Program,
+            shadertype: ShaderType,
+            index: u32,
+            subroutine_uniform_name_buf: [:0]u8,
+        ) [:0]const u8 {
+            assert(program != .invalid);
+            var length: i32 = undefined;
+            bindings.getActiveSubroutineUniformName(
+                @intFromEnum(program),
+                @intFromEnum(shadertype),
+                @bitCast(index),
+                // includes null terminator
+                @intCast(subroutine_uniform_name_buf.len + 1),
+                // excludes null terminator
+                @ptrCast(&length),
+                @ptrCast(subroutine_uniform_name_buf.ptr),
+            );
+            return subroutine_uniform_name_buf[0..@intCast(length) :0];
+        }
+
         // pub var getActiveSubroutineName: *const fn (program: Uint, shadertype: Enum, index: Uint, bufsize: Sizei, length: [*c]Sizei, name: [*c]Char) callconv(.c) void = undefined;
+        pub fn getActiveSubroutineName(
+            program: Program,
+            shadertype: ShaderType,
+            index: u32,
+            subroutine_name_buf: [:0]u8,
+        ) [:0]const u8 {
+            assert(program != .invalid);
+            var length: i32 = undefined;
+            bindings.getActiveSubroutineName(
+                @intFromEnum(program),
+                @intFromEnum(shadertype),
+                @bitCast(index),
+                // includes null terminator
+                @intCast(subroutine_name_buf.len + 1),
+                // excludes null terminator
+                @ptrCast(&length),
+                @ptrCast(subroutine_name_buf.ptr),
+            );
+            return subroutine_name_buf[0..@intCast(length) :0];
+        }
+
         // pub var uniformSubroutinesuiv: *const fn (shadertype: Enum, count: Sizei, indices: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn uniformSubroutinesuiv(
+            shadertype: ShaderType,
+            count: i32,
+            indices: []const u32,
+        ) void {
+            bindings.uniformSubroutinesuiv(
+                @intFromEnum(shadertype),
+                @bitCast(count),
+                @ptrCast(indices.ptr),
+            );
+        }
+
         // pub var getUniformSubroutineuiv: *const fn (shadertype: Enum, location: Int, params: [*c]Uint) callconv(.c) void = undefined;
+        pub fn getUniformSubroutineuiv(
+            shadertype: ShaderType,
+            location: UniformLocation,
+            params: []u32,
+        ) void {
+            bindings.getUniformSubroutineuiv(
+                @intFromEnum(shadertype),
+                @intFromEnum(location),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getProgramStageiv: *const fn (program: Uint, shadertype: Enum, pname: Enum, values: [*c]Int) callconv(.c) void = undefined;
+        pub fn getProgramStageiv(
+            program: Program,
+            shadertype: ShaderType,
+            pname: ProgramStageParameter,
+            values: []i32,
+        ) void {
+            assert(program != .invalid);
+            bindings.getProgramStageiv(
+                @intFromEnum(program),
+                @intFromEnum(shadertype),
+                @intFromEnum(pname),
+                @ptrCast(values.ptr),
+            );
+        }
+
         // pub var patchParameteri: *const fn (pname: Enum, value: Int) callconv(.c) void = undefined;
+        pub fn patchParameteri(pname: PatchIntegerParameter, value: i32) void {
+            bindings.patchParameteri(@intFromEnum(pname), @bitCast(value));
+        }
+
         // pub var patchParameterfv: *const fn (pname: Enum, values: [*c]const Float) callconv(.c) void = undefined;
+        pub fn patchParameterfv(pname: PatchFloatParameter, values: []const f32) void {
+            bindings.patchParameterfv(@intFromEnum(pname), @ptrCast(values.ptr));
+        }
+
         // pub var bindTransformFeedback: *const fn (target: Enum, id: Uint) callconv(.c) void = undefined;
+        pub fn bindTransformFeedback(
+            target: TransformFeedbackTarget,
+            transform_feedback: TransformFeedback,
+        ) void {
+            bindings.bindTransformFeedback(
+                @intFromEnum(target),
+                @intFromEnum(transform_feedback),
+            );
+        }
+
         // pub var deleteTransformFeedbacks: *const fn (n: Sizei, ids: [*c]const Uint) callconv(.c) void = undefined;
+        pub fn deleteTransformFeedback(ptr: *const TransformFeedback) void {
+            bindings.deleteTransformFeedbacks(1, @ptrCast(ptr));
+        }
+        pub fn deleteTransformFeedbacks(transform_feedbacks: []const TransformFeedback) void {
+            bindings.deleteTransformFeedbacks(
+                @intCast(transform_feedbacks.len),
+                @ptrCast(transform_feedbacks.ptr),
+            );
+        }
+
         // pub var genTransformFeedbacks: *const fn (n: Sizei, ids: [*c]Uint) callconv(.c) void = undefined;
+        pub fn genTransformFeedback(ptr: *TransformFeedback) void {
+            bindings.genTransformFeedbacks(1, @ptrCast(ptr));
+        }
+        pub fn genTransformFeedbacks(transform_feedbacks: []TransformFeedback) void {
+            bindings.genTransformFeedbacks(
+                @intCast(transform_feedbacks.len),
+                @ptrCast(transform_feedbacks.ptr),
+            );
+        }
+
         // pub var isTransformFeedback: *const fn (id: Uint) callconv(.c) Boolean = undefined;
+        pub fn isTransformFeedback(transform_feedback: TransformFeedback) bool {
+            return bindings.isTransformFeedback(@intFromEnum(transform_feedback)) == TRUE;
+        }
+
         // pub var pauseTransformFeedback: *const fn () callconv(.c) void = undefined;
+        pub fn pauseTransformFeedback() void {
+            bindings.pauseTransformFeedback();
+        }
+
         // pub var resumeTransformFeedback: *const fn () callconv(.c) void = undefined;
+        pub fn resumeTransformFeedback() void {
+            bindings.resumeTransformFeedback();
+        }
+
         // pub var drawTransformFeedback: *const fn (mode: Enum, id: Uint) callconv(.c) void = undefined;
+        pub fn drawTransformFeedback(
+            mode: PrimitiveType,
+            transform_feedback: TransformFeedback,
+        ) void {
+            bindings.drawTransformFeedback(
+                @intFromEnum(mode),
+                @intFromEnum(transform_feedback),
+            );
+        }
+
         // pub var drawTransformFeedbackStream: *const fn (mode: Enum, id: Uint, stream: Uint) callconv(.c) void = undefined;
+        pub fn drawTransformFeedbackStream(
+            mode: PrimitiveType,
+            transform_feedback: TransformFeedback,
+            stream: u32,
+        ) void {
+            bindings.drawTransformFeedbackStream(
+                @intFromEnum(mode),
+                @intFromEnum(transform_feedback),
+                @bitCast(stream),
+            );
+        }
+
         // pub var beginQueryIndexed: *const fn (target: Enum, index: Uint, id: Uint) callconv(.c) void = undefined;
+        pub fn beginQueryIndexed(
+            target: QueryTarget,
+            index: u32,
+            query: Query,
+        ) void {
+            bindings.beginQueryIndexed(
+                @intFromEnum(target),
+                @bitCast(index),
+                @intFromEnum(query),
+            );
+        }
+
         // pub var endQueryIndexed: *const fn (target: Enum, index: Uint) callconv(.c) void = undefined;
+        pub fn endQueryIndexed(
+            target: QueryTarget,
+            index: u32,
+        ) void {
+            bindings.endQueryIndexed(
+                @intFromEnum(target),
+                @bitCast(index),
+            );
+        }
+
         // pub var getQueryIndexediv: *const fn (target: Enum, index: Uint, pname: Enum, params: [*c]Int) callconv(.c) void = undefined;
+        pub fn getQueryIndexediv(
+            target: QueryTargetWithTimestamp,
+            index: u32,
+            pname: QueryParameter,
+            params: []i32,
+        ) void {
+            bindings.getQueryIndexediv(
+                @intFromEnum(target),
+                @bitCast(index),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
 
         //--------------------------------------------------------------------------------------------------
         //
@@ -7349,6 +9049,10 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const UNDEFINED_VERTEX = bindings.UNDEFINED_VERTEX;
 
         // pub var releaseShaderCompiler: *const fn () callconv(.c) void = undefined;
+        pub fn releaseShaderCompiler() void {
+            bindings.releaseShaderCompiler();
+        }
+
         // pub var shaderBinary: *const fn (
         //     count: Sizei,
         //     shaders: [*c]const Uint,
@@ -7356,14 +9060,44 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     binary: ?*const anyopaque,
         //     length: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn shaderBinary(
+            shaders: []const Shader,
+            binaryFormat: ShaderBinaryFormat,
+            binary_buf: []const u8,
+        ) void {
+            bindings.shaderBinary(
+                @intCast(shaders.len),
+                @ptrCast(shaders.ptr),
+                @intFromEnum(binaryFormat),
+                @ptrCast(binary_buf.ptr),
+                @intCast(binary_buf.len),
+            );
+        }
+
         // pub var getShaderPrecisionFormat: *const fn (
         //     shadertype: Enum,
         //     precisiontype: Enum,
         //     range: [*c]Int,
         //     precision: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getShaderPrecisionFormat(
+            shadertype: ShaderTypeBasic,
+            precisiontype: ShaderPrecisionFormat,
+            range: []i32,
+            precision: []i32,
+        ) void {
+            bindings.getShaderPrecisionFormat(
+                @intFromEnum(shadertype),
+                @intFromEnum(precisiontype),
+                @ptrCast(range.ptr),
+                @ptrCast(precision.ptr),
+            );
+        }
+
         // depthRangef first defined by OpenGL ES 1.0
+
         // clearDepthf first defined by OpenGL ES 1.0
+
         // pub var getProgramBinary: *const fn (
         //     program: Uint,
         //     bufSize: Sizei,
@@ -7371,54 +9105,203 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     binaryFormat: [*c]Enum,
         //     binary: ?*anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn getProgramBinary(
+            program: Program,
+            binaryFormat: *ProgramBinaryFormat,
+            binary_buf: []u8,
+        ) []const u8 {
+            assert(program != .invalid);
+            var length: i32 = undefined;
+            bindings.getProgramBinary(
+                @intFromEnum(program),
+                @intCast(binary_buf.len),
+                @ptrCast(&length),
+                @ptrCast(binaryFormat),
+                @ptrCast(binary_buf.ptr),
+            );
+            return binary_buf[0..@intCast(length)];
+        }
+
         // pub var programBinary: *const fn (
         //     program: Uint,
         //     binaryFormat: Enum,
         //     binary: ?*const anyopaque,
         //     length: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn programBinary(
+            program: Program,
+            binaryFormat: ProgramBinaryFormat,
+            binary_buf: []const u8,
+        ) void {
+            assert(program != .invalid);
+            bindings.programBinary(
+                @intFromEnum(program),
+                @intFromEnum(binaryFormat),
+                @ptrCast(binary_buf.ptr),
+                @intCast(binary_buf.len),
+            );
+        }
+
         // pub var programParameteri: *const fn (
         //     program: Uint,
         //     pname: Enum,
         //     value: Int,
         // ) callconv(.c) void = undefined;
+        pub fn programParameteri(
+            program: Program,
+            pname: ProgramParameterModifiable,
+            value: i32,
+        ) void {
+            assert(program != .invalid);
+            bindings.programParameteri(
+                @intFromEnum(program),
+                @intFromEnum(pname),
+                @bitCast(value),
+            );
+        }
+
         // pub var useProgramStages: *const fn (
         //     pipeline: Uint,
         //     stages: Bitfield,
         //     program: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn useProgramStages(
+            pipeline: ProgramPipeline,
+            stages: UsedProgramStages,
+            program: Program,
+        ) void {
+            assert(program != .invalid);
+            bindings.useProgramStages(
+                @intFromEnum(pipeline),
+                @bitCast(stages),
+                @intFromEnum(program),
+            );
+        }
+
         // pub var activeShaderProgram: *const fn (
         //     pipeline: Uint,
         //     program: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn activeShaderProgram(
+            pipeline: ProgramPipeline,
+            program: Program,
+        ) void {
+            assert(program != .invalid);
+            bindings.activeShaderProgram(
+                @intFromEnum(pipeline),
+                @intFromEnum(program),
+            );
+        }
+
         // pub var createShaderProgramv: *const fn (
         //     type: Enum,
         //     count: Sizei,
         //     strings: [*c]const [*c]const Char,
         // ) callconv(.c) Uint = undefined;
+        pub fn createShaderProgramv(
+            shader_type: ShaderType,
+            src_ptrs: []const [*:0]const u8,
+        ) Program {
+            return @enumFromInt(bindings.createShaderProgramv(
+                @intFromEnum(shader_type),
+                @intCast(src_ptrs.len),
+                @ptrCast(src_ptrs.ptr),
+            ));
+        }
+
         // pub var bindProgramPipeline: *const fn (pipeline: Uint) callconv(.c) void = undefined;
+        pub fn bindProgramPipeline(pipeline: ProgramPipeline) void {
+            bindings.bindProgramPipeline(@intFromEnum(pipeline));
+        }
+
         // pub var deleteProgramPipelines: *const fn (
         //     n: Sizei,
         //     pipelines: [*c]const Uint,
         // ) callconv(.c) void = undefined;
+        pub fn deleteProgramPipeline(ptr: *const ProgramPipeline) void {
+            bindings.deleteProgramPipelines(1, @ptrCast(ptr));
+        }
+        pub fn deleteProgramPipelines(pipelines: []const ProgramPipeline) void {
+            bindings.deleteProgramPipelines(
+                @intCast(pipelines.len),
+                @ptrCast(pipelines.ptr),
+            );
+        }
+
         // pub var genProgramPipelines: *const fn (n: Sizei, pipelines: [*c]Uint) callconv(.c) void = undefined;
-        // pub var isProgramPipeline: *const fn (pipeline: Uint) callconv(.c) Boolean = undefined;
+        pub fn genProgramPipeline(ptr: *ProgramPipeline) void {
+            bindings.genProgramPipelines(1, @ptrCast(ptr));
+        }
+        pub fn genProgramPipelines(pipelines: []ProgramPipeline) void {
+            bindings.genProgramPipelines(
+                @intCast(pipelines.len),
+                @ptrCast(pipelines.ptr),
+            );
+        }
+
+        // pub var isProgramPipeline: *const fn (pipeline: Uint) callconv(.c) Boolean = undefined
+        pub fn isProgramPipeline(pipeline: ProgramPipeline) bool {
+            return bindings.isProgramPipeline(@intFromEnum(pipeline)) == TRUE;
+        }
+
         // pub var getProgramPipelineiv: *const fn (
         //     pipeline: Uint,
         //     pname: Enum,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getProgramPipelineiv(
+            pipeline: ProgramPipeline,
+            pname: ProgramPipelineParameter,
+            params: []i32,
+        ) void {
+            bindings.getProgramPipelineiv(
+                @intFromEnum(pipeline),
+                @intFromEnum(pname),
+                @ptrCast(params),
+            );
+        }
+
         // pub var programUniform1i: *const fn (
         //     program: Uint,
         //     location: Int,
         //     v0: Int,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform1i(
+            program: Program,
+            location: UniformLocation,
+            v0: i32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform1i(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(v0),
+            );
+        }
+
         // pub var programUniform2i: *const fn (
         //     program: Uint,
         //     location: Int,
         //     v0: Int,
         //     v1: Int,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform2i(
+            program: Program,
+            location: UniformLocation,
+            v0: i32,
+            v1: i32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform2i(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(v0),
+                @bitCast(v1),
+            );
+        }
+
         // pub var programUniform3i: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7426,6 +9309,24 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     v1: Int,
         //     v2: Int,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform3i(
+            program: Program,
+            location: UniformLocation,
+            v0: i32,
+            v1: i32,
+            v2: i32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform3i(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(v0),
+                @bitCast(v1),
+                @bitCast(v2),
+            );
+        }
+
         // pub var programUniform4i: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7434,17 +9335,67 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     v2: Int,
         //     v3: Int,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform4i(
+            program: Program,
+            location: UniformLocation,
+            v0: i32,
+            v1: i32,
+            v2: i32,
+            v3: i32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform4i(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(v0),
+                @bitCast(v1),
+                @bitCast(v2),
+                @bitCast(v3),
+            );
+        }
+
         // pub var programUniform1ui: *const fn (
         //     program: Uint,
         //     location: Int,
         //     v0: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform1ui(
+            program: Program,
+            location: UniformLocation,
+            v0: u32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform1ui(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(v0),
+            );
+        }
+
         // pub var programUniform2ui: *const fn (
         //     program: Uint,
         //     location: Int,
         //     v0: Uint,
         //     v1: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform2ui(
+            program: Program,
+            location: UniformLocation,
+            v0: u32,
+            v1: u32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform2ui(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(v0),
+                @bitCast(v1),
+            );
+        }
+
         // pub var programUniform3ui: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7452,6 +9403,24 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     v1: Uint,
         //     v2: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform3ui(
+            program: Program,
+            location: UniformLocation,
+            v0: u32,
+            v1: u32,
+            v2: u32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform3ui(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(v0),
+                @bitCast(v1),
+                @bitCast(v2),
+            );
+        }
+
         // pub var programUniform4ui: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7460,17 +9429,67 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     v2: Uint,
         //     v3: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform4ui(
+            program: Program,
+            location: UniformLocation,
+            v0: u32,
+            v1: u32,
+            v2: u32,
+            v3: u32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform4ui(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(v0),
+                @bitCast(v1),
+                @bitCast(v2),
+                @bitCast(v3),
+            );
+        }
+
         // pub var programUniform1f: *const fn (
         //     program: Uint,
         //     location: Int,
         //     v0: Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform1f(
+            program: Program,
+            location: UniformLocation,
+            v0: f32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform1f(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                v0,
+            );
+        }
+
         // pub var programUniform2f: *const fn (
         //     program: Uint,
         //     location: Int,
         //     v0: Float,
         //     v1: Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform2f(
+            program: Program,
+            location: UniformLocation,
+            v0: f32,
+            v1: f32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform2f(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                v0,
+                v1,
+            );
+        }
+
         // pub var programUniform3f: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7478,6 +9497,24 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     v1: Float,
         //     v2: Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform3f(
+            program: Program,
+            location: UniformLocation,
+            v0: f32,
+            v1: f32,
+            v2: f32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform3f(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                v0,
+                v1,
+                v2,
+            );
+        }
+
         // pub var programUniform4f: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7486,17 +9523,67 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     v2: Float,
         //     v3: Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform4f(
+            program: Program,
+            location: UniformLocation,
+            v0: f32,
+            v1: f32,
+            v2: f32,
+            v3: f32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform4f(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                v0,
+                v1,
+                v2,
+                v3,
+            );
+        }
+
         // pub var programUniform1d: *const fn (
         //     program: Uint,
         //     location: Int,
         //     v0: Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform1d(
+            program: Program,
+            location: UniformLocation,
+            v0: f64,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform1d(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                v0,
+            );
+        }
+
         // pub var programUniform2d: *const fn (
         //     program: Uint,
         //     location: Int,
         //     v0: Double,
         //     v1: Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform2d(
+            program: Program,
+            location: UniformLocation,
+            v0: f64,
+            v1: f64,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform2d(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                v0,
+                v1,
+            );
+        }
+
         // pub var programUniform3d: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7504,6 +9591,24 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     v1: Double,
         //     v2: Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform3d(
+            program: Program,
+            location: UniformLocation,
+            v0: f64,
+            v1: f64,
+            v2: f64,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform3d(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                v0,
+                v1,
+                v2,
+            );
+        }
+
         // pub var programUniform4d: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7512,102 +9617,418 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     v2: Double,
         //     v3: Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform4d(
+            program: Program,
+            location: UniformLocation,
+            v0: f64,
+            v1: f64,
+            v2: f64,
+            v3: f64,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.programUniform4d(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                v0,
+                v1,
+                v2,
+                v3,
+            );
+        }
+
         // pub var programUniform1iv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Int,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform1iv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const i32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len == count);
+            bindings.programUniform1iv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniform2iv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Int,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform2iv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const i32,
+        ) void {
+            const vec_size = 2;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.programUniform2iv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniform3iv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Int,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform3iv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const i32,
+        ) void {
+            const vec_size = 3;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.programUniform3iv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniform4iv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Int,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform4iv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const i32,
+        ) void {
+            const vec_size = 4;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.programUniform4iv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniform1uiv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Uint,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform1uiv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const u32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len == count);
+            bindings.programUniform1uiv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniform2uiv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Uint,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform2uiv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const u32,
+        ) void {
+            const vec_size = 2;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.programUniform2uiv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniform3uiv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Uint,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform3uiv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const u32,
+        ) void {
+            const vec_size = 3;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.programUniform3uiv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniform4uiv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Uint,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform4uiv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const u32,
+        ) void {
+            const vec_size = 4;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.programUniform4uiv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniform1fv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform1fv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const f32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len == count);
+            bindings.programUniform1fv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniform2fv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform2fv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const f32,
+        ) void {
+            const vec_size = 2;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.programUniform2fv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniform3fv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform3fv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const f32,
+        ) void {
+            const vec_size = 3;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.programUniform3fv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniform4fv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform4fv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const f32,
+        ) void {
+            const vec_size = 4;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.programUniform4fv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniform1dv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform1dv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const f64,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len == count);
+            bindings.programUniform1dv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniform2dv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform2dv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const f64,
+        ) void {
+            const vec_size = 2;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.programUniform2dv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniform3dv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform3dv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const f64,
+        ) void {
+            const vec_size = 3;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.programUniform3dv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniform4dv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     count: Sizei,
         //     value: [*c]const Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniform4dv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            value: []const f64,
+        ) void {
+            const vec_size = 4;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % vec_size == 0);
+            assert(value.len / vec_size == count);
+            bindings.programUniform4dv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix2fv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7615,6 +10036,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix2fv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 2 * 2;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix2fv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix3fv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7622,6 +10064,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix3fv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 3 * 3;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix3fv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix4fv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7629,6 +10092,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix4fv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 4 * 4;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix4fv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix2dv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7636,6 +10120,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix2dv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 2 * 2;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix2dv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix3dv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7643,6 +10148,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix3dv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 3 * 3;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix3dv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix4dv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7650,6 +10176,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix4dv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 4 * 4;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix4dv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix2x3fv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7657,6 +10204,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix2x3fv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 2 * 3;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix2x3fv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix3x2fv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7664,6 +10232,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix3x2fv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 3 * 2;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix3x2fv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix2x4fv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7671,6 +10260,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix2x4fv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 2 * 4;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix2x4fv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix4x2fv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7678,6 +10288,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix4x2fv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 4 * 2;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix4x2fv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix3x4fv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7685,6 +10316,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix3x4fv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 3 * 4;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix3x4fv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix4x3fv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7692,6 +10344,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix4x3fv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f32,
+        ) void {
+            const mat_size = 4 * 3;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix4x3fv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix2x3dv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7699,6 +10372,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix2x3dv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 2 * 3;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix2x3dv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix3x2dv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7706,6 +10400,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix3x2dv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 3 * 2;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix3x2dv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix2x4dv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7713,6 +10428,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix2x4dv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 2 * 4;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix2x4dv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix4x2dv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7720,6 +10456,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix4x2dv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 4 * 2;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix4x2dv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix3x4dv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7727,6 +10484,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix3x4dv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 3 * 4;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix3x4dv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var programUniformMatrix4x3dv: *const fn (
         //     program: Uint,
         //     location: Int,
@@ -7734,21 +10512,84 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     transpose: Boolean,
         //     value: [*c]const Double,
         // ) callconv(.c) void = undefined;
+        pub fn programUniformMatrix4x3dv(
+            program: Program,
+            location: UniformLocation,
+            count: u32,
+            transpose: bool,
+            value: []const f64,
+        ) void {
+            const mat_size = 4 * 3;
+            assert(program != .invalid);
+            assert(location != .invalid);
+            assert(value.len % mat_size == 0);
+            assert(value.len / mat_size == count);
+            bindings.programUniformMatrix4x3dv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @bitCast(count),
+                @intFromBool(transpose),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var validateProgramPipeline: *const fn (pipeline: Uint) callconv(.c) void = undefined;
+        pub fn validateProgramPipeline(pipeline: ProgramPipeline) void {
+            bindings.validateProgramPipeline(@intFromEnum(pipeline));
+        }
+
         // pub var getProgramPipelineInfoLog: *const fn (
         //     pipeline: Uint,
         //     bufSize: Sizei,
         //     length: [*c]Sizei,
         //     infoLog: [*c]Char,
         // ) callconv(.c) void = undefined;
+        pub fn getProgramPipelineInfoLog(
+            pipeline: ProgramPipeline,
+            info_log_buf: [:0]u8,
+        ) [:0]const u8 {
+            var length: i32 = undefined;
+            bindings.getProgramPipelineInfoLog(
+                @intFromEnum(pipeline),
+                // includes null terminator
+                @intCast(info_log_buf.len + 1),
+                // excludes null terminator
+                @ptrCast(&length),
+                @ptrCast(info_log_buf.ptr),
+            );
+            return info_log_buf[0..@intCast(length) :0];
+        }
+
         // pub var vertexAttribL1d: *const fn (index: Uint, x: Double) callconv(.c) void = undefined;
+        pub fn vertexAttribL1d(location: VertexAttribLocation, x: f64) void {
+            bindings.vertexAttribL1d(@intFromEnum(location), x);
+        }
+
         // pub var vertexAttribL2d: *const fn (index: Uint, x: Double, y: Double) callconv(.c) void = undefined;
+        pub fn vertexAttribL2d(location: VertexAttribLocation, x: f64, y: f64) void {
+            bindings.vertexAttribL2d(@intFromEnum(location), x, y);
+        }
+
         // pub var vertexAttribL3d: *const fn (
         //     index: Uint,
         //     x: Double,
         //     y: Double,
         //     z: Double,
         // ) callconv(.c) void = undefined;
+        pub fn vertexAttribL3d(
+            location: VertexAttribLocation,
+            x: f64,
+            y: f64,
+            z: f64,
+        ) void {
+            bindings.vertexAttribL3d(
+                @intFromEnum(location),
+                x,
+                y,
+                z,
+            );
+        }
+
         // pub var vertexAttribL4d: *const fn (
         //     index: Uint,
         //     x: Double,
@@ -7756,16 +10597,99 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     z: Double,
         //     w: Double,
         // ) callconv(.c) void = undefined;
+        pub fn vertexAttribL4d(
+            location: VertexAttribLocation,
+            x: f64,
+            y: f64,
+            z: f64,
+            w: f64,
+        ) void {
+            bindings.vertexAttribL4d(
+                @intFromEnum(location),
+                x,
+                y,
+                z,
+                w,
+            );
+        }
+
         // pub var vertexAttribL1dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
+        pub fn vertexAttribL1dv(location: VertexAttribLocation, v: []const f64) void {
+            bindings.vertexAttribL1dv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttribL2dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
+        pub fn vertexAttribL2dv(location: VertexAttribLocation, v: []const f64) void {
+            bindings.vertexAttribL2dv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttribL3dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
+        pub fn vertexAttribL3dv(location: VertexAttribLocation, v: []const f64) void {
+            bindings.vertexAttribL3dv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
         // pub var vertexAttribL4dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
-        // TODO: add placeholders for 'vertexAttribLPointer' and 'getVertexAttribLdv' when bindings are added
+        pub fn vertexAttribL4dv(location: VertexAttribLocation, v: []const f64) void {
+            bindings.vertexAttribL4dv(@intFromEnum(location), @ptrCast(v.ptr));
+        }
+
+        // pub var vertexAttribLPointer: *const fn (
+        //     index: Uint,
+        //     size: Int,
+        //     type: Enum,
+        //     stride: Sizei,
+        //     pointer: ?*const anyopaque,
+        // ) callconv(.c) void = undefined;
+        pub fn vertexAttribLPointer(
+            location: VertexAttribLocation,
+            size: u32,
+            attrib_type: VertexAttribDoubleType,
+            stride: u32,
+            offset: usize,
+        ) void {
+            bindings.vertexAttribLPointer(
+                @intFromEnum(location),
+                @bitCast(size),
+                @intFromEnum(attrib_type),
+                @bitCast(stride),
+                @ptrFromInt(offset),
+            );
+        }
+
+        // pub var getVertexAttribLdv: *const fn (
+        //     index: Uint,
+        //     pname: Enum,
+        //     params: [*c]Double,
+        // ) callconv(.c) void = undefined;
+        pub fn getVertexAttribLdv(
+            location: VertexAttribLocation,
+            pname: VertexAttribDoubleParameter,
+            params: []f64,
+        ) void {
+            bindings.getVertexAttribLdv(
+                @intFromEnum(location),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var viewportArrayv: *const fn (
         //     first: Uint,
         //     count: Sizei,
         //     v: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn viewportArrayv(
+            first: u32,
+            count: i32,
+            v: []const f32,
+        ) void {
+            bindings.viewportArrayv(
+                @bitCast(first),
+                @bitCast(count),
+                @ptrCast(v.ptr),
+            );
+        }
+
         // pub var viewportIndexedf: *const fn (
         //     index: Uint,
         //     x: Float,
@@ -7773,12 +10697,44 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     w: Float,
         //     h: Float,
         // ) callconv(.c) void = undefined;
+        pub fn viewportIndexedf(
+            index: u32,
+            x: f32,
+            y: f32,
+            w: f32,
+            h: f32,
+        ) void {
+            bindings.viewportIndexedf(
+                @bitCast(index),
+                x,
+                y,
+                w,
+                h,
+            );
+        }
+
         // pub var viewportIndexedfv: *const fn (index: Uint, v: [*c]const Float) callconv(.c) void = undefined;
+        pub fn viewportIndexedfv(index: u32, v: []const f32) void {
+            bindings.viewportIndexedfv(@bitCast(index), @ptrCast(v.ptr));
+        }
+
         // pub var scissorArrayv: *const fn (
         //     first: Uint,
         //     count: Sizei,
         //     v: [*c]const Int,
         // ) callconv(.c) void = undefined;
+        pub fn scissorArrayv(
+            first: u32,
+            count: i32,
+            v: []const i32,
+        ) void {
+            bindings.scissorArrayv(
+                @bitCast(first),
+                @bitCast(count),
+                @ptrCast(v.ptr),
+            );
+        }
+
         // pub var scissorIndexed: *const fn (
         //     index: Uint,
         //     left: Int,
@@ -7786,27 +10742,86 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     width: Sizei,
         //     height: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn scissorIndexed(
+            index: u32,
+            left: i32,
+            bottom: i32,
+            width: i32,
+            height: i32,
+        ) void {
+            bindings.scissorIndexed(
+                @bitCast(index),
+                @bitCast(left),
+                @bitCast(bottom),
+                @bitCast(width),
+                @bitCast(height),
+            );
+        }
+
         // pub var scissorIndexedv: *const fn (index: Uint, v: [*c]const Int) callconv(.c) void = undefined;
+        pub fn scissorIndexedv(index: u32, v: []const i32) void {
+            bindings.scissorIndexedv(@bitCast(index), @ptrCast(v.ptr));
+        }
+
         // pub var depthRangeArrayv: *const fn (
         //     first: Uint,
         //     count: Sizei,
         //     v: [*c]const Double,
         // ) callconv(.c) void = undefined;
+        pub fn depthRangeArrayv(
+            first: u32,
+            count: i32,
+            v: []const f64,
+        ) void {
+            bindings.depthRangeArrayv(
+                @bitCast(first),
+                @bitCast(count),
+                @ptrCast(v.ptr),
+            );
+        }
+
         // pub var depthRangeIndexed: *const fn (
         //     index: Uint,
         //     n: Double,
         //     f: Double,
         // ) callconv(.c) void = undefined;
+        pub fn depthRangeIndexed(index: u32, n: f64, f: f64) void {
+            bindings.depthRangeIndexed(@bitCast(index), n, f);
+        }
+
         // pub var getFloati_v: *const fn (
         //     target: Enum,
         //     index: Uint,
         //     data: [*c]Float,
         // ) callconv(.c) void = undefined;
+        pub fn getFloati_v(
+            target: IndexedFloatParameter,
+            index: u32,
+            data: []f32,
+        ) void {
+            bindings.getFloati_v(
+                @intFromEnum(target),
+                @bitCast(index),
+                @ptrCast(data.ptr),
+            );
+        }
+
         // pub var getDoublei_v: *const fn (
         //     target: Enum,
         //     index: Uint,
         //     data: [*c]Double,
         // ) callconv(.c) void = undefined;
+        pub fn getDoublei_v(
+            target: IndexedDoubleParameter,
+            index: u32,
+            data: []f64,
+        ) void {
+            bindings.getDoublei_v(
+                @intFromEnum(target),
+                @bitCast(index),
+                @ptrCast(data.ptr),
+            );
+        }
 
         //--------------------------------------------------------------------------------------------------
         //
@@ -7933,6 +10948,22 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     instancecount: Sizei,
         //     baseinstance: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn drawArraysInstancedBaseInstance(
+            mode: PrimitiveType,
+            first: i32,
+            count: i32,
+            instancecount: i32,
+            baseinstance: u32,
+        ) void {
+            bindings.drawArraysInstancedBaseInstance(
+                @intFromEnum(mode),
+                @bitCast(first),
+                @bitCast(count),
+                @bitCast(instancecount),
+                @bitCast(baseinstance),
+            );
+        }
+
         // pub var drawElementsInstancedBaseInstance: *const fn (
         //     mode: Enum,
         //     count: Sizei,
@@ -7941,6 +10972,24 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     instancecount: Sizei,
         //     baseinstance: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn drawElementsInstancedBaseInstance(
+            mode: PrimitiveType,
+            count: i32,
+            index_type: DrawIndicesType,
+            offset: usize, // offset into bound element array buffer
+            instancecount: i32,
+            baseinstance: u32,
+        ) void {
+            bindings.drawElementsInstancedBaseInstance(
+                @intFromEnum(mode),
+                @bitCast(count),
+                @intFromEnum(index_type),
+                @ptrFromInt(offset),
+                @bitCast(instancecount),
+                @bitCast(baseinstance),
+            );
+        }
+
         // pub var drawElementsInstancedBaseVertexBaseInstance: *const fn (
         //     mode: Enum,
         //     count: Sizei,
@@ -7950,6 +10999,26 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     basevertex: Int,
         //     baseinstance: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn drawElementsInstancedBaseVertexBaseInstance(
+            mode: PrimitiveType,
+            count: i32,
+            index_type: DrawIndicesType,
+            offset: usize, // offset into bound element array buffer
+            instancecount: i32,
+            basevertex: i32,
+            baseinstance: u32,
+        ) void {
+            bindings.drawElementsInstancedBaseVertexBaseInstance(
+                @intFromEnum(mode),
+                @bitCast(count),
+                @intFromEnum(index_type),
+                @ptrFromInt(offset),
+                @bitCast(instancecount),
+                @bitCast(basevertex),
+                @bitCast(baseinstance),
+            );
+        }
+
         // pub var getInternalformativ: *const fn (
         //     target: Enum,
         //     internalformat: Enum,
@@ -7957,6 +11026,20 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     count: Sizei,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getInternalformativ(
+            target: InternalFormatTarget,
+            internalformat: InternalFormatAny,
+            pname: InternalFormatParameter,
+            params: []i32,
+        ) void {
+            bindings.getInternalformativ(
+                @intFromEnum(target),
+                @intFromEnum(internalformat),
+                @intFromEnum(pname),
+                @intCast(params.len),
+                @ptrCast(params.ptr),
+            );
+        }
 
         // pub var getActiveAtomicCounterBufferiv: *const fn (
         //     program: Uint,
@@ -7966,23 +11049,14 @@ pub fn Wrap(comptime bindings: anytype) type {
         // ) callconv(.c) void = undefined;
         pub fn getActiveAtomicCounterBufferiv(
             program: Program,
-            bufferIndex: Uint,
-            pname: enum(Enum) {
-                atomic_counter_buffer_size = ATOMIC_COUNTER_BUFFER_SIZE,
-                atomic_counter_buffer_data_size = ATOMIC_COUNTER_BUFFER_DATA_SIZE,
-                atomic_counter_buffer_active_atomic_counters = ATOMIC_COUNTER_BUFFER_ACTIVE_ATOMIC_COUNTERS,
-                atomic_counter_buffer_active_atomic_counter_indices = ATOMIC_COUNTER_BUFFER_ACTIVE_ATOMIC_COUNTER_INDICES,
-                atomic_counter_buffer_referenced_by_vertex_shader = ATOMIC_COUNTER_BUFFER_REFERENCED_BY_VERTEX_SHADER,
-                atomic_counter_buffer_referenced_by_tess_control_shader = ATOMIC_COUNTER_BUFFER_REFERENCED_BY_TESS_CONTROL_SHADER,
-                atomic_counter_buffer_referenced_by_tess_evaluation_shader = ATOMIC_COUNTER_BUFFER_REFERENCED_BY_TESS_EVALUATION_SHADER,
-                atomic_counter_buffer_referenced_by_geometry_shader = ATOMIC_COUNTER_BUFFER_REFERENCED_BY_GEOMETRY_SHADER,
-                atomic_counter_buffer_referenced_by_fragment_shader = ATOMIC_COUNTER_BUFFER_REFERENCED_BY_FRAGMENT_SHADER,
-            },
-            params: []Int,
+            bufferIndex: u32,
+            pname: AtomicCounterBufferParameter,
+            params: []i32,
         ) void {
+            assert(program != .invalid);
             bindings.getActiveAtomicCounterBufferiv(
                 @intFromEnum(program),
-                bufferIndex,
+                @bitCast(bufferIndex),
                 @intFromEnum(pname),
                 @ptrCast(params.ptr),
             );
@@ -7997,15 +11071,53 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     access: Enum,
         //     format: Enum,
         // ) callconv(.c) void = undefined;
+        pub fn bindImageTexture(
+            unit: u32,
+            texture: Texture,
+            level: i32,
+            layered: bool,
+            layer: i32,
+            access: Access,
+            format: ImageUnitFormat,
+        ) void {
+            bindings.bindImageTexture(
+                @bitCast(unit),
+                @intFromEnum(texture),
+                @bitCast(level),
+                @intFromBool(layered),
+                @bitCast(layer),
+                @intFromEnum(access),
+                @intFromEnum(format),
+            );
+        }
+
         // pub var memoryBarrier: *const fn (
         //     barriers: Bitfield,
         // ) callconv(.c) void = undefined;
+        pub fn memoryBarrier(barriers: UsedBarriers) void {
+            bindings.memoryBarrier(@bitCast(barriers));
+        }
+
         // pub var texStorage1D: *const fn (
         //     target: Enum,
         //     levels: Sizei,
         //     internalformat: Enum,
         //     width: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn texStorage1D(
+            target: TexImage1DTarget,
+            levels: i32,
+            internalformat: InternalFormat,
+            width: i32,
+        ) void {
+            bindings.texStorage1D(
+                @intFromEnum(target),
+                @bitCast(levels),
+                @intFromEnum(internalformat),
+                @bitCast(width),
+            );
+        }
+
         // pub var texStorage2D: *const fn (
         //     target: Enum,
         //     levels: Sizei,
@@ -8013,6 +11125,22 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     width: Sizei,
         //     height: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn texStorage2D(
+            target: TexImage2DTarget,
+            levels: i32,
+            internalformat: InternalFormat,
+            width: i32,
+            height: i32,
+        ) void {
+            bindings.texStorage2D(
+                @intFromEnum(target),
+                @bitCast(levels),
+                @intFromEnum(internalformat),
+                @bitCast(width),
+                @bitCast(height),
+            );
+        }
+
         // pub var texStorage3D: *const fn (
         //     target: Enum,
         //     levels: Sizei,
@@ -8021,32 +11149,75 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     height: Sizei,
         //     depth: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn texStorage3D(
+            target: TexImage3DTarget,
+            levels: i32,
+            internalformat: InternalFormat,
+            width: i32,
+            height: i32,
+            depth: i32,
+        ) void {
+            bindings.texStorage3D(
+                @intFromEnum(target),
+                @bitCast(levels),
+                @intFromEnum(internalformat),
+                @bitCast(width),
+                @bitCast(height),
+                @bitCast(depth),
+            );
+        }
+
         // pub var drawTransformFeedbackInstanced: *const fn (
         //     mode: Enum,
         //     id: Uint,
         //     instancecount: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn drawTransformFeedbackInstanced(
+            mode: PrimitiveType,
+            transform_feedback: TransformFeedback,
+            instancecount: i32,
+        ) void {
+            bindings.drawTransformFeedbackInstanced(
+                @intFromEnum(mode),
+                @intFromEnum(transform_feedback),
+                @bitCast(instancecount),
+            );
+        }
+
         // pub var drawTransformFeedbackStreamInstanced: *const fn (
         //     mode: Enum,
         //     id: Uint,
         //     stream: Uint,
         //     instancecount: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn drawTransformFeedbackStreamInstanced(
+            mode: PrimitiveType,
+            transform_feedback: TransformFeedback,
+            stream: u32,
+            instancecount: i32,
+        ) void {
+            bindings.drawTransformFeedbackStreamInstanced(
+                @intFromEnum(mode),
+                @intFromEnum(transform_feedback),
+                @bitCast(stream),
+                @bitCast(instancecount),
+            );
+        }
 
         //--------------------------------------------------------------------------------------------------
         //
         // OpenGL 4.3 (Core Profile)
         //
         //--------------------------------------------------------------------------------------------------
-        pub const DEBUGPROC = *const fn (
+        pub const DEBUGPROC = fn (
             source: DebugSource,
             type: DebugType,
-            id: Uint,
+            id: u32,
             severity: DebugSeverity,
-            length: u32,
-            message: [*]const u8,
+            length: i32,
+            message: [*:0]const u8,
             userParam: ?*const anyopaque,
-        ) void;
+        ) callconv(.c) void;
 
         pub const NUM_SHADING_LANGUAGE_VERSIONS = bindings.NUM_SHADING_LANGUAGE_VERSIONS;
         pub const VERTEX_ATTRIB_ARRAY_LONG = bindings.VERTEX_ATTRIB_ARRAY_LONG;
@@ -8314,6 +11485,22 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     type: Enum,
         //     data: ?*const anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn clearBufferData(
+            target: BufferTarget,
+            internalformat: TextureInternalFormat,
+            format: PixelFormat,
+            pixel_type: PixelType,
+            data: ?[]const u8, // passing null will fill the buffer with zeros
+        ) void {
+            bindings.clearBufferData(
+                @intFromEnum(target),
+                @intFromEnum(internalformat),
+                @intFromEnum(format),
+                @intFromEnum(pixel_type),
+                if (data) |d| @ptrCast(d.ptr) else null,
+            );
+        }
+
         // pub var clearBufferSubData: *const fn (
         //     target: Enum,
         //     internalformat: Enum,
@@ -8323,14 +11510,50 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     type: Enum,
         //     data: ?*const anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn clearBufferSubData(
+            target: BufferTarget,
+            internalformat: TextureInternalFormat,
+            offset: usize,
+            size: usize,
+            format: PixelFormat,
+            pixel_type: PixelType,
+            data: ?[]const u8, // passing null will fill the buffer region with zeros
+        ) void {
+            bindings.clearBufferSubData(
+                @intFromEnum(target),
+                @intFromEnum(internalformat),
+                @bitCast(offset),
+                @bitCast(size),
+                @intFromEnum(format),
+                @intFromEnum(pixel_type),
+                if (data) |d| d.ptr else null,
+            );
+        }
+
         // pub var dispatchCompute: *const fn (
         //     num_groups_x: Uint,
         //     num_groups_y: Uint,
         //     num_groups_z: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn dispatchCompute(
+            num_groups_x: u32,
+            num_groups_y: u32,
+            num_groups_z: u32,
+        ) void {
+            bindings.dispatchCompute(
+                @bitCast(num_groups_x),
+                @bitCast(num_groups_y),
+                @bitCast(num_groups_z),
+            );
+        }
+
         // pub var dispatchComputeIndirect: *const fn (
         //     indirect: Intptr,
         // ) callconv(.c) void = undefined;
+        pub fn dispatchComputeIndirect(indirect: usize) void {
+            bindings.dispatchComputeIndirect(@bitCast(indirect));
+        }
+
         // pub var copyImageSubData: *const fn (
         //     srcName: Uint,
         //     srcTarget: Enum,
@@ -8348,16 +11571,186 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     srcHeight: Sizei,
         //     srcDepth: Sizei,
         // ) callconv(.c) void = undefined;
+        // function 'copyImageSubData' is split into four variants,
+        // because '*Name' parameters can either name a texture or
+        // a rednderbuffer, and this way we handle all combinations,
+        // also TEXTURE_BUFFER is not allowed as a texture target,
+        // that's why TextureTarget is not used
+        pub fn copyImageSubDataTexture(
+            srcName: Texture,
+            srcTarget: CopyImageTextureTarget,
+            srcLevel: i32,
+            srcX: i32,
+            srcY: i32,
+            srcZ: i32,
+            dstName: Texture,
+            dstTarget: CopyImageTextureTarget,
+            dstLevel: i32,
+            dstX: i32,
+            dstY: i32,
+            dstZ: i32,
+            srcWidth: i32,
+            srcHeight: i32,
+            srcDepth: i32,
+        ) void {
+            bindings.copyImageSubData(
+                @intFromEnum(srcName),
+                @intFromEnum(srcTarget),
+                @bitCast(srcLevel),
+                @bitCast(srcX),
+                @bitCast(srcY),
+                @bitCast(srcZ),
+                @intFromEnum(dstName),
+                @intFromEnum(dstTarget),
+                @bitCast(dstLevel),
+                @bitCast(dstX),
+                @bitCast(dstY),
+                @bitCast(dstZ),
+                @bitCast(srcWidth),
+                @bitCast(srcHeight),
+                @bitCast(srcDepth),
+            );
+        }
+        pub fn copyImageSubDataRenderbuffer(
+            srcName: Renderbuffer,
+            srcTarget: RenderbufferTarget,
+            srcLevel: i32,
+            srcX: i32,
+            srcY: i32,
+            srcZ: i32,
+            dstName: Renderbuffer,
+            dstTarget: RenderbufferTarget,
+            dstLevel: i32,
+            dstX: i32,
+            dstY: i32,
+            dstZ: i32,
+            srcWidth: i32,
+            srcHeight: i32,
+            srcDepth: i32,
+        ) void {
+            bindings.copyImageSubData(
+                @intFromEnum(srcName),
+                @intFromEnum(srcTarget),
+                @bitCast(srcLevel),
+                @bitCast(srcX),
+                @bitCast(srcY),
+                @bitCast(srcZ),
+                @intFromEnum(dstName),
+                @intFromEnum(dstTarget),
+                @bitCast(dstLevel),
+                @bitCast(dstX),
+                @bitCast(dstY),
+                @bitCast(dstZ),
+                @bitCast(srcWidth),
+                @bitCast(srcHeight),
+                @bitCast(srcDepth),
+            );
+        }
+        pub fn copyImageSubDataTextureToRenderbuffer(
+            srcName: Texture,
+            srcTarget: CopyImageTextureTarget,
+            srcLevel: i32,
+            srcX: i32,
+            srcY: i32,
+            srcZ: i32,
+            dstName: Renderbuffer,
+            dstTarget: CopyImageTextureTarget,
+            dstLevel: i32,
+            dstX: i32,
+            dstY: i32,
+            dstZ: i32,
+            srcWidth: i32,
+            srcHeight: i32,
+            srcDepth: i32,
+        ) void {
+            bindings.copyImageSubData(
+                @intFromEnum(srcName),
+                @intFromEnum(srcTarget),
+                @bitCast(srcLevel),
+                @bitCast(srcX),
+                @bitCast(srcY),
+                @bitCast(srcZ),
+                @intFromEnum(dstName),
+                @intFromEnum(dstTarget),
+                @bitCast(dstLevel),
+                @bitCast(dstX),
+                @bitCast(dstY),
+                @bitCast(dstZ),
+                @bitCast(srcWidth),
+                @bitCast(srcHeight),
+                @bitCast(srcDepth),
+            );
+        }
+        pub fn copyImageSubDataRenderbufferToTexture(
+            srcName: Renderbuffer,
+            srcTarget: RenderbufferTarget,
+            srcLevel: i32,
+            srcX: i32,
+            srcY: i32,
+            srcZ: i32,
+            dstName: Texture,
+            dstTarget: CopyImageTextureTarget,
+            dstLevel: i32,
+            dstX: i32,
+            dstY: i32,
+            dstZ: i32,
+            srcWidth: i32,
+            srcHeight: i32,
+            srcDepth: i32,
+        ) void {
+            bindings.copyImageSubData(
+                @intFromEnum(srcName),
+                @intFromEnum(srcTarget),
+                @bitCast(srcLevel),
+                @bitCast(srcX),
+                @bitCast(srcY),
+                @bitCast(srcZ),
+                @intFromEnum(dstName),
+                @intFromEnum(dstTarget),
+                @bitCast(dstLevel),
+                @bitCast(dstX),
+                @bitCast(dstY),
+                @bitCast(dstZ),
+                @bitCast(srcWidth),
+                @bitCast(srcHeight),
+                @bitCast(srcDepth),
+            );
+        }
+
         // pub var framebufferParameteri: *const fn (
         //     target: Enum,
         //     pname: Enum,
         //     param: Int,
         // ) callconv(.c) void = undefined;
+        pub fn framebufferParameteri(
+            target: FramebufferTarget,
+            pname: FramebufferParameter,
+            param: i32,
+        ) void {
+            bindings.framebufferParameteri(
+                @intFromEnum(target),
+                @intFromEnum(pname),
+                @bitCast(param),
+            );
+        }
+
         // pub var getFramebufferParameteriv: *const fn (
         //     target: Enum,
         //     pname: Enum,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getFramebufferParameteriv(
+            target: FramebufferTarget,
+            pname: GetFramebufferParameter,
+            params: []i32,
+        ) void {
+            bindings.getFramebufferParameteriv(
+                @intFromEnum(target),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getInternalformati64v: *const fn (
         //     target: Enum,
         //     internalformat: Enum,
@@ -8365,6 +11758,21 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     count: Sizei,
         //     params: [*c]Int64,
         // ) callconv(.c) void = undefined;
+        pub fn getInternalformati64v(
+            target: InternalFormatTarget,
+            internalformat: InternalFormatAny,
+            pname: InternalFormatParameter,
+            params: []i64,
+        ) void {
+            bindings.getInternalformati64v(
+                @intFromEnum(target),
+                @intFromEnum(internalformat),
+                @intFromEnum(pname),
+                @intCast(params.len),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var invalidateTexSubImage: *const fn (
         //     texture: Uint,
         //     level: Int,
@@ -8375,23 +11783,82 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     height: Sizei,
         //     depth: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn invalidateTexSubImage(
+            texture: Texture,
+            level: i32,
+            xoffset: i32,
+            yoffset: i32,
+            zoffset: i32,
+            width: i32,
+            height: i32,
+            depth: i32,
+        ) void {
+            bindings.invalidateTexSubImage(
+                @intFromEnum(texture),
+                @bitCast(level),
+                @bitCast(xoffset),
+                @bitCast(yoffset),
+                @bitCast(zoffset),
+                @bitCast(width),
+                @bitCast(height),
+                @bitCast(depth),
+            );
+        }
+
         // pub var invalidateTexImage: *const fn (
         //     texture: Uint,
         //     level: Int,
         // ) callconv(.c) void = undefined;
+        pub fn invalidateTexImage(
+            texture: Texture,
+            level: i32,
+        ) void {
+            bindings.invalidateTexImage(
+                @intFromEnum(texture),
+                @bitCast(level),
+            );
+        }
+
         // pub var invalidateBufferSubData: *const fn (
         //     buffer: Uint,
         //     offset: Intptr,
         //     length: Sizeiptr,
         // ) callconv(.c) void = undefined;
+        pub fn invalidateBufferSubData(
+            buffer: Buffer,
+            offset: usize,
+            length: usize,
+        ) void {
+            bindings.invalidateBufferSubData(
+                @intFromEnum(buffer),
+                @bitCast(offset),
+                @bitCast(length),
+            );
+        }
+
         // pub var invalidateBufferData: *const fn (
         //     buffer: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn invalidateBufferData(buffer: Buffer) void {
+            bindings.invalidateBufferData(@intFromEnum(buffer));
+        }
+
         // pub var invalidateFramebuffer: *const fn (
         //     target: Enum,
         //     numAttachments: Sizei,
         //     attachments: [*c]const Enum,
         // ) callconv(.c) void = undefined;
+        pub fn invalidateFramebuffer(
+            target: FramebufferTarget,
+            attachments: []FramebufferAttachmentDefault,
+        ) void {
+            bindings.invalidateFramebuffer(
+                @intFromEnum(target),
+                @intCast(attachments.len),
+                @ptrCast(attachments.ptr),
+            );
+        }
+
         // pub var invalidateSubFramebuffer: *const fn (
         //     target: Enum,
         //     numAttachments: Sizei,
@@ -8401,12 +11868,45 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     width: Sizei,
         //     height: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn invalidateSubFramebuffer(
+            target: FramebufferTarget,
+            attachments: []FramebufferAttachmentDefault,
+            x: i32,
+            y: i32,
+            width: i32,
+            height: i32,
+        ) void {
+            bindings.invalidateSubFramebuffer(
+                @intFromEnum(target),
+                @intCast(attachments.len),
+                @ptrCast(attachments.ptr),
+                @bitCast(x),
+                @bitCast(y),
+                @bitCast(width),
+                @bitCast(height),
+            );
+        }
+
         // pub var multiDrawArraysIndirect: *const fn (
         //     mode: Enum,
         //     indirect: ?*const anyopaque,
         //     drawcount: Sizei,
         //     stride: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn multiDrawArraysIndirect(
+            mode: PrimitiveType,
+            offset: usize, // offset of first DrawArraysIndirectCommand in bound DRAW_INDIRECT buffer
+            drawcount: i32,
+            stride: i32,
+        ) void {
+            bindings.multiDrawArraysIndirect(
+                @intFromEnum(mode),
+                @ptrFromInt(offset),
+                @bitCast(drawcount),
+                @bitCast(stride),
+            );
+        }
+
         // pub var multiDrawElementsIndirect: *const fn (
         //     mode: Enum,
         //     type: Enum,
@@ -8414,17 +11914,61 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     drawcount: Sizei,
         //     stride: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn multiDrawElementsIndirect(
+            mode: PrimitiveType,
+            index_type: DrawIndicesType,
+            offset: usize, // offset of first DrawElementsIndirectCommand in bound DRAW_INDIRECT buffer
+            drawcount: i32,
+            stride: i32,
+        ) void {
+            bindings.multiDrawElementsIndirect(
+                @intFromEnum(mode),
+                @intFromEnum(index_type),
+                @ptrFromInt(offset),
+                @bitCast(drawcount),
+                @bitCast(stride),
+            );
+        }
+
         // pub var getProgramInterfaceiv: *const fn (
         //     program: Uint,
         //     programInterface: Enum,
         //     pname: Enum,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getProgramInterfaceiv(
+            program: Program,
+            programInterface: ProgramInterface,
+            pname: ProgramInterfaceParameter,
+            params: []i32,
+        ) void {
+            assert(program != .invalid);
+            bindings.getProgramInterfaceiv(
+                @intFromEnum(program),
+                @intFromEnum(programInterface),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getProgramResourceIndex: *const fn (
         //     program: Uint,
         //     programInterface: Enum,
         //     name: [*c]const Char,
         // ) callconv(.c) Uint = undefined;
+        pub fn getProgramResourceIndex(
+            program: Program,
+            programInterface: ProgramInterfaceWithName,
+            name: [:0]const u8,
+        ) u32 {
+            assert(program != .invalid);
+            return @bitCast(bindings.getProgramResourceIndex(
+                @intFromEnum(program),
+                @intFromEnum(programInterface),
+                @ptrCast(name.ptr),
+            ));
+        }
+
         // pub var getProgramResourceName: *const fn (
         //     program: Uint,
         //     programInterface: Enum,
@@ -8433,6 +11977,27 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     length: [*c]Sizei,
         //     name: [*c]Char,
         // ) callconv(.c) void = undefined;
+        pub fn getProgramResourceName(
+            program: Program,
+            programInterface: ProgramInterfaceWithName,
+            index: u32,
+            name_buf: [:0]u8,
+        ) [:0]const u8 {
+            assert(program != .invalid);
+            var length: i32 = undefined;
+            bindings.getProgramResourceName(
+                @intFromEnum(program),
+                @intFromEnum(programInterface),
+                @bitCast(index),
+                // includes null terminator
+                @intCast(name_buf.len + 1),
+                // excludes null terminator
+                @ptrCast(&length),
+                @ptrCast(name_buf.ptr),
+            );
+            return name_buf[0..@intCast(length) :0];
+        }
+
         // pub var getProgramResourceiv: *const fn (
         //     program: Uint,
         //     programInterface: Enum,
@@ -8443,21 +12008,82 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     length: [*c]Sizei,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getProgramResourceiv(
+            program: Program,
+            programInterface: ProgramInterface,
+            index: u32,
+            props: []const ProgramResource,
+            params_buf: []i32,
+        ) []const i32 {
+            assert(program != .invalid);
+            var length: i32 = undefined;
+            bindings.getProgramResourceiv(
+                @intFromEnum(program),
+                @intFromEnum(programInterface),
+                @bitCast(index),
+                @intCast(props.len),
+                @ptrCast(props.ptr),
+                @intCast(params_buf.len),
+                @ptrCast(&length),
+                @ptrCast(params_buf.ptr),
+            );
+            return params_buf[0..@intCast(length)];
+        }
+
         // pub var getProgramResourceLocation: *const fn (
         //     program: Uint,
         //     programInterface: Enum,
         //     name: [*c]const Char,
         // ) callconv(.c) Int = undefined;
+        pub fn getProgramResourceLocation(
+            program: Program,
+            programInterface: ProgramInterfaceWithLocation,
+            name: [:0]const u8,
+        ) i32 {
+            assert(program != .invalid);
+            return @bitCast(bindings.getProgramResourceLocation(
+                @intFromEnum(program),
+                @intFromEnum(programInterface),
+                @ptrCast(name.ptr),
+            ));
+        }
+
         // pub var getProgramResourceLocationIndex: *const fn (
         //     program: Uint,
         //     programInterface: Enum,
         //     name: [*c]const Char,
         // ) callconv(.c) Int = undefined;
+        pub fn getProgramResourceLocationIndex(
+            program: Program,
+            programInterface: ProgramInterfaceWithLocationIndex,
+            name: [:0]const u8,
+        ) i32 {
+            assert(program != .invalid);
+            return @bitCast(bindings.getProgramResourceLocationIndex(
+                @intFromEnum(program),
+                @intFromEnum(programInterface),
+                @ptrCast(name.ptr),
+            ));
+        }
+
         // pub var shaderStorageBlockBinding: *const fn (
         //     program: Uint,
         //     storageBlockIndex: Uint,
         //     storageBlockBinding: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn shaderStorageBlockBinding(
+            program: Program,
+            storageBlockIndex: u32,
+            storageBlockBinding: u32,
+        ) void {
+            assert(program != .invalid);
+            bindings.shaderStorageBlockBinding(
+                @intFromEnum(program),
+                @bitCast(storageBlockIndex),
+                @bitCast(storageBlockBinding),
+            );
+        }
+
         // pub var texBufferRange: *const fn (
         //     target: Enum,
         //     internalformat: Enum,
@@ -8465,6 +12091,22 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     offset: Intptr,
         //     size: Sizeiptr,
         // ) callconv(.c) void = undefined;
+        pub fn texBufferRange(
+            target: TexBufferTarget,
+            internalformat: TextureInternalFormat,
+            buffer: Buffer,
+            offset: usize,
+            size: usize,
+        ) void {
+            bindings.texBufferRange(
+                @intFromEnum(target),
+                @intFromEnum(internalformat),
+                @intFromEnum(buffer),
+                @bitCast(offset),
+                @bitCast(size),
+            );
+        }
+
         // pub var texStorage2DMultisample: *const fn (
         //     target: Enum,
         //     samples: Sizei,
@@ -8473,6 +12115,24 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     height: Sizei,
         //     fixedsamplelocations: Boolean,
         // ) callconv(.c) void = undefined;
+        pub fn texStorage2DMultisample(
+            target: TexImage2DMultisampleTarget,
+            samples: i32,
+            internalformat: InternalFormat,
+            width: i32,
+            height: i32,
+            fixedsamplelocations: bool,
+        ) void {
+            bindings.texStorage2DMultisample(
+                @intFromEnum(target),
+                @bitCast(samples),
+                @intFromEnum(internalformat),
+                @bitCast(width),
+                @bitCast(height),
+                @intFromBool(fixedsamplelocations),
+            );
+        }
+
         // pub var texStorage3DMultisample: *const fn (
         //     target: Enum,
         //     samples: Sizei,
@@ -8482,6 +12142,26 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     depth: Sizei,
         //     fixedsamplelocations: Boolean,
         // ) callconv(.c) void = undefined;
+        pub fn texStorage3DMultisample(
+            target: TexImage3DMultisampleTarget,
+            samples: i32,
+            internalformat: InternalFormat,
+            width: i32,
+            height: i32,
+            depth: i32,
+            fixedsamplelocations: bool,
+        ) void {
+            bindings.texStorage3DMultisample(
+                @intFromEnum(target),
+                @bitCast(samples),
+                @intFromEnum(internalformat),
+                @bitCast(width),
+                @bitCast(height),
+                @bitCast(depth),
+                @intFromBool(fixedsamplelocations),
+            );
+        }
+
         // pub var textureView: *const fn (
         //     texture: Uint,
         //     target: Enum,
@@ -8492,12 +12172,49 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     minlayer: Uint,
         //     numlayers: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn textureView(
+            texture: Texture,
+            target: CopyImageTextureTarget,
+            origtexture: Texture,
+            internalformat: TextureViewInternalFormat,
+            minlevel: u32,
+            numlevels: u32,
+            minlayer: u32,
+            numlayers: u32,
+        ) void {
+            assert(texture != .invalid);
+            bindings.textureView(
+                @intFromEnum(texture),
+                @intFromEnum(target),
+                @intFromEnum(origtexture),
+                @intFromEnum(internalformat),
+                @bitCast(minlevel),
+                @bitCast(numlevels),
+                @bitCast(minlayer),
+                @bitCast(numlayers),
+            );
+        }
+
         // pub var bindVertexBuffer: *const fn (
         //     bindingindex: Uint,
         //     buffer: Uint,
         //     offset: Intptr,
         //     stride: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn bindVertexBuffer(
+            bindingindex: u32,
+            buffer: Buffer,
+            offset: usize,
+            stride: i32,
+        ) void {
+            bindings.bindVertexBuffer(
+                @bitCast(bindingindex),
+                @intFromEnum(buffer),
+                @bitCast(offset),
+                @bitCast(stride),
+            );
+        }
+
         // pub var vertexAttribFormat: *const fn (
         //     attribindex: Uint,
         //     size: Int,
@@ -8505,26 +12222,90 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     normalized: Boolean,
         //     relativeoffset: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn vertexAttribFormat(
+            attribindex: VertexAttribLocation,
+            size: i32,
+            attrib_type: VertexAttribType,
+            normalized: bool,
+            relativeoffset: u32,
+        ) void {
+            bindings.vertexAttribFormat(
+                @intFromEnum(attribindex),
+                @bitCast(size),
+                @intFromEnum(attrib_type),
+                @intFromBool(normalized),
+                @bitCast(relativeoffset),
+            );
+        }
+
         // pub var vertexAttribIFormat: *const fn (
         //     attribindex: Uint,
         //     size: Int,
         //     type: Enum,
         //     relativeoffset: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn vertexAttribIFormat(
+            attribindex: VertexAttribLocation,
+            size: i32,
+            attrib_type: VertexAttribIntegerType,
+            relativeoffset: u32,
+        ) void {
+            bindings.vertexAttribIFormat(
+                @intFromEnum(attribindex),
+                @bitCast(size),
+                @intFromEnum(attrib_type),
+                @bitCast(relativeoffset),
+            );
+        }
+
         // pub var vertexAttribLFormat: *const fn (
         //     attribindex: Uint,
         //     size: Int,
         //     type: Enum,
         //     relativeoffset: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn vertexAttribLFormat(
+            attribindex: VertexAttribLocation,
+            size: i32,
+            attrib_type: VertexAttribDoubleType,
+            relativeoffset: u32,
+        ) void {
+            bindings.vertexAttribLFormat(
+                @intFromEnum(attribindex),
+                @bitCast(size),
+                @intFromEnum(attrib_type),
+                @bitCast(relativeoffset),
+            );
+        }
+
         // pub var vertexAttribBinding: *const fn (
         //     attribindex: Uint,
         //     bindingindex: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn vertexAttribBinding(
+            attribindex: VertexAttribLocation,
+            bindingindex: u32,
+        ) void {
+            bindings.vertexAttribBinding(
+                @intFromEnum(attribindex),
+                @bitCast(bindingindex),
+            );
+        }
+
         // pub var vertexBindingDivisor: *const fn (
         //     bindingindex: Uint,
         //     divisor: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn vertexBindingDivisor(
+            bindingindex: u32,
+            divisor: u32,
+        ) void {
+            bindings.vertexBindingDivisor(
+                @bitCast(bindingindex),
+                @bitCast(divisor),
+            );
+        }
+
         // pub var debugMessageControl: *const fn (
         //     source: Enum,
         //     type: Enum,
@@ -8533,6 +12314,30 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     ids: [*c]const Uint,
         //     enabled: Boolean,
         // ) callconv(.c) void = undefined;
+        pub fn debugMessageControl(
+            source: DebugSourceWithDontCare,
+            debug_type: DebugTypeWithDontCare,
+            severity: DebugSeverityWithDontCare,
+            ids: []const u32,
+            enabled: bool,
+        ) void {
+            if (ids.len > 0) {
+                // when ids are provided, source and type must not be DONT_CARE
+                assert(source != .dont_care);
+                assert(debug_type != .dont_care);
+                // and severity must be DONT_CARE
+                assert(severity == .dont_care);
+            }
+            bindings.debugMessageControl(
+                @intFromEnum(source),
+                @intFromEnum(debug_type),
+                @intFromEnum(severity),
+                @intCast(ids.len),
+                @ptrCast(ids.ptr),
+                @intFromBool(enabled),
+            );
+        }
+
         // pub var debugMessageInsert: *const fn (
         //     source: Enum,
         //     type: Enum,
@@ -8541,12 +12346,31 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     length: Sizei,
         //     message: [*c]const Char,
         // ) callconv(.c) void = undefined;
+        pub fn debugMessageInsert(
+            source: DebugSourceCustom,
+            debug_type: DebugType,
+            id: u32,
+            severity: DebugSeverity,
+            messsage: []const u8,
+        ) void {
+            bindings.debugMessageInsert(
+                @intFromEnum(source),
+                @intFromEnum(debug_type),
+                @bitCast(id),
+                @intFromEnum(severity),
+                @intCast(messsage.len),
+                @ptrCast(messsage.ptr),
+            );
+        }
 
         pub fn debugMessageCallback(
-            callback: DEBUGPROC,
+            callback: ?*const DEBUGPROC, // passing null will unset message callback
             userParam: ?*const anyopaque,
         ) void {
-            bindings.debugMessageCallback(@as(bindings.DEBUGPROC, @ptrCast(callback)), userParam);
+            bindings.debugMessageCallback(
+                @ptrCast(callback),
+                userParam,
+            );
         }
 
         // pub var getDebugMessageLog: *const fn (
@@ -8559,19 +12383,92 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     lengths: [*c]Sizei,
         //     messageLog: [*c]Char,
         // ) callconv(.c) Uint = undefined;
+        /// passing null to optional parameters will omit that segment
+        /// of messages' information, while still populating all non-null
+        /// parameters,
+        /// when parameters 'sources', 'types', 'ids', 'severities' and 'lengths',
+        /// are non-null, they must have space for at least 'count' messages
+        pub fn getDebugMessageLog(
+            count: u32,
+            sources: ?[*]DebugSource,
+            types: ?[*]DebugType,
+            ids: ?[*]u32,
+            severities: ?[*]DebugSeverity,
+            lengths: ?[*]i32,
+            message_log_buf: ?[:0]u8,
+        ) usize {
+            return @intCast(bindings.getDebugMessageLog(
+                @bitCast(count),
+                if (message_log_buf) |buf| @intCast(buf.len) else 0,
+                @ptrCast(sources),
+                @ptrCast(types),
+                @ptrCast(ids),
+                @ptrCast(severities),
+                @ptrCast(lengths),
+                if (message_log_buf) |buf| @ptrCast(buf.ptr) else null,
+            ));
+        }
+        /// discards 'count' messages from the log
+        pub fn getDebugMessageLogDiscard(count: usize) usize {
+            return @intCast(bindings.getDebugMessageLog(
+                @intCast(count),
+                0,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+            ));
+        }
+
         // pub var pushDebugGroup: *const fn (
         //     source: Enum,
         //     id: Uint,
         //     length: Sizei,
         //     message: [*c]const Char,
         // ) callconv(.c) void = undefined;
+        pub fn pushDebugGroup(
+            source: DebugSourceCustom,
+            id: u32,
+            message: [:0]const u8,
+        ) void {
+            bindings.pushDebugGroup(
+                @intFromEnum(source),
+                @bitCast(id),
+                @intCast(message.len),
+                @ptrCast(message.ptr),
+            );
+        }
+
         // pub var popDebugGroup: *const fn () callconv(.c) void = undefined;
+        pub fn popDebugGroup() void {
+            bindings.popDebugGroup();
+        }
+
         // pub var objectLabel: *const fn (
         //     identifier: Enum,
         //     name: Uint,
         //     length: Sizei,
         //     label: [*c]const Char,
         // ) callconv(.c) void = undefined;
+        /// parameter 'NameType' must be Buffer, Framebuffer,
+        /// ProgramPipeline, Program, Query, Renderbuffer, Sampler,
+        /// Shader, Texture, TransformFeedback or VertexArrayObject
+        pub fn objectLabel(
+            comptime NameType: type,
+            name: NameType,
+            label: ?[:0]const u8, // null removes the label from object
+        ) void {
+            const namespace: DebugObjectNamespace = .fromType(NameType);
+            bindings.objectLabel(
+                @intFromEnum(namespace),
+                @intFromEnum(name),
+                if (label) |l| @intCast(l.len) else 0,
+                if (label) |l| @ptrCast(l.ptr) else null,
+            );
+        }
+
         // pub var getObjectLabel: *const fn (
         //     identifier: Enum,
         //     name: Uint,
@@ -8579,21 +12476,79 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     length: [*c]Sizei,
         //     label: [*c]Char,
         // ) callconv(.c) void = undefined;
+        /// parameter 'NameType' must be Buffer, Framebuffer,
+        /// ProgramPipeline, Program, Query, Renderbuffer, Sampler,
+        /// Shader, Texture, TransformFeedback or VertexArrayObject
+        pub fn getObjectLabel(
+            comptime NameType: type,
+            name: NameType,
+            label_buf: [:0]u8,
+        ) [:0]const u8 {
+            const namespace: DebugObjectNamespace = .fromType(NameType);
+            var length: i32 = undefined;
+            bindings.getObjectLabel(
+                @intFromEnum(namespace),
+                @intFromEnum(name),
+                // includes null terminator
+                @intCast(label_buf.len + 1),
+                // excludes null terminator
+                @ptrCast(&length),
+                @ptrCast(label_buf.ptr),
+            );
+            return label_buf[0..@intCast(length) :0];
+        }
+
         // pub var objectPtrLabel: *const fn (
         //     ptr: ?*const anyopaque,
         //     length: Sizei,
         //     label: [*c]const Char,
         // ) callconv(.c) void = undefined;
+        pub fn objectPtrLabel(
+            sync: Sync,
+            label_buf: [:0]const u8,
+        ) void {
+            bindings.objectPtrLabel(
+                @ptrCast(sync),
+                @intCast(label_buf.len),
+                @ptrCast(label_buf.ptr),
+            );
+        }
+
         // pub var getObjectPtrLabel: *const fn (
         //     ptr: ?*const anyopaque,
         //     bufSize: Sizei,
         //     length: [*c]Sizei,
         //     label: [*c]Char,
         // ) callconv(.c) void = undefined;
+        pub fn getObjectPtrLabel(
+            sync: Sync,
+            label_buf: [:0]u8,
+        ) [:0]const u8 {
+            var length: i32 = undefined;
+            bindings.getObjectPtrLabel(
+                @ptrCast(sync),
+                // includes null terminator
+                @intCast(label_buf.len + 1),
+                // excludes null terminator
+                @ptrCast(&length),
+                @ptrCast(label_buf.ptr),
+            );
+            return label_buf[0..@intCast(length) :0];
+        }
+
         // pub var getPointerv: *const fn (
         //     pname: Enum,
         //     params: [*c]?*anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn getPointerv(
+            pname: DebugPointerParameter,
+            params: *?*anyopaque,
+        ) void {
+            bindings.getPointerv(
+                @intFromEnum(pname),
+                @ptrCast(params),
+            );
+        }
 
         //--------------------------------------------------------------------------------------------------
         //
@@ -8624,32 +12579,13 @@ pub fn Wrap(comptime bindings: anytype) type {
             target: BufferTarget,
             size: usize,
             data: ?[]const u8,
-            flags: packed struct(Bitfield) {
-                ///Enables reading via buffer mapping; read mapping fails otherwise.
-                map_read: bool = false, //0x1
-
-                ///Enables write mapping; write mapping fails otherwise.
-                map_write: bool = false, //0x2
-
-                /// DO NOT WRITE
-                pad1: u4 = 0,
-
-                ///Permits buffer operations while mapped; otherwise, such operations fail.
-                map_persistent: bool = false, //0x40
-
-                ///Makes persistent accesses coherent without barriers; barriers required otherwise.
-                map_coherent: bool = false, //0x80
-
-                ///Permits glNamedBufferSubData updates; calls fail otherwise.
-                dynamic_storage: bool = false, //0x100
-
-                ///Hints storage should use client memory.
-                client_storage: bool = false, //0x200
-
-                /// DO NOT WRITE
-                pad2: u22 = 0,
-            },
+            flags: BufferStorageFlags,
         ) void {
+            // when MAP_COHERENT_BIT is set, MAP_PERSISTENT_BIT must also be set
+            assert(!flags.map_coherent or flags.map_persistent);
+            // when MAP_PERSISTENT_BIT is set, at least one of
+            // MAP_READ_BIT and/or MAP_WRITE_BIT must also be set
+            assert(!flags.map_persistent or (flags.map_read or flags.map_write));
             bindings.bufferStorage(
                 @intFromEnum(target),
                 @as(Sizeiptr, @bitCast(size)),
@@ -8793,10 +12729,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const CONTEXT_RELEASE_BEHAVIOR = bindings.CONTEXT_RELEASE_BEHAVIOR;
         pub const CONTEXT_RELEASE_BEHAVIOR_FLUSH = bindings.CONTEXT_RELEASE_BEHAVIOR_FLUSH;
 
-        pub fn clipControl(
-            origin: enum(Enum) { lower_left = LOWER_LEFT, upper_left = UPPER_LEFT },
-            depth: enum(Enum) { negative_one_to_one = NEGATIVE_ONE_TO_ONE, zero_to_one = ZERO_TO_ONE },
-        ) void {
+        pub fn clipControl(origin: ClipOrigin, depth: ClipDepth) void {
             bindings.clipControl(@intFromEnum(origin), @intFromEnum(depth));
         }
 
@@ -8804,11 +12737,33 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     n: Sizei,
         //     ids: [*c]Uint,
         // ) callconv(.c) void = undefined;
+        pub fn createTransformFeedback(ptr: *TransformFeedback) void {
+            bindings.createTransformFeedbacks(1, @ptrCast(ptr));
+        }
+        pub fn createTransformFeedbacks(transform_feedbacks: []TransformFeedback) void {
+            bindings.createTransformFeedbacks(
+                @intCast(transform_feedbacks.len),
+                @ptrCast(transform_feedbacks.ptr),
+            );
+        }
+
         // pub var transformFeedbackBufferBase: *const fn (
         //     xfb: Uint,
         //     index: Uint,
         //     buffer: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn transformFeedbackBufferBase(
+            transform_feedback: TransformFeedback,
+            index: u32,
+            buffer: Buffer,
+        ) void {
+            bindings.transformFeedbackBufferBase(
+                @intFromEnum(transform_feedback),
+                @bitCast(index),
+                @intFromEnum(buffer),
+            );
+        }
+
         // pub var transformFeedbackBufferRange: *const fn (
         //     xfb: Uint,
         //     index: Uint,
@@ -8816,26 +12771,81 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     offset: Intptr,
         //     size: Sizeiptr,
         // ) callconv(.c) void = undefined;
+        pub fn transformFeedbackBufferRange(
+            transform_feedback: TransformFeedback,
+            index: u32,
+            buffer: Buffer,
+            offset: usize,
+            size: usize,
+        ) void {
+            bindings.transformFeedbackBufferRange(
+                @intFromEnum(transform_feedback),
+                @bitCast(index),
+                @intFromEnum(buffer),
+                @bitCast(offset),
+                @bitCast(size),
+            );
+        }
+
         // pub var getTransformFeedbackiv: *const fn (
         //     xfb: Uint,
         //     pname: Enum,
         //     param: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getTransformFeedbackiv(
+            transform_feedback: TransformFeedback,
+            pname: TransformFeedbackIntegerParameter,
+            param: []i32,
+        ) void {
+            bindings.getTransformFeedbackiv(
+                @intFromEnum(transform_feedback),
+                @intFromEnum(pname),
+                @ptrCast(param.ptr),
+            );
+        }
+
         // pub var getTransformFeedbacki_v: *const fn (
         //     xfb: Uint,
         //     pname: Enum,
         //     index: Uint,
         //     param: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getTransformFeedbacki_v(
+            transform_feedback: TransformFeedback,
+            pname: IndexedTransformFeedbackIntegerParameter,
+            index: u32,
+            param: []i32,
+        ) void {
+            bindings.getTransformFeedbacki_v(
+                @intFromEnum(transform_feedback),
+                @intFromEnum(pname),
+                @bitCast(index),
+                @ptrCast(param.ptr),
+            );
+        }
+
         // pub var getTransformFeedbacki64_v: *const fn (
         //     xfb: Uint,
         //     pname: Enum,
         //     index: Uint,
         //     param: [*c]Int64,
         // ) callconv(.c) void = undefined;
+        pub fn getTransformFeedbacki64_v(
+            transform_feedback: TransformFeedback,
+            pname: IndexedTransformFeedbackInt64Parameter,
+            index: u32,
+            param: []i64,
+        ) void {
+            bindings.getTransformFeedbacki64_v(
+                @intFromEnum(transform_feedback),
+                @intFromEnum(pname),
+                @bitCast(index),
+                @ptrCast(param.ptr),
+            );
+        }
 
         pub fn createBuffer(ptr: *Buffer) void {
-            bindings.createBuffers(1, @ptrCast(@constCast(&ptr)));
+            bindings.createBuffers(1, @ptrCast(ptr));
         }
         pub fn createBuffers(buffers: []Buffer) void {
             bindings.createBuffers(@intCast(buffers.len), @ptrCast(buffers.ptr));
@@ -8847,6 +12857,24 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     data: ?*const anyopaque,
         //     flags: Bitfield,
         // ) callconv(.c) void = undefined;
+        pub fn namedBufferStorage(
+            buffer: Buffer,
+            size: usize,
+            data: ?[]const u8,
+            flags: BufferStorageFlags,
+        ) void {
+            // when MAP_COHERENT_BIT is set, MAP_PERSISTENT_BIT must also be set
+            assert(!flags.map_coherent or flags.map_persistent);
+            // when MAP_PERSISTENT_BIT is set, at least one of
+            // MAP_READ_BIT and/or MAP_WRITE_BIT must also be set
+            assert(!flags.map_persistent or (flags.map_read or flags.map_write));
+            bindings.namedBufferStorage(
+                @intFromEnum(buffer),
+                @bitCast(size),
+                if (data) |d| @ptrCast(d.ptr) else null,
+                @bitCast(flags),
+            );
+        }
 
         pub fn namedBufferData(buffer: Buffer, data: []const u8, usage: BufferUsage) void {
             bindings.namedBufferData(@intFromEnum(buffer), @intCast(data.len), data.ptr, @intFromEnum(usage));
@@ -8858,6 +12886,19 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     size: Sizeiptr,
         //     data: ?*const anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn namedBufferSubData(
+            buffer: Buffer,
+            offset: usize,
+            bytes: []const u8,
+        ) void {
+            bindings.namedBufferSubData(
+                @intFromEnum(buffer),
+                @bitCast(offset),
+                @bitCast(bytes.len),
+                @ptrCast(bytes.ptr),
+            );
+        }
+
         // pub var copyNamedBufferSubData: *const fn (
         //     readBuffer: Uint,
         //     writeBuffer: Uint,
@@ -8865,6 +12906,22 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     writeOffset: Intptr,
         //     size: Sizeiptr,
         // ) callconv(.c) void = undefined;
+        pub fn copyNamedBufferSubData(
+            read_buffer: Buffer,
+            write_buffer: Buffer,
+            readOffset: usize,
+            writeOffset: usize,
+            size: usize,
+        ) void {
+            bindings.copyNamedBufferSubData(
+                @intFromEnum(read_buffer),
+                @intFromEnum(write_buffer),
+                @bitCast(readOffset),
+                @bitCast(writeOffset),
+                @bitCast(size),
+            );
+        }
+
         // pub var clearNamedBufferData: *const fn (
         //     buffer: Uint,
         //     internalformat: Enum,
@@ -8872,6 +12929,22 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     type: Enum,
         //     data: ?*const anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn clearNamedBufferData(
+            buffer: Buffer,
+            internalformat: TextureInternalFormat,
+            format: PixelFormat,
+            pixel_type: PixelType,
+            data: ?[]const u8, // passing null will fill the buffer with zeros
+        ) void {
+            bindings.clearNamedBufferData(
+                @intFromEnum(buffer),
+                @intFromEnum(internalformat),
+                @intFromEnum(format),
+                @intFromEnum(pixel_type),
+                if (data) |d| @ptrCast(d.ptr) else null,
+            );
+        }
+
         // pub var clearNamedBufferSubData: *const fn (
         //     buffer: Uint,
         //     internalformat: Enum,
@@ -8881,48 +12954,159 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     type: Enum,
         //     data: ?*const anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn clearNamedBufferSubData(
+            buffer: Buffer,
+            internalformat: TextureInternalFormat,
+            offset: usize,
+            size: usize,
+            format: PixelFormat,
+            pixel_type: PixelType,
+            data: ?[]const u8, // passing null will clear the buffer region with zeros
+        ) void {
+            bindings.clearNamedBufferSubData(
+                @intFromEnum(buffer),
+                @intFromEnum(internalformat),
+                @bitCast(offset),
+                @bitCast(size),
+                @intFromEnum(format),
+                @intFromEnum(pixel_type),
+                if (data) |d| @ptrCast(d.ptr) else null,
+            );
+        }
+
         // pub var mapNamedBuffer: *const fn (
         //     buffer: Uint,
         //     access: Enum,
         // ) callconv(.c) ?*anyopaque = undefined;
+        pub fn mapNamedBuffer(buffer: Buffer, access: Access) ?[*]u8 {
+            return @ptrCast(bindings.mapNamedBuffer(
+                @intFromEnum(buffer),
+                @intFromEnum(access),
+            ));
+        }
+
         // pub var mapNamedBufferRange: *const fn (
         //     buffer: Uint,
         //     offset: Intptr,
         //     length: Sizeiptr,
         //     access: Bitfield,
         // ) callconv(.c) ?*anyopaque = undefined;
+        pub fn mapNamedBufferRange(
+            buffer: Buffer,
+            offset: usize,
+            length: usize,
+            access: MappedBufferAccess,
+        ) ?[*]u8 {
+            return @ptrCast(bindings.mapNamedBufferRange(
+                @intFromEnum(buffer),
+                @bitCast(offset),
+                @bitCast(length),
+                @bitCast(access),
+            ));
+        }
+
         // pub var unmapNamedBuffer: *const fn (
         //     buffer: Uint,
         // ) callconv(.c) Boolean = undefined;
+        pub fn unmapNamedBuffer(buffer: Buffer) bool {
+            return bindings.unmapNamedBuffer(@intFromEnum(buffer)) == TRUE;
+        }
+
         // pub var flushMappedNamedBufferRange: *const fn (
         //     buffer: Uint,
         //     offset: Intptr,
         //     length: Sizeiptr,
         // ) callconv(.c) void = undefined;
+        pub fn flushMappedNamedBufferRange(
+            buffer: Buffer,
+            offset: usize,
+            length: usize,
+        ) void {
+            bindings.flushMappedNamedBufferRange(
+                @intFromEnum(buffer),
+                @bitCast(offset),
+                @bitCast(length),
+            );
+        }
+
         // pub var getNamedBufferParameteriv: *const fn (
         //     buffer: Uint,
         //     pname: Enum,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getNamedBufferParameteriv(
+            buffer: Buffer,
+            pname: BufferParameter,
+            params: []i32,
+        ) void {
+            bindings.getNamedBufferParameteriv(
+                @intFromEnum(buffer),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getNamedBufferParameteri64v: *const fn (
         //     buffer: Uint,
         //     pname: Enum,
         //     params: [*c]Int64,
         // ) callconv(.c) void = undefined;
+        pub fn getNamedBufferParameteri64v(
+            buffer: Buffer,
+            pname: BufferParameter,
+            params: []i64,
+        ) void {
+            bindings.getNamedBufferParameteri64v(
+                @intFromEnum(buffer),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getNamedBufferPointerv: *const fn (
         //     buffer: Uint,
         //     pname: Enum,
         //     params: [*c]?*anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn getNamedBufferPointerv(
+            buffer: Buffer,
+            pname: BufferPointerParameter,
+            params: *?[*]u8,
+        ) void {
+            bindings.getNamedBufferPointerv(
+                @intFromEnum(buffer),
+                @intFromEnum(pname),
+                @ptrCast(params),
+            );
+        }
+
         // pub var getNamedBufferSubData: *const fn (
         //     buffer: Uint,
         //     offset: Intptr,
         //     size: Sizeiptr,
         //     data: ?*anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn getNamedBufferSubData(
+            buffer: Buffer,
+            offset: usize,
+            data: []u8,
+        ) void {
+            bindings.getNamedBufferSubData(
+                @intFromEnum(buffer),
+                @bitCast(offset),
+                @bitCast(data.len),
+                @ptrCast(data.ptr),
+            );
+        }
 
         pub fn createFramebuffer(ptr: *Framebuffer) void {
             bindings.createFramebuffers(1, @ptrCast(ptr));
+        }
+        pub fn createFramebuffers(framebuffers: []Framebuffer) void {
+            bindings.createFramebuffers(
+                @intCast(framebuffers.len),
+                @ptrCast(framebuffers.ptr),
+            );
         }
 
         // pub var namedFramebufferRenderbuffer: *const fn (
@@ -8931,11 +13115,36 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     renderbuffertarget: Enum,
         //     renderbuffer: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn namedFramebufferRenderbuffer(
+            framebuffer: Framebuffer,
+            attachment: FramebufferAttachment,
+            renderbuffertarget: RenderbufferTarget,
+            renderbuffer: Renderbuffer,
+        ) void {
+            bindings.namedFramebufferRenderbuffer(
+                @intFromEnum(framebuffer),
+                @intFromEnum(attachment),
+                @intFromEnum(renderbuffertarget),
+                @intFromEnum(renderbuffer),
+            );
+        }
+
         // pub var namedFramebufferParameteri: *const fn (
         //     framebuffer: Uint,
         //     pname: Enum,
         //     param: Int,
         // ) callconv(.c) void = undefined;
+        pub fn namedFramebufferParameteri(
+            framebuffer: Framebuffer,
+            pname: FramebufferParameter,
+            param: i32,
+        ) void {
+            bindings.namedFramebufferParameteri(
+                @intFromEnum(framebuffer),
+                @intFromEnum(pname),
+                @bitCast(param),
+            );
+        }
 
         pub fn namedFramebufferTexture(framebuffer: Framebuffer, attachment: FramebufferAttachment, texture: Texture, level: i32) void {
             bindings.namedFramebufferTexture(@intFromEnum(framebuffer), @intFromEnum(attachment), @intFromEnum(texture), level);
@@ -8948,24 +13157,82 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     level: Int,
         //     layer: Int,
         // ) callconv(.c) void = undefined;
+        pub fn namedFramebufferTextureLayer(
+            framebuffer: Framebuffer,
+            attachment: FramebufferAttachment,
+            texture: Texture,
+            level: i32,
+            layer: i32,
+        ) void {
+            bindings.namedFramebufferTextureLayer(
+                @intFromEnum(framebuffer),
+                @intFromEnum(attachment),
+                @intFromEnum(texture),
+                @bitCast(level),
+                @bitCast(layer),
+            );
+        }
+
         // pub var namedFramebufferDrawBuffer: *const fn (
         //     framebuffer: Uint,
         //     buf: Enum,
         // ) callconv(.c) void = undefined;
+        pub fn namedFramebufferDrawBuffer(
+            framebuffer: Framebuffer,
+            buf: ColorBuffer,
+        ) void {
+            bindings.namedFramebufferDrawBuffer(
+                @intFromEnum(framebuffer),
+                @intFromEnum(buf),
+            );
+        }
+
         // pub var namedFramebufferDrawBuffers: *const fn (
         //     framebuffer: Uint,
         //     n: Sizei,
         //     bufs: [*c]const Enum,
         // ) callconv(.c) void = undefined;
+        pub fn namedFramebufferDrawBuffers(
+            framebuffer: Framebuffer,
+            bufs: []const ColorBufferSingle,
+        ) void {
+            bindings.namedFramebufferDrawBuffers(
+                @intFromEnum(framebuffer),
+                @intCast(bufs.len),
+                @ptrCast(bufs.ptr),
+            );
+        }
+
         // pub var namedFramebufferReadBuffer: *const fn (
         //     framebuffer: Uint,
         //     src: Enum,
         // ) callconv(.c) void = undefined;
+        pub fn namedFramebufferReadBuffer(
+            framebuffer: Framebuffer,
+            src: ColorBuffer,
+        ) void {
+            bindings.namedFramebufferReadBuffer(
+                @intFromEnum(framebuffer),
+                @intFromEnum(src),
+            );
+        }
+
         // pub var invalidateNamedFramebufferData: *const fn (
         //     framebuffer: Uint,
         //     numAttachments: Sizei,
         //     attachments: [*c]const Enum,
         // ) callconv(.c) void = undefined;
+        pub fn invalidateNamedFramebufferData(
+            framebuffer: Framebuffer,
+            attachments: []FramebufferAttachmentDefault,
+        ) void {
+            bindings.invalidateNamedFramebufferData(
+                @intFromEnum(framebuffer),
+                @intCast(attachments.len),
+                @ptrCast(attachments.ptr),
+            );
+        }
+
         // pub var invalidateNamedFramebufferSubData: *const fn (
         //     framebuffer: Uint,
         //     numAttachments: Sizei,
@@ -8975,24 +13242,85 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     width: Sizei,
         //     height: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn invalidateNamedFramebufferSubData(
+            framebuffer: Framebuffer,
+            attachments: []FramebufferAttachmentDefault,
+            x: i32,
+            y: i32,
+            width: i32,
+            height: i32,
+        ) void {
+            bindings.invalidateNamedFramebufferSubData(
+                @intFromEnum(framebuffer),
+                @intCast(attachments.len),
+                @ptrCast(attachments.ptr),
+                @bitCast(x),
+                @bitCast(y),
+                @bitCast(width),
+                @bitCast(height),
+            );
+        }
+
         // pub var clearNamedFramebufferiv: *const fn (
         //     framebuffer: Uint,
         //     buffer: Enum,
         //     drawbuffer: Int,
         //     value: [*c]const Int,
         // ) callconv(.c) void = undefined;
+        pub fn clearNamedFramebufferiv(
+            framebuffer: Framebuffer,
+            buffer: ClearBuffer,
+            drawbuffer: i32,
+            value: []const i32,
+        ) void {
+            bindings.clearNamedFramebufferiv(
+                @intFromEnum(framebuffer),
+                @intFromEnum(buffer),
+                @bitCast(drawbuffer),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var clearNamedFramebufferuiv: *const fn (
         //     framebuffer: Uint,
         //     buffer: Enum,
         //     drawbuffer: Int,
         //     value: [*c]const Uint,
         // ) callconv(.c) void = undefined;
+        pub fn clearNamedFramebufferuiv(
+            framebuffer: Framebuffer,
+            buffer: ClearBuffer,
+            drawbuffer: i32,
+            value: []const u32,
+        ) void {
+            bindings.clearNamedFramebufferuiv(
+                @intFromEnum(framebuffer),
+                @intFromEnum(buffer),
+                @bitCast(drawbuffer),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var clearNamedFramebufferfv: *const fn (
         //     framebuffer: Uint,
         //     buffer: Enum,
         //     drawbuffer: Int,
         //     value: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn clearNamedFramebufferfv(
+            framebuffer: Framebuffer,
+            buffer: ClearBuffer,
+            drawbuffer: i32,
+            value: []const f32,
+        ) void {
+            bindings.clearNamedFramebufferfv(
+                @intFromEnum(framebuffer),
+                @intFromEnum(buffer),
+                @bitCast(drawbuffer),
+                @ptrCast(value.ptr),
+            );
+        }
+
         // pub var clearNamedFramebufferfi: *const fn (
         //     framebuffer: Uint,
         //     buffer: Enum,
@@ -9000,6 +13328,22 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     depth: Float,
         //     stencil: Int,
         // ) callconv(.c) void = undefined;
+        pub fn clearNamedFramebufferfi(
+            framebuffer: Framebuffer,
+            buffer: ClearBufferDepthStencil,
+            drawbuffer: i32,
+            depth: f32,
+            stencil: i32,
+        ) void {
+            bindings.clearNamedFramebufferfi(
+                @intFromEnum(framebuffer),
+                @intFromEnum(buffer),
+                @bitCast(drawbuffer),
+                depth,
+                @bitCast(stencil),
+            );
+        }
+
         // pub var blitNamedFramebuffer: *const fn (
         //     readFramebuffer: Uint,
         //     drawFramebuffer: Uint,
@@ -9014,31 +13358,121 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     mask: Bitfield,
         //     filter: Enum,
         // ) callconv(.c) void = undefined;
+        pub fn blitNamedFramebuffer(
+            readFramebuffer: Framebuffer,
+            drawFramebuffer: Framebuffer,
+            srcX0: i32,
+            srcY0: i32,
+            srcX1: i32,
+            srcY1: i32,
+            dstX0: i32,
+            dstY0: i32,
+            dstX1: i32,
+            dstY1: i32,
+            mask: ColorMask,
+            filter: Filter,
+        ) void {
+            bindings.blitNamedFramebuffer(
+                @intFromEnum(readFramebuffer),
+                @intFromEnum(drawFramebuffer),
+                @bitCast(srcX0),
+                @bitCast(srcY0),
+                @bitCast(srcX1),
+                @bitCast(srcY1),
+                @bitCast(dstX0),
+                @bitCast(dstY0),
+                @bitCast(dstX1),
+                @bitCast(dstY1),
+                @bitCast(mask),
+                @intFromEnum(filter),
+            );
+        }
+
         // pub var checkNamedFramebufferStatus: *const fn (
         //     framebuffer: Uint,
         //     target: Enum,
         // ) callconv(.c) Enum = undefined;
+        pub fn checkNamedFramebufferStatus(
+            framebuffer: Framebuffer,
+            target: FramebufferTarget,
+        ) FramebufferStatus {
+            return @enumFromInt(bindings.checkNamedFramebufferStatus(
+                @intFromEnum(framebuffer),
+                @intFromEnum(target),
+            ));
+        }
+
         // pub var getNamedFramebufferParameteriv: *const fn (
         //     framebuffer: Uint,
         //     pname: Enum,
         //     param: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getNamedFramebufferParameteriv(
+            framebuffer: Framebuffer,
+            pname: GetFramebufferParameter,
+            params: []i32,
+        ) void {
+            bindings.getNamedFramebufferParameteriv(
+                @intFromEnum(framebuffer),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getNamedFramebufferAttachmentParameteriv: *const fn (
         //     framebuffer: Uint,
         //     attachment: Enum,
         //     pname: Enum,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getNamedFramebufferAttachmentParameteriv(
+            framebuffer: Framebuffer,
+            attachment: FramebufferAttachmentDefault,
+            pname: FramebufferAttachmentParameter,
+            params: []i32,
+        ) void {
+            bindings.getNamedFramebufferAttachmentParameteriv(
+                @intFromEnum(framebuffer),
+                @intFromEnum(attachment),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var createRenderbuffers: *const fn (
         //     n: Sizei,
         //     renderbuffers: [*c]Uint,
         // ) callconv(.c) void = undefined;
+        pub fn createRenderbuffer(ptr: *Renderbuffer) void {
+            bindings.createRenderbuffers(1, @ptrCast(ptr));
+        }
+        pub fn createRenderbuffers(renderbuffers: []Renderbuffer) void {
+            bindings.createRenderbuffers(
+                @intCast(renderbuffers.len),
+                @ptrCast(renderbuffers.ptr),
+            );
+        }
+
         // pub var namedRenderbufferStorage: *const fn (
         //     renderbuffer: Uint,
         //     internalformat: Enum,
         //     width: Sizei,
         //     height: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn namedRenderbufferStorage(
+            renderbuffer: Renderbuffer,
+            internal_format: InternalFormat,
+            width: u32,
+            height: u32,
+        ) void {
+            bindings.namedRenderbufferStorage(
+                @intFromEnum(renderbuffer),
+                @intFromEnum(internal_format),
+                @bitCast(width),
+                @bitCast(height),
+            );
+        }
+
         // pub var namedRenderbufferStorageMultisample: *const fn (
         //     renderbuffer: Uint,
         //     samples: Sizei,
@@ -9046,11 +13480,38 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     width: Sizei,
         //     height: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn namedRenderbufferStorageMultisample(
+            renderbuffer: Renderbuffer,
+            samples: u32,
+            internalformat: InternalFormat,
+            width: u32,
+            height: u32,
+        ) void {
+            bindings.namedRenderbufferStorageMultisample(
+                @intFromEnum(renderbuffer),
+                @bitCast(samples),
+                @intFromEnum(internalformat),
+                @bitCast(width),
+                @bitCast(height),
+            );
+        }
+
         // pub var getNamedRenderbufferParameteriv: *const fn (
         //     renderbuffer: Uint,
         //     pname: Enum,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getNamedRenderbufferParameteriv(
+            renderbuffer: Renderbuffer,
+            pname: RenderbufferParameter,
+            params: []i32,
+        ) void {
+            bindings.getNamedRenderbufferParameteriv(
+                @intFromEnum(renderbuffer),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
 
         pub fn createTexture(target: TextureTarget, ptr: *Texture) void {
             bindings.createTextures(@intFromEnum(target), 1, @ptrCast(ptr));
@@ -9064,6 +13525,18 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     internalformat: Enum,
         //     buffer: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn textureBuffer(
+            texture: Texture,
+            internalformat: TextureInternalFormat,
+            buffer: Buffer,
+        ) void {
+            bindings.textureBuffer(
+                @intFromEnum(texture),
+                @intFromEnum(internalformat),
+                @intFromEnum(buffer),
+            );
+        }
+
         // pub var textureBufferRange: *const fn (
         //     texture: Uint,
         //     internalformat: Enum,
@@ -9071,12 +13544,41 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     offset: Intptr,
         //     size: Sizeiptr,
         // ) callconv(.c) void = undefined;
+        pub fn textureBufferRange(
+            texture: Texture,
+            internalformat: TextureInternalFormat,
+            buffer: Buffer,
+            offset: usize,
+            size: usize,
+        ) void {
+            bindings.textureBufferRange(
+                @intFromEnum(texture),
+                @intFromEnum(internalformat),
+                @intFromEnum(buffer),
+                @bitCast(offset),
+                @bitCast(size),
+            );
+        }
+
         // pub var textureStorage1D: *const fn (
         //     texture: Uint,
         //     levels: Sizei,
         //     internalformat: Enum,
         //     width: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn textureStorage1D(
+            texture: Texture,
+            levels: i32,
+            internalformat: InternalFormat,
+            width: i32,
+        ) void {
+            bindings.textureStorage1D(
+                @intFromEnum(texture),
+                @bitCast(levels),
+                @intFromEnum(internalformat),
+                @bitCast(width),
+            );
+        }
 
         pub fn textureStorage2D(texture: Texture, levels: u32, internal_format: InternalFormat, width: u32, height: u32) void {
             bindings.textureStorage2D(@intFromEnum(texture), @intCast(levels), @intFromEnum(internal_format), @intCast(width), @intCast(height));
@@ -9090,6 +13592,24 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     height: Sizei,
         //     depth: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn textureStorage3D(
+            texture: Texture,
+            levels: i32,
+            internalformat: InternalFormat,
+            width: i32,
+            height: i32,
+            depth: i32,
+        ) void {
+            bindings.textureStorage3D(
+                @intFromEnum(texture),
+                @bitCast(levels),
+                @intFromEnum(internalformat),
+                @bitCast(width),
+                @bitCast(height),
+                @bitCast(depth),
+            );
+        }
+
         // pub var textureStorage2DMultisample: *const fn (
         //     texture: Uint,
         //     samples: Sizei,
@@ -9098,6 +13618,24 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     height: Sizei,
         //     fixedsamplelocations: Boolean,
         // ) callconv(.c) void = undefined;
+        pub fn textureStorage2DMultisample(
+            texture: Texture,
+            samples: i32,
+            internalformat: InternalFormat,
+            width: i32,
+            height: i32,
+            fixedsamplelocations: bool,
+        ) void {
+            bindings.textureStorage2DMultisample(
+                @intFromEnum(texture),
+                @bitCast(samples),
+                @intFromEnum(internalformat),
+                @bitCast(width),
+                @bitCast(height),
+                @intFromBool(fixedsamplelocations),
+            );
+        }
+
         // pub var textureStorage3DMultisample: *const fn (
         //     texture: Uint,
         //     samples: Sizei,
@@ -9107,6 +13645,26 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     depth: Sizei,
         //     fixedsamplelocations: Boolean,
         // ) callconv(.c) void = undefined;
+        pub fn textureStorage3DMultisample(
+            texture: Texture,
+            samples: i32,
+            internalformat: InternalFormat,
+            width: i32,
+            height: i32,
+            depth: i32,
+            fixedsamplelocations: bool,
+        ) void {
+            bindings.textureStorage3DMultisample(
+                @intFromEnum(texture),
+                @bitCast(samples),
+                @intFromEnum(internalformat),
+                @bitCast(width),
+                @bitCast(height),
+                @bitCast(depth),
+                @intFromBool(fixedsamplelocations),
+            );
+        }
+
         // pub var textureSubImage1D: *const fn (
         //     texture: Uint,
         //     level: Int,
@@ -9116,6 +13674,26 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     type: Enum,
         //     pixels: ?*const anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn textureSubImage1D(
+            texture: Texture,
+            level: i32,
+            xoffset: i32,
+            width: u32,
+            format: PixelFormat,
+            pixel_type: PixelType,
+            data: ?[*]const u8,
+        ) void {
+            bindings.textureSubImage1D(
+                @intFromEnum(texture),
+                @bitCast(level),
+                @bitCast(xoffset),
+                @bitCast(width),
+                @intFromEnum(format),
+                @intFromEnum(pixel_type),
+                @ptrCast(data),
+            );
+        }
+
         // pub var textureSubImage2D: *const fn (
         //     texture: Uint,
         //     level: Int,
@@ -9127,6 +13705,30 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     type: Enum,
         //     pixels: ?*const anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn textureSubImage2D(
+            texture: Texture,
+            level: i32,
+            xoffset: i32,
+            yoffset: i32,
+            width: u32,
+            height: u32,
+            format: PixelFormat,
+            pixel_type: PixelType,
+            data: ?[*]const u8,
+        ) void {
+            bindings.textureSubImage2D(
+                @intFromEnum(texture),
+                @bitCast(level),
+                @bitCast(xoffset),
+                @bitCast(yoffset),
+                @bitCast(width),
+                @bitCast(height),
+                @intFromEnum(format),
+                @intFromEnum(pixel_type),
+                @ptrCast(data),
+            );
+        }
+
         // pub var textureSubImage3D: *const fn (
         //     texture: Uint,
         //     level: Int,
@@ -9140,6 +13742,34 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     type: Enum,
         //     pixels: ?*const anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn textureSubImage3D(
+            texture: Texture,
+            level: i32,
+            xoffset: i32,
+            yoffset: i32,
+            zoffset: i32,
+            width: u32,
+            height: u32,
+            depth: u32,
+            format: PixelFormat,
+            pixel_type: PixelType,
+            data: ?[*]const u8,
+        ) void {
+            bindings.textureSubImage3D(
+                @intFromEnum(texture),
+                @bitCast(level),
+                @bitCast(xoffset),
+                @bitCast(yoffset),
+                @bitCast(zoffset),
+                @bitCast(width),
+                @bitCast(height),
+                @bitCast(depth),
+                @intFromEnum(format),
+                @intFromEnum(pixel_type),
+                @ptrCast(data),
+            );
+        }
+
         // pub var compressedTextureSubImage1D: *const fn (
         //     texture: Uint,
         //     level: Int,
@@ -9149,6 +13779,25 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     imageSize: Sizei,
         //     data: ?*const anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn compressedTextureSubImage1D(
+            texture: Texture,
+            level: i32,
+            xoffset: i32,
+            width: u32,
+            format: CompressedPixelFormat,
+            data: []const u8,
+        ) void {
+            bindings.compressedTextureSubImage1D(
+                @intFromEnum(texture),
+                @bitCast(level),
+                @bitCast(xoffset),
+                @bitCast(width),
+                @intFromEnum(format),
+                @intCast(data.len),
+                @ptrCast(data.ptr),
+            );
+        }
+
         // pub var compressedTextureSubImage2D: *const fn (
         //     texture: Uint,
         //     level: Int,
@@ -9160,6 +13809,29 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     imageSize: Sizei,
         //     data: ?*const anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn compressedTextureSubImage2D(
+            texture: Texture,
+            level: i32,
+            xoffset: i32,
+            yoffset: i32,
+            width: u32,
+            height: u32,
+            format: CompressedPixelFormat,
+            data: []const u8,
+        ) void {
+            bindings.compressedTextureSubImage2D(
+                @intFromEnum(texture),
+                @bitCast(level),
+                @bitCast(xoffset),
+                @bitCast(yoffset),
+                @bitCast(width),
+                @bitCast(height),
+                @intFromEnum(format),
+                @intCast(data.len),
+                @ptrCast(data.ptr),
+            );
+        }
+
         // pub var compressedTextureSubImage3D: *const fn (
         //     texture: Uint,
         //     level: Int,
@@ -9173,6 +13845,33 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     imageSize: Sizei,
         //     data: ?*const anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn compressedTextureSubImage3D(
+            texture: Texture,
+            level: i32,
+            xoffset: i32,
+            yoffset: i32,
+            zoffset: i32,
+            width: u32,
+            height: u32,
+            depth: u32,
+            format: CompressedPixelFormat,
+            data: []const u8,
+        ) void {
+            bindings.compressedTextureSubImage3D(
+                @intFromEnum(texture),
+                @bitCast(level),
+                @bitCast(xoffset),
+                @bitCast(yoffset),
+                @bitCast(zoffset),
+                @bitCast(width),
+                @bitCast(height),
+                @bitCast(depth),
+                @intFromEnum(format),
+                @intCast(data.len),
+                @ptrCast(data.ptr),
+            );
+        }
+
         // pub var copyTextureSubImage1D: *const fn (
         //     texture: Uint,
         //     level: Int,
@@ -9181,6 +13880,24 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     y: Int,
         //     width: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn copyTextureSubImage1D(
+            texture: Texture,
+            level: i32,
+            xoffset: i32,
+            x: i32,
+            y: i32,
+            width: u32,
+        ) void {
+            bindings.copyTextureSubImage1D(
+                @intFromEnum(texture),
+                @bitCast(level),
+                @bitCast(xoffset),
+                @bitCast(x),
+                @bitCast(y),
+                @bitCast(width),
+            );
+        }
+
         // pub var copyTextureSubImage2D: *const fn (
         //     texture: Uint,
         //     level: Int,
@@ -9191,6 +13908,28 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     width: Sizei,
         //     height: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn copyTextureSubImage2D(
+            texture: Texture,
+            level: i32,
+            xoffset: i32,
+            yoffset: i32,
+            x: i32,
+            y: i32,
+            width: u32,
+            height: u32,
+        ) void {
+            bindings.copyTextureSubImage2D(
+                @intFromEnum(texture),
+                @bitCast(level),
+                @bitCast(xoffset),
+                @bitCast(yoffset),
+                @bitCast(x),
+                @bitCast(y),
+                @bitCast(width),
+                @bitCast(height),
+            );
+        }
+
         // pub var copyTextureSubImage3D: *const fn (
         //     texture: Uint,
         //     level: Int,
@@ -9202,43 +13941,147 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     width: Sizei,
         //     height: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn copyTextureSubImage3D(
+            texture: Texture,
+            level: i32,
+            xoffset: i32,
+            yoffset: i32,
+            zoffset: i32,
+            x: i32,
+            y: i32,
+            width: u32,
+            height: u32,
+        ) void {
+            bindings.copyTextureSubImage3D(
+                @intFromEnum(texture),
+                @bitCast(level),
+                @bitCast(xoffset),
+                @bitCast(yoffset),
+                @bitCast(zoffset),
+                @bitCast(x),
+                @bitCast(y),
+                @bitCast(width),
+                @bitCast(height),
+            );
+        }
+
         // pub var textureParameterf: *const fn (
         //     texture: Uint,
         //     pname: Enum,
         //     param: Float,
         // ) callconv(.c) void = undefined;
+        pub fn textureParameterf(
+            texture: Texture,
+            pname: TexParameter,
+            param: f32,
+        ) void {
+            bindings.textureParameterf(
+                @intFromEnum(texture),
+                @intFromEnum(pname),
+                param,
+            );
+        }
+
         // pub var textureParameterfv: *const fn (
         //     texture: Uint,
         //     pname: Enum,
         //     param: [*c]const Float,
         // ) callconv(.c) void = undefined;
+        pub fn textureParameterfv(
+            texture: Texture,
+            pname: TexParameter,
+            params: []const f32,
+        ) void {
+            bindings.textureParameterfv(
+                @intFromEnum(texture),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var textureParameteri: *const fn (
         //     texture: Uint,
         //     pname: Enum,
         //     param: Int,
         // ) callconv(.c) void = undefined;
+        pub fn textureParameteri(
+            texture: Texture,
+            pname: TexParameter,
+            param: i32,
+        ) void {
+            bindings.textureParameteri(
+                @intFromEnum(texture),
+                @intFromEnum(pname),
+                @bitCast(param),
+            );
+        }
+
         // pub var textureParameterIiv: *const fn (
         //     texture: Uint,
         //     pname: Enum,
         //     params: [*c]const Int,
         // ) callconv(.c) void = undefined;
+        pub fn textureParameterIiv(
+            texture: Texture,
+            pname: TexParameter,
+            params: []const i32,
+        ) void {
+            bindings.textureParameterIiv(
+                @intFromEnum(texture),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var textureParameterIuiv: *const fn (
         //     texture: Uint,
         //     pname: Enum,
         //     params: [*c]const Uint,
         // ) callconv(.c) void = undefined;
+        pub fn textureParameterIuiv(
+            texture: Texture,
+            pname: TexParameter,
+            params: []const u32,
+        ) void {
+            bindings.textureParameterIuiv(
+                @intFromEnum(texture),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var textureParameteriv: *const fn (
         //     texture: Uint,
         //     pname: Enum,
         //     param: [*c]const Int,
         // ) callconv(.c) void = undefined;
+        pub fn textureParameteriv(
+            texture: Texture,
+            pname: TexParameter,
+            params: []const i32,
+        ) void {
+            bindings.textureParameteriv(
+                @intFromEnum(texture),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var generateTextureMipmap: *const fn (
         //     texture: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn generateTextureMipmap(texture: Texture) void {
+            bindings.generateTextureMipmap(@intFromEnum(texture));
+        }
+
         // pub var bindTextureUnit: *const fn (
         //     unit: Uint,
         //     texture: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn bindTextureUnit(unit: u32, texture: Texture) void {
+            bindings.bindTextureUnit(@bitCast(unit), @intFromEnum(texture));
+        }
+
         // pub var getTextureImage: *const fn (
         //     texture: Uint,
         //     level: Int,
@@ -9247,60 +14090,206 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     bufSize: Sizei,
         //     pixels: ?*anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn getTextureImage(
+            texture: Texture,
+            level: u32,
+            format: PixelFormat,
+            pixel_type: PixelType,
+            pixels: []u8,
+        ) void {
+            bindings.getTextureImage(
+                @intFromEnum(texture),
+                @bitCast(level),
+                @intFromEnum(format),
+                @intFromEnum(pixel_type),
+                @intCast(pixels.len),
+                @ptrCast(pixels.ptr),
+            );
+        }
+
         // pub var getCompressedTextureImage: *const fn (
         //     texture: Uint,
         //     level: Int,
         //     bufSize: Sizei,
         //     pixels: ?*anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn getCompressedTextureImage(
+            texture: Texture,
+            level: i32,
+            pixels: []u8,
+        ) void {
+            bindings.getCompressedTextureImage(
+                @intFromEnum(texture),
+                @bitCast(level),
+                @intCast(pixels.len),
+                @ptrCast(pixels.ptr),
+            );
+        }
+
         // pub var getTextureLevelParameterfv: *const fn (
         //     texture: Uint,
         //     level: Int,
         //     pname: Enum,
         //     params: [*c]Float,
         // ) callconv(.c) void = undefined;
+        pub fn getTextureLevelParameterfv(
+            texture: Texture,
+            level: u32,
+            pname: GetTexLevelParameter,
+            params: []f32,
+        ) void {
+            bindings.getTextureLevelParameterfv(
+                @intFromEnum(texture),
+                @bitCast(level),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getTextureLevelParameteriv: *const fn (
         //     texture: Uint,
         //     level: Int,
         //     pname: Enum,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getTextureLevelParameteriv(
+            texture: Texture,
+            level: u32,
+            pname: GetTexLevelParameter,
+            params: []i32,
+        ) void {
+            bindings.getTextureLevelParameteriv(
+                @intFromEnum(texture),
+                @bitCast(level),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getTextureParameterfv: *const fn (
         //     texture: Uint,
         //     pname: Enum,
         //     params: [*c]Float,
         // ) callconv(.c) void = undefined;
+        pub fn getTextureParameterfv(
+            texture: Texture,
+            pname: GetTexParameter,
+            params: []f32,
+        ) void {
+            bindings.getTextureParameterfv(
+                @intFromEnum(texture),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getTextureParameterIiv: *const fn (
         //     texture: Uint,
         //     pname: Enum,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getTextureParameterIiv(
+            texture: Texture,
+            pname: GetTexParameter,
+            params: []i32,
+        ) void {
+            bindings.getTextureParameterIiv(
+                @intFromEnum(texture),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getTextureParameterIuiv: *const fn (
         //     texture: Uint,
         //     pname: Enum,
         //     params: [*c]Uint,
         // ) callconv(.c) void = undefined;
+        pub fn getTextureParameterIuiv(
+            texture: Texture,
+            pname: GetTexParameter,
+            params: []u32,
+        ) void {
+            bindings.getTextureParameterIuiv(
+                @intFromEnum(texture),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getTextureParameteriv: *const fn (
         //     texture: Uint,
         //     pname: Enum,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getTextureParameteriv(
+            texture: Texture,
+            pname: GetTexParameter,
+            params: []i32,
+        ) void {
+            bindings.getTextureParameteriv(
+                @intFromEnum(texture),
+                @intFromEnum(pname),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var createVertexArrays: *const fn (
         //     n: Sizei,
         //     arrays: [*c]Uint,
         // ) callconv(.c) void = undefined;
+        pub fn createVertexArray(ptr: *VertexArrayObject) void {
+            bindings.createVertexArrays(1, @ptrCast(ptr));
+        }
+        pub fn createVertexArrays(arrays: []VertexArrayObject) void {
+            bindings.createVertexArrays(
+                @intCast(arrays.len),
+                @ptrCast(arrays.ptr),
+            );
+        }
+
         // pub var disableVertexArrayAttrib: *const fn (
         //     vaobj: Uint,
         //     index: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn disableVertexArrayAttrib(
+            vaobj: VertexArrayObject,
+            location: VertexAttribLocation,
+        ) void {
+            bindings.disableVertexArrayAttrib(
+                @intFromEnum(vaobj),
+                @intFromEnum(location),
+            );
+        }
+
         // pub var enableVertexArrayAttrib: *const fn (
         //     vaobj: Uint,
         //     index: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn enableVertexArrayAttrib(
+            vaobj: VertexArrayObject,
+            location: VertexAttribLocation,
+        ) void {
+            bindings.enableVertexArrayAttrib(
+                @intFromEnum(vaobj),
+                @intFromEnum(location),
+            );
+        }
+
         // pub var vertexArrayElementBuffer: *const fn (
         //     vaobj: Uint,
         //     buffer: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn vertexArrayElementBuffer(
+            vaobj: VertexArrayObject,
+            buffer: Buffer,
+        ) void {
+            bindings.vertexArrayElementBuffer(
+                @intFromEnum(vaobj),
+                @intFromEnum(buffer),
+            );
+        }
+
         // pub var vertexArrayVertexBuffer: *const fn (
         //     vaobj: Uint,
         //     bindingindex: Uint,
@@ -9308,6 +14297,22 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     offset: Intptr,
         //     stride: Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn vertexArrayVertexBuffer(
+            vaobj: VertexArrayObject,
+            bindingindex: u32,
+            buffer: Buffer,
+            offset: usize,
+            stride: i32,
+        ) void {
+            bindings.vertexArrayVertexBuffer(
+                @intFromEnum(vaobj),
+                @bitCast(bindingindex),
+                @intFromEnum(buffer),
+                @bitCast(offset),
+                @bitCast(stride),
+            );
+        }
+
         // pub var vertexArrayVertexBuffers: *const fn (
         //     vaobj: Uint,
         //     first: Uint,
@@ -9316,11 +14321,42 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     offsets: [*c]const Intptr,
         //     strides: [*c]const Sizei,
         // ) callconv(.c) void = undefined;
+        pub fn vertexArrayVertexBuffers(
+            vaobj: VertexArrayObject,
+            first: u32,
+            buffers: []const Buffer,
+            offsets: []const usize,
+            strides: []const i32,
+        ) void {
+            assert(buffers.len == offsets.len);
+            assert(buffers.len == strides.len);
+            bindings.vertexArrayVertexBuffers(
+                @intFromEnum(vaobj),
+                @bitCast(first),
+                @intCast(buffers.len),
+                @ptrCast(buffers.ptr),
+                @ptrCast(offsets.ptr),
+                @ptrCast(strides.ptr),
+            );
+        }
+
         // pub var vertexArrayAttribBinding: *const fn (
         //     vaobj: Uint,
         //     attribindex: Uint,
         //     bindingindex: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn vertexArrayAttribBinding(
+            vaobj: VertexArrayObject,
+            location: VertexAttribLocation,
+            bindingindex: u32,
+        ) void {
+            bindings.vertexArrayAttribBinding(
+                @intFromEnum(vaobj),
+                @intFromEnum(location),
+                @bitCast(bindingindex),
+            );
+        }
+
         // pub var vertexArrayAttribFormat: *const fn (
         //     vaobj: Uint,
         //     attribindex: Uint,
@@ -9329,6 +14365,24 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     normalized: Boolean,
         //     relativeoffset: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn vertexArrayAttribFormat(
+            vaobj: VertexArrayObject,
+            attribindex: VertexAttribLocation,
+            size: i32,
+            attrib_type: VertexAttribType,
+            normalized: bool,
+            relativeoffset: u32,
+        ) void {
+            bindings.vertexArrayAttribFormat(
+                @intFromEnum(vaobj),
+                @intFromEnum(attribindex),
+                @bitCast(size),
+                @intFromEnum(attrib_type),
+                @intFromBool(normalized),
+                @bitCast(relativeoffset),
+            );
+        }
+
         // pub var vertexArrayAttribIFormat: *const fn (
         //     vaobj: Uint,
         //     attribindex: Uint,
@@ -9336,6 +14390,22 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     type: Enum,
         //     relativeoffset: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn vertexArrayAttribIFormat(
+            vaobj: VertexArrayObject,
+            attribindex: VertexAttribLocation,
+            size: i32,
+            attrib_type: VertexAttribIntegerType,
+            relativeoffset: u32,
+        ) void {
+            bindings.vertexArrayAttribIFormat(
+                @intFromEnum(vaobj),
+                @intFromEnum(attribindex),
+                @bitCast(size),
+                @intFromEnum(attrib_type),
+                @bitCast(relativeoffset),
+            );
+        }
+
         // pub var vertexArrayAttribLFormat: *const fn (
         //     vaobj: Uint,
         //     attribindex: Uint,
@@ -9343,68 +14413,236 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     type: Enum,
         //     relativeoffset: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn vertexArrayAttribLFormat(
+            vaobj: VertexArrayObject,
+            attribindex: VertexAttribLocation,
+            size: i32,
+            attrib_type: VertexAttribDoubleType,
+            relativeoffset: u32,
+        ) void {
+            bindings.vertexArrayAttribLFormat(
+                @intFromEnum(vaobj),
+                @intFromEnum(attribindex),
+                @bitCast(size),
+                @intFromEnum(attrib_type),
+                @bitCast(relativeoffset),
+            );
+        }
+
         // pub var vertexArrayBindingDivisor: *const fn (
         //     vaobj: Uint,
         //     bindingindex: Uint,
         //     divisor: Uint,
         // ) callconv(.c) void = undefined;
+        pub fn vertexArrayBindingDivisor(
+            vaobj: VertexArrayObject,
+            bindingindex: u32,
+            divisor: u32,
+        ) void {
+            bindings.vertexArrayBindingDivisor(
+                @intFromEnum(vaobj),
+                @bitCast(bindingindex),
+                @bitCast(divisor),
+            );
+        }
+
         // pub var getVertexArrayiv: *const fn (
         //     vaobj: Uint,
         //     pname: Enum,
         //     param: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getVertexArrayiv(
+            vaobj: VertexArrayObject,
+            pname: VertexArrayIntegerParameter,
+            param: []i32,
+        ) void {
+            bindings.getVertexArrayiv(
+                @intFromEnum(vaobj),
+                @intFromEnum(pname),
+                @ptrCast(param.ptr),
+            );
+        }
+
         // pub var getVertexArrayIndexediv: *const fn (
         //     vaobj: Uint,
         //     index: Uint,
         //     pname: Enum,
         //     param: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getVertexArrayIndexediv(
+            vaobj: VertexArrayObject,
+            index: u32,
+            pname: IndexedVertexArrayIntegerParameter,
+            param: []i32,
+        ) void {
+            bindings.getVertexArrayIndexediv(
+                @intFromEnum(vaobj),
+                @bitCast(index),
+                @intFromEnum(pname),
+                @ptrCast(param.ptr),
+            );
+        }
+
         // pub var getVertexArrayIndexed64iv: *const fn (
         //     vaobj: Uint,
         //     index: Uint,
         //     pname: Enum,
         //     param: [*c]Int64,
         // ) callconv(.c) void = undefined;
+        pub fn getVertexArrayIndexed64iv(
+            vaobj: VertexArrayObject,
+            index: u32,
+            pname: IndexedVertexArrayInt64Parameter,
+            param: []i64,
+        ) void {
+            bindings.getVertexArrayIndexed64iv(
+                @intFromEnum(vaobj),
+                @bitCast(index),
+                @intFromEnum(pname),
+                @ptrCast(param.ptr),
+            );
+        }
+
         // pub var createSamplers: *const fn (
         //     n: Sizei,
         //     samplers: [*c]Uint,
         // ) callconv(.c) void = undefined;
+        pub fn createSampler(ptr: *Sampler) void {
+            bindings.createSamplers(1, @ptrCast(ptr));
+        }
+        pub fn createSamplers(samplers: []Sampler) void {
+            bindings.createSamplers(
+                @intCast(samplers.len),
+                @ptrCast(samplers.ptr),
+            );
+        }
+
         // pub var createProgramPipelines: *const fn (
         //     n: Sizei,
         //     pipelines: [*c]Uint,
         // ) callconv(.c) void = undefined;
+        pub fn createProgramPipeline(ptr: *ProgramPipeline) void {
+            bindings.createProgramPipelines(1, @ptrCast(ptr));
+        }
+        pub fn createProgramPipelines(pipelines: []ProgramPipeline) void {
+            bindings.createProgramPipelines(
+                @intCast(pipelines.len),
+                @ptrCast(pipelines.ptr),
+            );
+        }
+
         // pub var createQueries: *const fn (
         //     target: Enum,
         //     n: Sizei,
         //     ids: [*c]Uint,
         // ) callconv(.c) void = undefined;
+        pub fn createQuery(
+            target: QueryTargetWithTimestamp,
+            ptr: *Query,
+        ) void {
+            bindings.createQueries(
+                @intFromEnum(target),
+                1,
+                @ptrCast(ptr),
+            );
+        }
+        pub fn createQueries(
+            target: QueryTargetWithTimestamp,
+            queries: []Query,
+        ) void {
+            bindings.createQueries(
+                @intFromEnum(target),
+                @intCast(queries.len),
+                @ptrCast(queries.ptr),
+            );
+        }
+
         // pub var getQueryBufferObjecti64v: *const fn (
         //     id: Uint,
         //     buffer: Uint,
         //     pname: Enum,
         //     offset: Intptr,
         // ) callconv(.c) void = undefined;
+        pub fn getQueryBufferObjecti64v(
+            query: Query,
+            buffer: Buffer,
+            pname: QueryObjectParameter,
+            offset: usize,
+        ) void {
+            bindings.getQueryBufferObjecti64v(
+                @intFromEnum(query),
+                @intFromEnum(buffer),
+                @intFromEnum(pname),
+                @bitCast(offset),
+            );
+        }
+
         // pub var getQueryBufferObjectiv: *const fn (
         //     id: Uint,
         //     buffer: Uint,
         //     pname: Enum,
         //     offset: Intptr,
         // ) callconv(.c) void = undefined;
+        pub fn getQueryBufferObjectiv(
+            query: Query,
+            buffer: Buffer,
+            pname: QueryObjectParameter,
+            offset: usize,
+        ) void {
+            bindings.getQueryBufferObjectiv(
+                @intFromEnum(query),
+                @intFromEnum(buffer),
+                @intFromEnum(pname),
+                @bitCast(offset),
+            );
+        }
+
         // pub var getQueryBufferObjectui64v: *const fn (
         //     id: Uint,
         //     buffer: Uint,
         //     pname: Enum,
         //     offset: Intptr,
         // ) callconv(.c) void = undefined;
+        pub fn getQueryBufferObjectui64v(
+            query: Query,
+            buffer: Buffer,
+            pname: QueryObjectParameter,
+            offset: usize,
+        ) void {
+            bindings.getQueryBufferObjectui64v(
+                @intFromEnum(query),
+                @intFromEnum(buffer),
+                @intFromEnum(pname),
+                @bitCast(offset),
+            );
+        }
+
         // pub var getQueryBufferObjectuiv: *const fn (
         //     id: Uint,
         //     buffer: Uint,
         //     pname: Enum,
         //     offset: Intptr,
         // ) callconv(.c) void = undefined;
+        pub fn getQueryBufferObjectuiv(
+            query: Query,
+            buffer: Buffer,
+            pname: QueryObjectParameter,
+            offset: usize,
+        ) void {
+            bindings.getQueryBufferObjectuiv(
+                @intFromEnum(query),
+                @intFromEnum(buffer),
+                @intFromEnum(pname),
+                @bitCast(offset),
+            );
+        }
+
         // pub var memoryBarrierByRegion: *const fn (
         //     barriers: Bitfield,
         // ) callconv(.c) void = undefined;
+        pub fn memoryBarrierByRegion(barriers: UsedRegionBarriers) void {
+            bindings.memoryBarrierByRegion(@bitCast(barriers));
+        }
 
         pub fn getTextureSubImage(texture: Texture, level: i32, xoffset: i32, yoffset: i32, zoffset: i32, width: u32, height: u32, depth: u32, format: PixelFormat, pixel_type: PixelType, buf_size: u32, pixels: ?[*]u8) void {
             bindings.getTextureSubImage(@intFromEnum(texture), level, xoffset, yoffset, zoffset, @intCast(width), @intCast(height), @intCast(depth), @intFromEnum(format), @intFromEnum(pixel_type), @intCast(buf_size), pixels);
@@ -9422,13 +14660,32 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     bufSize: Sizei,
         //     pixels: ?*anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn getCompressedTextureSubImage(
+            texture: Texture,
+            level: i32,
+            xoffset: i32,
+            yoffset: i32,
+            zoffset: i32,
+            width: u32,
+            height: u32,
+            depth: u32,
+            pixels: []u8,
+        ) void {
+            bindings.getCompressedTextureSubImage(
+                @intFromEnum(texture),
+                @bitCast(level),
+                @bitCast(xoffset),
+                @bitCast(yoffset),
+                @bitCast(zoffset),
+                @bitCast(width),
+                @bitCast(height),
+                @bitCast(depth),
+                @intCast(pixels.len),
+                @ptrCast(pixels.ptr),
+            );
+        }
 
-        pub fn getGraphicsResetStatus() enum(Enum) {
-            no_error = NO_ERROR,
-            guilty_context_reset = GUILTY_CONTEXT_RESET,
-            innocent_context_reset = INNOCENT_CONTEXT_RESET,
-            unknown_context_reset = UNKNOWN_CONTEXT_RESET,
-        } {
+        pub fn getGraphicsResetStatus() GraphicsResetStatus {
             return @enumFromInt(bindings.getGraphicsResetStatus());
         }
 
@@ -9438,6 +14695,19 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     bufSize: Sizei,
         //     pixels: ?*anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn getnCompressedTexImage(
+            target: TexLevelTarget,
+            lod: i32,
+            pixels: []u8,
+        ) void {
+            bindings.getnCompressedTexImage(
+                @intFromEnum(target),
+                @bitCast(lod),
+                @intCast(pixels.len),
+                @ptrCast(pixels.ptr),
+            );
+        }
+
         // pub var getnTexImage: *const fn (
         //     target: Enum,
         //     level: Int,
@@ -9446,30 +14716,107 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     bufSize: Sizei,
         //     pixels: ?*anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn getnTexImage(
+            target: TexImageTarget,
+            level: u32,
+            format: PixelFormat,
+            pixel_type: PixelType,
+            pixels: []u8,
+        ) void {
+            bindings.getnTexImage(
+                @intFromEnum(target),
+                @bitCast(level),
+                @intFromEnum(format),
+                @intFromEnum(pixel_type),
+                @intCast(pixels.len),
+                @ptrCast(pixels.ptr),
+            );
+        }
+
         // pub var getnUniformdv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     bufSize: Sizei,
         //     params: [*c]Double,
         // ) callconv(.c) void = undefined;
+        pub fn getnUniformdv(
+            program: Program,
+            location: UniformLocation,
+            params: []f64,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.getnUniformdv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @intCast(params.len),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getnUniformfv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     bufSize: Sizei,
         //     params: [*c]Float,
         // ) callconv(.c) void = undefined;
+        pub fn getnUniformfv(
+            program: Program,
+            location: UniformLocation,
+            params: []f32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.getnUniformfv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @intCast(params.len),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getnUniformiv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     bufSize: Sizei,
         //     params: [*c]Int,
         // ) callconv(.c) void = undefined;
+        pub fn getnUniformiv(
+            program: Program,
+            location: UniformLocation,
+            params: []i32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.getnUniformiv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @intCast(params.len),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var getnUniformuiv: *const fn (
         //     program: Uint,
         //     location: Int,
         //     bufSize: Sizei,
         //     params: [*c]Uint,
         // ) callconv(.c) void = undefined;
+        pub fn getnUniformuiv(
+            program: Program,
+            location: UniformLocation,
+            params: []u32,
+        ) void {
+            assert(program != .invalid);
+            assert(location != .invalid);
+            bindings.getnUniformuiv(
+                @intFromEnum(program),
+                @intFromEnum(location),
+                @intCast(params.len),
+                @ptrCast(params.ptr),
+            );
+        }
+
         // pub var readnPixels: *const fn (
         //     x: Int,
         //     y: Int,
@@ -9480,7 +14827,31 @@ pub fn Wrap(comptime bindings: anytype) type {
         //     bufSize: Sizei,
         //     data: ?*anyopaque,
         // ) callconv(.c) void = undefined;
+        pub fn readnPixels(
+            x: i32,
+            y: i32,
+            width: i32,
+            height: i32,
+            format: PixelFormat,
+            pixel_type: PixelType,
+            data: []u8,
+        ) void {
+            bindings.readnPixels(
+                @bitCast(x),
+                @bitCast(y),
+                @bitCast(width),
+                @bitCast(height),
+                @intFromEnum(format),
+                @intFromEnum(pixel_type),
+                @intCast(data.len),
+                @ptrCast(data.ptr),
+            );
+        }
+
         // pub var textureBarrier: *const fn () callconv(.c) void = undefined;
+        pub fn textureBarrier() void {
+            bindings.textureBarrier();
+        }
 
         //--------------------------------------------------------------------------------------------------
         //
@@ -9570,7 +14941,14 @@ pub fn Wrap(comptime bindings: anytype) type {
         //
         //------------------------------------------------------------------------------------------
         // pub var clearDepthf: *const fn (depth: Float) callconv(.c) void = undefined;
+        pub fn clearDepthf(depth: f32) void {
+            bindings.clearDepthf(depth);
+        }
+
         // pub var depthRangef: *const fn (n: Clampf, f: Clampf) callconv(.c) void = undefined;
+        pub fn depthRangef(n: f32, f: f32) void {
+            bindings.depthRangef(n, f);
+        }
 
         //------------------------------------------------------------------------------------------
         //

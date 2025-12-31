@@ -562,6 +562,8 @@ pub fn loadCoreProfile(loader: LoaderFn, major: u32, minor: u32) !void {
         try load("glVertexAttribL2dv", .{&bindings.vertexAttribL2dv});
         try load("glVertexAttribL3dv", .{&bindings.vertexAttribL3dv});
         try load("glVertexAttribL4dv", .{&bindings.vertexAttribL4dv});
+        try load("glVertexAttribLPointer", .{&bindings.vertexAttribLPointer});
+        try load("glGetVertexAttribLdv", .{&bindings.getVertexAttribLdv});
         try load("glViewportArrayv", .{&bindings.viewportArrayv});
         try load("glViewportIndexedf", .{&bindings.viewportIndexedf});
         try load("glViewportIndexedfv", .{&bindings.viewportIndexedfv});

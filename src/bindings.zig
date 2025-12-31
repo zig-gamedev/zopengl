@@ -2540,8 +2540,18 @@ pub var vertexAttribL1dv: *const fn (index: Uint, v: [*c]const Double) callconv(
 pub var vertexAttribL2dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
 pub var vertexAttribL3dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
 pub var vertexAttribL4dv: *const fn (index: Uint, v: [*c]const Double) callconv(.c) void = undefined;
-// TODO: missing glVertexAttribLPointer(GLuint index, GLint size, GLenum type, GLsizei stride, const void *pointer)
-// TODO: missing glGetVertexAttribLdv(GLuint index, GLenum pname, GLdouble *params)
+pub var vertexAttribLPointer: *const fn (
+    index: Uint,
+    size: Int,
+    type: Enum,
+    stride: Sizei,
+    pointer: ?*const anyopaque,
+) callconv(.c) void = undefined;
+pub var getVertexAttribLdv: *const fn (
+    index: Uint,
+    pname: Enum,
+    params: [*c]Double,
+) callconv(.c) void = undefined;
 pub var viewportArrayv: *const fn (
     first: Uint,
     count: Sizei,
@@ -2794,7 +2804,7 @@ pub var drawTransformFeedbackStreamInstanced: *const fn (
 // OpenGL 4.3 (Core Profile)
 //
 //--------------------------------------------------------------------------------------------------
-pub const DEBUGPROC = *const fn (
+pub const DEBUGPROC = fn (
     source: Enum,
     type: Enum,
     id: Uint,
@@ -3298,7 +3308,7 @@ pub var debugMessageInsert: *const fn (
     message: [*c]const Char,
 ) callconv(.c) void = undefined;
 pub var debugMessageCallback: *const fn (
-    callback: ?DEBUGPROC,
+    callback: ?*const DEBUGPROC,
     userParam: ?*const anyopaque,
 ) callconv(.c) void = undefined;
 pub var getDebugMessageLog: *const fn (
@@ -4413,7 +4423,7 @@ pub var debugMessageInsertKHR: *const fn (
     buf: [*c]const Char,
 ) callconv(.c) void = undefined;
 pub var debugMessageCallbackKHR: *const fn (
-    callback: ?DEBUGPROC,
+    callback: ?*const DEBUGPROC,
     userParam: ?*const anyopaque,
 ) callconv(.c) void = undefined;
 pub var getDebugMessageLogKHR: *const fn (
