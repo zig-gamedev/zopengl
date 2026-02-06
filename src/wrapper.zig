@@ -5765,7 +5765,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             location: VertexAttribLocation,
             size: u32,
             attrib_type: VertexAttribType,
-            normalised: Boolean,
+            normalised: bool,
             stride: u32,
             offset: usize,
         ) void {
@@ -5773,7 +5773,7 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @intFromEnum(location),
                 @as(Int, @bitCast(size)),
                 @intFromEnum(attrib_type),
-                normalised,
+                @intFromBool(normalised),
                 @as(Sizei, @bitCast(stride)),
                 @as(*allowzero const anyopaque, @ptrFromInt(offset)),
             );
