@@ -7,7 +7,10 @@ pub fn build(b: *std.Build) void {
         .preferred_optimize_mode = .ReleaseSafe,
     });
 
-    const export_linkage = b.option(std.builtin.GlobalLinkage, "export-linkage", "Global linkage for exported OpenGL C symbols") orelse .strong;
+    const default_export_linkage: std.builtin.GlobalLinkage =
+        if (target.result.os.tag == .emscripten) .weak else .strong;
+    const export_linkage = b.option(std.builtin.GlobalLinkage, "export_linkage", "Global linkage for exported OpenGL C symbols") orelse
+        default_export_linkage;
 
     const build_options = b.addOptions();
     build_options.addOption(std.meta.Tag(std.builtin.GlobalLinkage), "linkage", @intFromEnum(export_linkage));
