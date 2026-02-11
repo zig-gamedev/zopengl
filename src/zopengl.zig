@@ -2,6 +2,7 @@ const std = @import("std");
 const assert = std.debug.assert;
 
 const options = @import("zopengl_options");
+const build_options = @import("build_options");
 
 comptime {
     @setEvalBranchQuota(20_000);
@@ -1371,7 +1372,7 @@ fn getProcAddress(comptime T: type, proc_name: [:0]const u8) !T {
 // C exports
 //
 //--------------------------------------------------------------------------------------------------
-const linkage: @import("std").builtin.GlobalLinkage = .strong;
+const linkage: std.builtin.GlobalLinkage = @enumFromInt(build_options.linkage);
 comptime {
     //----------------------------------------------------------------------------------------------
     // OpenGL 1.0 (Core Profile)
