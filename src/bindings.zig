@@ -2021,32 +2021,13 @@ pub const TRANSFORM_FEEDBACK_BUFFER_ACTIVE = 0x8E24;
 pub const TRANSFORM_FEEDBACK_BINDING = 0x8E25;
 pub const MAX_TRANSFORM_FEEDBACK_BUFFERS = 0x8E70;
 
-// TODO: should probably be in wrapper.zig
-pub const DrawArraysIndirectCommand = extern struct {
-    count: Uint,
-    instance_count: Uint,
-    first: Uint,
-    /// base_instance should always be set to zero for GL versions < 4.2
-    base_instance: Uint = 0,
-};
-
-pub const DrawElementsIndirectCommand = extern struct {
-    count: Uint,
-    instance_count: Uint,
-    first_index: Uint,
-    base_vertex: Int,
-    /// base_instance should always be set to zero for GL versions < 4.2
-    base_instance: Uint = 0,
-};
-
 pub var minSampleShading: *const fn (value: Float) callconv(.c) void = undefined;
 pub var blendEquationi: *const fn (buf: Uint, mode: Enum) callconv(.c) void = undefined;
 pub var blendEquationSeparatei: *const fn (buf: Uint, modeRGB: Enum, modeAlpha: Enum) callconv(.c) void = undefined;
 pub var blendFunci: *const fn (buf: Uint, src: Enum, dst: Enum) callconv(.c) void = undefined;
 pub var blendFuncSeparatei: *const fn (buf: Uint, srcRGB: Enum, dstRGB: Enum, srcAlpha: Enum, dstAlpha: Enum) callconv(.c) void = undefined;
-// TODO: ?*const anyopaque should be used to keep bindings as closed to reference
-pub var drawArraysIndirect: *const fn (mode: Enum, indirect: [*c]const DrawArraysIndirectCommand) callconv(.c) void = undefined;
-pub var drawElementsIndirect: *const fn (mode: Enum, type: Enum, indirect: [*c]const DrawElementsIndirectCommand) callconv(.c) void = undefined;
+pub var drawArraysIndirect: *const fn (mode: Enum, indirect: ?*const anyopaque) callconv(.c) void = undefined;
+pub var drawElementsIndirect: *const fn (mode: Enum, type: Enum, indirect: ?*const anyopaque) callconv(.c) void = undefined;
 pub var uniform1d: *const fn (location: Int, x: Double) callconv(.c) void = undefined;
 pub var uniform2d: *const fn (location: Int, x: Double, y: Double) callconv(.c) void = undefined;
 pub var uniform3d: *const fn (location: Int, x: Double, y: Double, z: Double) callconv(.c) void = undefined;
