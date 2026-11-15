@@ -1374,7 +1374,7 @@ fn getProcAddress(comptime T: type, proc_name: [:0]const u8) !T {
 // C exports
 //
 //--------------------------------------------------------------------------------------------------
-const linkage: std.builtin.GlobalLinkage = @enumFromInt(build_options.linkage);
+const linkage: std.builtin.GlobalLinkage = @fromBackingInt(@intCast(build_options.linkage));
 comptime {
     //----------------------------------------------------------------------------------------------
     // OpenGL 1.0 (Core Profile)

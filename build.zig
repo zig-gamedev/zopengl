@@ -13,7 +13,7 @@ pub fn build(b: *std.Build) void {
         default_export_linkage;
 
     const build_options = b.addOptions();
-    build_options.addOption(std.meta.Tag(std.builtin.GlobalLinkage), "linkage", @intFromEnum(export_linkage));
+    build_options.addOption(std.meta.Tag(std.builtin.GlobalLinkage), "linkage", @backingInt(export_linkage));
 
     const root = b.addModule("root", .{
         .root_source_file = b.path("src/zopengl.zig"),
