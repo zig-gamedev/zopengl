@@ -4193,15 +4193,15 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const REPEAT = bindings.REPEAT;
 
         pub fn cullFace(mode: Face) void {
-            bindings.cullFace(@intFromEnum(mode));
+            bindings.cullFace(@backingInt(mode));
         }
 
         pub fn frontFace(mode: FaceOrientation) void {
-            bindings.frontFace(@intFromEnum(mode));
+            bindings.frontFace(@backingInt(mode));
         }
 
         pub fn hint(target: HintTarget, mode: HintPreference) void {
-            bindings.hint(@intFromEnum(target), @intFromEnum(mode));
+            bindings.hint(@backingInt(target), @backingInt(mode));
         }
 
         pub fn lineWidth(width: f32) void {
@@ -4213,7 +4213,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn polygonMode(face: Face, mode: PolygonMode) void {
-            bindings.polygonMode(@intFromEnum(face), @intFromEnum(mode));
+            bindings.polygonMode(@backingInt(face), @backingInt(mode));
         }
 
         pub fn scissor(x: i32, y: i32, width: u32, height: u32) void {
@@ -4231,8 +4231,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: f32,
         ) void {
             bindings.texParameterf(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 param,
             );
         }
@@ -4243,8 +4243,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []const f32,
         ) void {
             bindings.texParameterfv(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -4255,8 +4255,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: i32,
         ) void {
             bindings.texParameteri(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @bitCast(param),
             );
         }
@@ -4267,8 +4267,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []const i32,
         ) void {
             bindings.texParameteriv(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -4287,14 +4287,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.texImage1D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 // must be zero since OpenGL 3.0 (Core profile)
                 0,
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrFromInt(pixel_unpack_buf_offset),
             );
         }
@@ -4312,13 +4312,13 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: [*]const u8,
         ) void {
             bindings.texImage1D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 0,
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrCast(pixels),
             );
         }
@@ -4333,13 +4333,13 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_type: PixelType,
         ) void {
             bindings.texImage1D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 0,
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 null,
             );
         }
@@ -4359,15 +4359,15 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.texImage2D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 @bitCast(height),
                 // must be zero since OpenGL 3.0 (Core profile)
                 0,
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrFromInt(pixel_unpack_buf_offset),
             );
         }
@@ -4386,14 +4386,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: [*]const u8,
         ) void {
             bindings.texImage2D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 @bitCast(height),
                 0,
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrCast(pixels),
             );
         }
@@ -4410,20 +4410,20 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_type: PixelType,
         ) void {
             bindings.texImage2D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 @bitCast(height),
                 0,
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 null,
             );
         }
 
         pub fn drawBuffer(buf: ColorBuffer) void {
-            bindings.drawBuffer(@intFromEnum(buf));
+            bindings.drawBuffer(@backingInt(buf));
         }
 
         pub fn clear(mask: ColorMask) void {
@@ -4460,11 +4460,11 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn disable(cap: Capability) void {
-            bindings.disable(@intFromEnum(cap));
+            bindings.disable(@backingInt(cap));
         }
 
         pub fn enable(cap: Capability) void {
-            bindings.enable(@intFromEnum(cap));
+            bindings.enable(@backingInt(cap));
         }
 
         pub fn finish() void {
@@ -4476,15 +4476,15 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn blendFunc(sfactor: BlendFactor, dfactor: BlendFactor) void {
-            bindings.blendFunc(@intFromEnum(sfactor), @intFromEnum(dfactor));
+            bindings.blendFunc(@backingInt(sfactor), @backingInt(dfactor));
         }
 
         pub fn logicOp(opcode: LogicOperation) void {
-            bindings.logicOp(@intFromEnum(opcode));
+            bindings.logicOp(@backingInt(opcode));
         }
 
         pub fn stencilFunc(func: ComparisonFunction, ref: i32, mask: u32) void {
-            bindings.stencilFunc(@intFromEnum(func), @bitCast(ref), @bitCast(mask));
+            bindings.stencilFunc(@backingInt(func), @bitCast(ref), @bitCast(mask));
         }
 
         pub fn stencilOp(
@@ -4493,26 +4493,26 @@ pub fn Wrap(comptime bindings: anytype) type {
             zpass: StencilAction,
         ) void {
             bindings.stencilOp(
-                @intFromEnum(fail),
-                @intFromEnum(zfail),
-                @intFromEnum(zpass),
+                @backingInt(fail),
+                @backingInt(zfail),
+                @backingInt(zpass),
             );
         }
 
         pub fn depthFunc(func: ComparisonFunction) void {
-            bindings.depthFunc(@intFromEnum(func));
+            bindings.depthFunc(@backingInt(func));
         }
 
         pub fn pixelStoref(pname: PixelStoreParameter, param: f32) void {
-            bindings.pixelStoref(@intFromEnum(pname), param);
+            bindings.pixelStoref(@backingInt(pname), param);
         }
 
         pub fn pixelStorei(pname: PixelStoreParameter, param: i32) void {
-            bindings.pixelStorei(@intFromEnum(pname), @bitCast(param));
+            bindings.pixelStorei(@backingInt(pname), @bitCast(param));
         }
 
         pub fn readBuffer(src: ColorBuffer) void {
-            bindings.readBuffer(@intFromEnum(src));
+            bindings.readBuffer(@backingInt(src));
         }
 
         /// parameter `pixel_pack_buf_offset` specifies the byte offset into
@@ -4532,8 +4532,8 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(y),
                 @bitCast(width),
                 @bitCast(height),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrFromInt(pixel_pack_buf_offset),
             );
         }
@@ -4554,18 +4554,18 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(y),
                 @bitCast(width),
                 @bitCast(height),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrCast(pixels),
             );
         }
 
         pub fn getBooleanv(pname: BooleanParameter, data: []bool) void {
-            bindings.getBooleanv(@intFromEnum(pname), @ptrCast(data.ptr));
+            bindings.getBooleanv(@backingInt(pname), @ptrCast(data.ptr));
         }
 
         pub fn getDoublev(pname: DoubleParameter, data: []f64) void {
-            bindings.getDoublev(@intFromEnum(pname), @ptrCast(data.ptr));
+            bindings.getDoublev(@backingInt(pname), @ptrCast(data.ptr));
         }
 
         /// returns null in case encountered value not defined by `Error`, when
@@ -4575,18 +4575,18 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn getFloatv(pname: FloatParameter, data: []f32) void {
-            bindings.getFloatv(@intFromEnum(pname), @ptrCast(data.ptr));
+            bindings.getFloatv(@backingInt(pname), @ptrCast(data.ptr));
         }
 
         pub fn getIntegerv(pname: IntegerParameter, data: []i32) void {
-            bindings.getIntegerv(@intFromEnum(pname), @ptrCast(data.ptr));
+            bindings.getIntegerv(@backingInt(pname), @ptrCast(data.ptr));
         }
 
         /// returns null if error is generated, but that should not be
         /// possible, bacause `StringParameter` only allowes valid values,
         /// so chaining `.?` operator is safe
         pub fn getString(name: StringParameter) ?[*:0]const u8 {
-            return bindings.getString(@intFromEnum(name));
+            return bindings.getString(@backingInt(name));
         }
 
         /// parameter `pixel_pack_buf_offset` specifies the byte offset into
@@ -4600,10 +4600,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_pack_buf_offset: usize,
         ) void {
             bindings.getTexImage(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrFromInt(pixel_pack_buf_offset),
             );
         }
@@ -4618,10 +4618,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: [*]u8,
         ) void {
             bindings.getTexImage(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrCast(pixels),
             );
         }
@@ -4632,8 +4632,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []f32,
         ) void {
             bindings.getTexParameterfv(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -4644,8 +4644,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getTexParameteriv(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -4657,9 +4657,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []f32,
         ) void {
             bindings.getTexLevelParameterfv(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(pname),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -4671,15 +4671,15 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getTexLevelParameteriv(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(pname),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
 
         pub fn isEnabled(cap: Capability) bool {
-            return bindings.isEnabled(@intFromEnum(cap)) == TRUE;
+            return bindings.isEnabled(@backingInt(cap)) == TRUE;
         }
 
         pub fn depthRange(near: f64, far: f64) void {
@@ -4740,7 +4740,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         /// used to render primitives specifed by `mode`
         pub fn drawArrays(prim_type: PrimitiveType, first: u32, count: u32) void {
             bindings.drawArrays(
-                @intFromEnum(prim_type),
+                @backingInt(prim_type),
                 @bitCast(first),
                 @bitCast(count),
             );
@@ -4757,9 +4757,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             element_array_buf_offset: usize,
         ) void {
             bindings.drawElements(
-                @intFromEnum(mode),
+                @backingInt(mode),
                 @bitCast(count),
-                @intFromEnum(index_type),
+                @backingInt(index_type),
                 @ptrFromInt(element_array_buf_offset),
             );
         }
@@ -4777,9 +4777,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             width: u32,
         ) void {
             bindings.copyTexImage1D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(x),
                 @bitCast(y),
                 @bitCast(width),
@@ -4798,9 +4798,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             height: u32,
         ) void {
             bindings.copyTexImage2D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(x),
                 @bitCast(y),
                 @bitCast(width),
@@ -4819,7 +4819,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             width: u32,
         ) void {
             bindings.copyTexSubImage1D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(x),
@@ -4839,7 +4839,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             height: u32,
         ) void {
             bindings.copyTexSubImage2D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -4864,12 +4864,12 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.texSubImage1D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(width),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrFromInt(pixel_unpack_buf_offset),
             );
         }
@@ -4887,12 +4887,12 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: [*]const u8,
         ) void {
             bindings.texSubImage1D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(width),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrCast(pixels),
             );
         }
@@ -4913,14 +4913,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.texSubImage2D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
                 @bitCast(width),
                 @bitCast(height),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrFromInt(pixel_unpack_buf_offset),
             );
         }
@@ -4940,20 +4940,20 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: [*]const u8,
         ) void {
             bindings.texSubImage2D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
                 @bitCast(width),
                 @bitCast(height),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrCast(pixels),
             );
         }
 
         pub fn bindTexture(target: TextureTargetWithTextureBuffer, texture: Texture) void {
-            bindings.bindTexture(@intFromEnum(target), @intFromEnum(texture));
+            bindings.bindTexture(@backingInt(target), @backingInt(texture));
         }
 
         pub fn deleteTexture(ptr: *const Texture) void {
@@ -4971,7 +4971,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn isTexture(texture: Texture) bool {
-            return bindings.isTexture(@intFromEnum(texture)) == TRUE;
+            return bindings.isTexture(@backingInt(texture)) == TRUE;
         }
 
         //------------------------------------------------------------------------------------------
@@ -5032,11 +5032,11 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(start <= end);
             bindings.drawRangeElements(
-                @intFromEnum(mode),
+                @backingInt(mode),
                 @bitCast(start),
                 @bitCast(end),
                 @bitCast(count),
-                @intFromEnum(index_type),
+                @backingInt(index_type),
                 @ptrFromInt(element_array_buf_offset),
             );
         }
@@ -5057,16 +5057,16 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.texImage3D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
                 // must be zero since OpenGL 3.0 (Core profile)
                 0,
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrFromInt(pixel_unpack_buf_offset),
             );
         }
@@ -5086,15 +5086,15 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: [*]const u8,
         ) void {
             bindings.texImage3D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
                 0,
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrCast(pixels),
             );
         }
@@ -5112,15 +5112,15 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_type: PixelType,
         ) void {
             bindings.texImage3D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
                 0,
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 null,
             );
         }
@@ -5144,7 +5144,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.texSubImage3D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -5152,8 +5152,8 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrFromInt(pixel_unpack_buf_offset),
             );
         }
@@ -5176,7 +5176,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: [*]const u8,
         ) void {
             bindings.texSubImage3D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -5184,8 +5184,8 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrCast(pixels),
             );
         }
@@ -5202,7 +5202,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             height: u32,
         ) void {
             bindings.copyTexSubImage3D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -5280,7 +5280,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const CLAMP_TO_BORDER = bindings.CLAMP_TO_BORDER;
 
         pub fn activeTexture(texture_unit: TextureUnit) void {
-            bindings.activeTexture(@intFromEnum(texture_unit));
+            bindings.activeTexture(@backingInt(texture_unit));
         }
 
         pub fn sampleCoverage(value: f32, invert: bool) void {
@@ -5303,9 +5303,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.compressedTexImage3D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
@@ -5329,9 +5329,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []const u8,
         ) void {
             bindings.compressedTexImage3D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
@@ -5355,9 +5355,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             compressed_size: usize,
         ) void {
             bindings.compressedTexImage3D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
@@ -5382,9 +5382,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.compressedTexImage2D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 @bitCast(height),
                 0,
@@ -5405,9 +5405,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []const u8,
         ) void {
             bindings.compressedTexImage2D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 @bitCast(height),
                 0,
@@ -5428,9 +5428,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             compressed_size: usize,
         ) void {
             bindings.compressedTexImage2D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 @bitCast(height),
                 0,
@@ -5452,9 +5452,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.compressedTexImage1D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 // must be zero since OpenGL 3.0 (Core profile)
                 0,
@@ -5474,9 +5474,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []const u8,
         ) void {
             bindings.compressedTexImage1D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 0,
                 @intCast(data.len),
@@ -5495,9 +5495,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             compressed_size: usize,
         ) void {
             bindings.compressedTexImage1D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 0,
                 @intCast(compressed_size),
@@ -5523,7 +5523,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.compressedTexSubImage3D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -5531,7 +5531,7 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
-                @intFromEnum(format),
+                @backingInt(format),
                 @intCast(compressed_size),
                 @ptrFromInt(pixel_unpack_buf_offset),
             );
@@ -5552,7 +5552,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []const u8,
         ) void {
             bindings.compressedTexSubImage3D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -5560,7 +5560,7 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
-                @intFromEnum(format),
+                @backingInt(format),
                 @intCast(data.len),
                 @ptrCast(data.ptr),
             );
@@ -5582,13 +5582,13 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.compressedTexSubImage2D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
                 @bitCast(width),
                 @bitCast(height),
-                @intFromEnum(format),
+                @backingInt(format),
                 @intCast(compressed_size),
                 @ptrFromInt(pixel_unpack_buf_offset),
             );
@@ -5607,13 +5607,13 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []const u8,
         ) void {
             bindings.compressedTexSubImage2D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
                 @bitCast(width),
                 @bitCast(height),
-                @intFromEnum(format),
+                @backingInt(format),
                 @intCast(data.len),
                 @ptrCast(data.ptr),
             );
@@ -5633,11 +5633,11 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.compressedTexSubImage1D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(width),
-                @intFromEnum(format),
+                @backingInt(format),
                 @intCast(compressed_size),
                 @ptrFromInt(pixel_unpack_buf_offset),
             );
@@ -5654,11 +5654,11 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []const u8,
         ) void {
             bindings.compressedTexSubImage1D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(width),
-                @intFromEnum(format),
+                @backingInt(format),
                 @intCast(data.len),
                 @ptrCast(data.ptr),
             );
@@ -5673,7 +5673,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_pack_buf_offset: usize,
         ) void {
             bindings.getCompressedTexImage(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @ptrFromInt(pixel_pack_buf_offset),
             );
@@ -5687,7 +5687,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: [*]u8,
         ) void {
             bindings.getCompressedTexImage(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
                 @ptrCast(pixels),
             );
@@ -5733,10 +5733,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             dst_alpha: BlendFactor,
         ) void {
             bindings.blendFuncSeparate(
-                @intFromEnum(src_rgb),
-                @intFromEnum(dst_rgb),
-                @intFromEnum(src_alpha),
-                @intFromEnum(dst_alpha),
+                @backingInt(src_rgb),
+                @backingInt(dst_rgb),
+                @backingInt(src_alpha),
+                @backingInt(dst_alpha),
             );
         }
 
@@ -5752,7 +5752,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(counts.len == firsts.len);
             bindings.multiDrawArrays(
-                @intFromEnum(prim_type),
+                @backingInt(prim_type),
                 @ptrCast(firsts.ptr),
                 @ptrCast(counts.ptr),
                 @intCast(counts.len),
@@ -5774,28 +5774,28 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(counts.len == element_array_buf_offsets.len);
             bindings.multiDrawElements(
-                @intFromEnum(mode),
+                @backingInt(mode),
                 @ptrCast(counts.ptr),
-                @intFromEnum(index_type),
+                @backingInt(index_type),
                 @ptrCast(element_array_buf_offsets.ptr),
                 @intCast(counts.len),
             );
         }
 
         pub fn pointParameterf(pname: PointParameter, param: f32) void {
-            bindings.pointParameterf(@intFromEnum(pname), param);
+            bindings.pointParameterf(@backingInt(pname), param);
         }
 
         pub fn pointParameterfv(pname: PointParameter, params: []const f32) void {
-            bindings.pointParameterfv(@intFromEnum(pname), params.ptr);
+            bindings.pointParameterfv(@backingInt(pname), params.ptr);
         }
 
         pub fn pointParameteri(pname: PointParameter, param: i32) void {
-            bindings.pointParameteri(@intFromEnum(pname), param);
+            bindings.pointParameteri(@backingInt(pname), param);
         }
 
         pub fn pointParameteriv(pname: PointParameter, params: []const i32) void {
-            bindings.pointParameteriv(@intFromEnum(pname), params.ptr);
+            bindings.pointParameteriv(@backingInt(pname), params.ptr);
         }
 
         pub fn blendColor(red: f32, green: f32, blue: f32, alpha: f32) void {
@@ -5803,7 +5803,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn blendEquation(mode: BlendEquation) void {
-            bindings.blendEquation(@intFromEnum(mode));
+            bindings.blendEquation(@backingInt(mode));
         }
 
         //------------------------------------------------------------------------------------------
@@ -5858,15 +5858,15 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn isQuery(query: Query) bool {
-            return bindings.isQuery(@intFromEnum(query)) == TRUE;
+            return bindings.isQuery(@backingInt(query)) == TRUE;
         }
 
         pub fn beginQuery(target: QueryTarget, query: Query) void {
-            bindings.beginQuery(@intFromEnum(target), @intFromEnum(query));
+            bindings.beginQuery(@backingInt(target), @backingInt(query));
         }
 
         pub fn endQuery(target: QueryTarget) void {
-            bindings.endQuery(@intFromEnum(target));
+            bindings.endQuery(@backingInt(target));
         }
 
         pub fn getQueryiv(
@@ -5875,8 +5875,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getQueryiv(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -5887,8 +5887,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getQueryObjectiv(
-                @intFromEnum(query),
-                @intFromEnum(pname),
+                @backingInt(query),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -5899,14 +5899,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []u32,
         ) void {
             bindings.getQueryObjectuiv(
-                @intFromEnum(query),
-                @intFromEnum(pname),
+                @backingInt(query),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
 
         pub fn bindBuffer(target: BufferTarget, buffer: Buffer) void {
-            bindings.bindBuffer(@intFromEnum(target), @intFromEnum(buffer));
+            bindings.bindBuffer(@backingInt(target), @backingInt(buffer));
         }
 
         pub fn deleteBuffer(ptr: *const Buffer) void {
@@ -5924,7 +5924,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn isBuffer(buffer: Buffer) bool {
-            return bindings.isBuffer(@intFromEnum(buffer)) == TRUE;
+            return bindings.isBuffer(@backingInt(buffer)) == TRUE;
         }
 
         pub fn bufferData(
@@ -5933,10 +5933,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             usage: BufferUsage,
         ) void {
             bindings.bufferData(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(data.len),
                 @ptrCast(data.ptr),
-                @intFromEnum(usage),
+                @backingInt(usage),
             );
         }
         /// buffer will be allocated, but its contents are undefined
@@ -5946,10 +5946,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             usage: BufferUsage,
         ) void {
             bindings.bufferData(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(size),
                 null,
-                @intFromEnum(usage),
+                @backingInt(usage),
             );
         }
 
@@ -5959,7 +5959,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []const u8,
         ) void {
             bindings.bufferSubData(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(offset),
                 @bitCast(data.len),
                 @ptrCast(data.ptr),
@@ -5972,7 +5972,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []u8,
         ) void {
             bindings.getBufferSubData(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(offset),
                 @bitCast(data.len),
                 @ptrCast(data.ptr),
@@ -5981,12 +5981,12 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         pub fn mapBuffer(target: BufferTarget, access: Access) ?[*]u8 {
             return @ptrCast(
-                bindings.mapBuffer(@intFromEnum(target), @intFromEnum(access)),
+                bindings.mapBuffer(@backingInt(target), @backingInt(access)),
             );
         }
 
         pub fn unmapBuffer(target: BufferTarget) bool {
-            return bindings.unmapBuffer(@intFromEnum(target)) == TRUE;
+            return bindings.unmapBuffer(@backingInt(target)) == TRUE;
         }
 
         pub fn getBufferParameteriv(
@@ -5995,8 +5995,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getBufferParameteriv(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -6007,8 +6007,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: *?[*]u8,
         ) void {
             bindings.getBufferPointerv(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @ptrCast(params),
             );
         }
@@ -6109,8 +6109,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             modeAlpha: BlendEquation,
         ) void {
             bindings.blendEquationSeparate(
-                @intFromEnum(modeRGB),
-                @intFromEnum(modeAlpha),
+                @backingInt(modeRGB),
+                @backingInt(modeAlpha),
             );
         }
 
@@ -6128,10 +6128,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             dppass: StencilAction,
         ) void {
             bindings.stencilOpSeparate(
-                @intFromEnum(face),
-                @intFromEnum(sfail),
-                @intFromEnum(dpfail),
-                @intFromEnum(dppass),
+                @backingInt(face),
+                @backingInt(sfail),
+                @backingInt(dpfail),
+                @backingInt(dppass),
             );
         }
 
@@ -6142,8 +6142,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             mask: u32,
         ) void {
             bindings.stencilFuncSeparate(
-                @intFromEnum(face),
-                @intFromEnum(func),
+                @backingInt(face),
+                @backingInt(func),
                 @bitCast(ref),
                 @bitCast(mask),
             );
@@ -6151,7 +6151,7 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         pub fn stencilMaskSeparate(face: Face, mask: u32) void {
             bindings.stencilMaskSeparate(
-                @intFromEnum(face),
+                @backingInt(face),
                 @bitCast(mask),
             );
         }
@@ -6160,8 +6160,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(shader != .invalid);
             bindings.attachShader(
-                @intFromEnum(program),
-                @intFromEnum(shader),
+                @backingInt(program),
+                @backingInt(shader),
             );
         }
 
@@ -6174,55 +6174,55 @@ pub fn Wrap(comptime bindings: anytype) type {
             // prefix 'gl_' is reserved and cannot be used
             assert(!std.mem.startsWith(u8, name, "gl_"));
             bindings.bindAttribLocation(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @ptrCast(name.ptr),
             );
         }
 
         pub fn compileShader(shader: Shader) void {
             assert(shader != .invalid);
-            bindings.compileShader(@intFromEnum(shader));
+            bindings.compileShader(@backingInt(shader));
         }
 
         pub fn createProgram() ProgramCreateError!Program {
             const maybe_program = bindings.createProgram();
-            if (maybe_program == @intFromEnum(Program.invalid)) {
+            if (maybe_program == @backingInt(Program.invalid)) {
                 return error.ProgramCreationFailed;
             }
-            return @enumFromInt(maybe_program);
+            return @fromBackingInt(@intCast(maybe_program));
         }
 
         pub fn createShader(shader_type: ShaderType) ShaderCreateError!Shader {
-            const maybe_shader = bindings.createShader(@intFromEnum(shader_type));
-            if (maybe_shader == @intFromEnum(Shader.invalid)) {
+            const maybe_shader = bindings.createShader(@backingInt(shader_type));
+            if (maybe_shader == @backingInt(Shader.invalid)) {
                 return error.ShaderCreationFailed;
             }
-            return @enumFromInt(maybe_shader);
+            return @fromBackingInt(@intCast(maybe_shader));
         }
 
         pub fn deleteProgram(program: Program) void {
             assert(program != .invalid);
-            bindings.deleteProgram(@intFromEnum(program));
+            bindings.deleteProgram(@backingInt(program));
         }
 
         pub fn deleteShader(shader: Shader) void {
             assert(shader != .invalid);
-            bindings.deleteShader(@intFromEnum(shader));
+            bindings.deleteShader(@backingInt(shader));
         }
 
         pub fn detachShader(program: Program, shader: Shader) void {
             assert(program != .invalid);
             assert(shader != .invalid);
-            bindings.detachShader(@intFromEnum(program), @intFromEnum(shader));
+            bindings.detachShader(@backingInt(program), @backingInt(shader));
         }
 
         pub fn disableVertexAttribArray(location: VertexAttribLocation) void {
-            bindings.disableVertexAttribArray(@intFromEnum(location));
+            bindings.disableVertexAttribArray(@backingInt(location));
         }
 
         pub fn enableVertexAttribArray(location: VertexAttribLocation) void {
-            bindings.enableVertexAttribArray(@intFromEnum(location));
+            bindings.enableVertexAttribArray(@backingInt(location));
         }
 
         pub fn getActiveAttrib(
@@ -6235,7 +6235,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             var length: i32 = -1;
             bindings.getActiveAttrib(
-                @intFromEnum(program),
+                @backingInt(program),
                 @bitCast(index),
                 // includes null terminator
                 @intCast(name_buf.len + 1),
@@ -6258,7 +6258,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             var length: i32 = -1;
             bindings.getActiveUniform(
-                @intFromEnum(program),
+                @backingInt(program),
                 @bitCast(index),
                 // includes null terminator
                 @intCast(name_buf.len + 1),
@@ -6278,7 +6278,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             var count: i32 = -1;
             bindings.getAttachedShaders(
-                @intFromEnum(program),
+                @backingInt(program),
                 @intCast(shaders.len),
                 @ptrCast(&count),
                 @ptrCast(shaders.ptr),
@@ -6296,10 +6296,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             // * `name` parameter is not an active attribute in provided `program`,
             // * an error has been generated.
             const location = bindings.getAttribLocation(
-                @intFromEnum(program),
+                @backingInt(program),
                 @ptrCast(name.ptr),
             );
-            return if (location != -1) @enumFromInt(location) else null;
+            return if (location != -1) @fromBackingInt(@intCast(location)) else null;
         }
 
         pub fn getProgramiv(
@@ -6309,8 +6309,8 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(program != .invalid);
             bindings.getProgramiv(
-                @intFromEnum(program),
-                @intFromEnum(parameter),
+                @backingInt(program),
+                @backingInt(parameter),
                 @ptrCast(params.ptr),
             );
         }
@@ -6319,7 +6319,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             var length: i32 = -1;
             bindings.getProgramInfoLog(
-                @intFromEnum(program),
+                @backingInt(program),
                 // includes null terminator
                 @intCast(log_buf.len + 1),
                 // excludes null terminator
@@ -6336,8 +6336,8 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(shader != .invalid);
             bindings.getShaderiv(
-                @intFromEnum(shader),
-                @intFromEnum(parameter),
+                @backingInt(shader),
+                @backingInt(parameter),
                 @ptrCast(params.ptr),
             );
         }
@@ -6346,7 +6346,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(shader != .invalid);
             var length: i32 = -1;
             bindings.getShaderInfoLog(
-                @intFromEnum(shader),
+                @backingInt(shader),
                 // includes null terminator
                 @intCast(log_buf.len + 1),
                 // excludes null terminator
@@ -6360,7 +6360,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(shader != .invalid);
             var length: i32 = -1;
             bindings.getShaderSource(
-                @intFromEnum(shader),
+                @backingInt(shader),
                 // includes null terminator
                 @intCast(source_buf.len + 1),
                 // excludes null terminator
@@ -6381,10 +6381,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             // * `name` parameter is associated with a named uniform block in provided `program`,
             // * an error has been generated.
             const location = bindings.getUniformLocation(
-                @intFromEnum(program),
+                @backingInt(program),
                 @ptrCast(name.ptr),
             );
-            return if (location != -1) @enumFromInt(location) else null;
+            return if (location != -1) @fromBackingInt(@intCast(location)) else null;
         }
 
         pub fn getUniformfv(
@@ -6395,8 +6395,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.getUniformfv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @ptrCast(params.ptr),
             );
         }
@@ -6409,8 +6409,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.getUniformiv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @ptrCast(params.ptr),
             );
         }
@@ -6421,8 +6421,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []f64,
         ) void {
             bindings.getVertexAttribdv(
-                @intFromEnum(location),
-                @intFromEnum(pname),
+                @backingInt(location),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -6433,8 +6433,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []f32,
         ) void {
             bindings.getVertexAttribfv(
-                @intFromEnum(location),
-                @intFromEnum(pname),
+                @backingInt(location),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -6445,8 +6445,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getVertexAttribiv(
-                @intFromEnum(location),
-                @intFromEnum(pname),
+                @backingInt(location),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -6457,23 +6457,23 @@ pub fn Wrap(comptime bindings: anytype) type {
             pointer: **allowzero anyopaque,
         ) void {
             bindings.getVertexAttribPointerv(
-                @intFromEnum(location),
-                @intFromEnum(pname),
+                @backingInt(location),
+                @backingInt(pname),
                 @ptrCast(pointer),
             );
         }
 
         pub fn isProgram(program: Program) bool {
-            return bindings.isProgram(@intFromEnum(program)) == TRUE;
+            return bindings.isProgram(@backingInt(program)) == TRUE;
         }
 
         pub fn isShader(shader: Shader) bool {
-            return bindings.isShader(@intFromEnum(shader)) == TRUE;
+            return bindings.isShader(@backingInt(shader)) == TRUE;
         }
 
         pub fn linkProgram(program: Program) void {
             assert(program != .invalid);
-            bindings.linkProgram(@intFromEnum(program));
+            bindings.linkProgram(@backingInt(program));
         }
 
         pub fn shaderSourceSingle(
@@ -6485,7 +6485,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             // it to u32, since bindings.shaderSource expects length of 4 bytes
             const string_len: u32 = @intCast(string.len);
             bindings.shaderSource(
-                @intFromEnum(shader),
+                @backingInt(shader),
                 1,
                 @ptrCast(&string.ptr),
                 @ptrCast(&string_len),
@@ -6497,7 +6497,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(shader != .invalid);
             bindings.shaderSource(
-                @intFromEnum(shader),
+                @backingInt(shader),
                 1,
                 @ptrCast(&string),
                 null,
@@ -6511,7 +6511,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(shader != .invalid);
             assert(strings.len == lengths.len);
             bindings.shaderSource(
-                @intFromEnum(shader),
+                @backingInt(shader),
                 @intCast(strings.len),
                 @ptrCast(strings.ptr),
                 @ptrCast(lengths.ptr),
@@ -6523,7 +6523,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(shader != .invalid);
             bindings.shaderSource(
-                @intFromEnum(shader),
+                @backingInt(shader),
                 @intCast(strings.len),
                 @ptrCast(strings.ptr),
                 null,
@@ -6531,7 +6531,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn useProgram(program: Program) void {
-            bindings.useProgram(@intFromEnum(program));
+            bindings.useProgram(@backingInt(program));
         }
 
         pub fn uniform1f(
@@ -6539,7 +6539,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             v0: f32,
         ) void {
             assert(location != .invalid);
-            bindings.uniform1f(@intFromEnum(location), v0);
+            bindings.uniform1f(@backingInt(location), v0);
         }
 
         pub fn uniform2f(
@@ -6549,7 +6549,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(location != .invalid);
             bindings.uniform2f(
-                @intFromEnum(location),
+                @backingInt(location),
                 v0,
                 v1,
             );
@@ -6563,7 +6563,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(location != .invalid);
             bindings.uniform3f(
-                @intFromEnum(location),
+                @backingInt(location),
                 v0,
                 v1,
                 v2,
@@ -6579,7 +6579,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(location != .invalid);
             bindings.uniform4f(
-                @intFromEnum(location),
+                @backingInt(location),
                 v0,
                 v1,
                 v2,
@@ -6593,7 +6593,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(location != .invalid);
             bindings.uniform1i(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(v0),
             );
         }
@@ -6605,7 +6605,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(location != .invalid);
             bindings.uniform2i(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(v0),
                 @bitCast(v1),
             );
@@ -6619,7 +6619,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(location != .invalid);
             bindings.uniform3i(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(v0),
                 @bitCast(v1),
                 @bitCast(v2),
@@ -6635,7 +6635,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(location != .invalid);
             bindings.uniform4i(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(v0),
                 @bitCast(v1),
                 @bitCast(v2),
@@ -6647,7 +6647,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(location != .invalid);
             assert(value.len == count);
             bindings.uniform1fv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -6659,7 +6659,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.uniform2fv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -6671,7 +6671,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.uniform3fv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -6683,7 +6683,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.uniform4fv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -6693,7 +6693,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(location != .invalid);
             assert(value.len == count);
             bindings.uniform1iv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -6705,7 +6705,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.uniform2iv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -6717,7 +6717,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.uniform3iv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -6729,7 +6729,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.uniform4iv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -6746,7 +6746,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix2fv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -6764,7 +6764,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix3fv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -6782,7 +6782,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix4fv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -6791,7 +6791,7 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         pub fn validateProgram(program: Program) void {
             assert(program != .invalid);
-            bindings.validateProgram(@intFromEnum(program));
+            bindings.validateProgram(@backingInt(program));
         }
 
         pub fn vertexAttrib1d(
@@ -6799,13 +6799,13 @@ pub fn Wrap(comptime bindings: anytype) type {
             x: f64,
         ) void {
             bindings.vertexAttrib1d(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
             );
         }
 
         pub fn vertexAttrib1dv(location: VertexAttribLocation, v: []const f64) void {
-            bindings.vertexAttrib1dv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib1dv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib1f(
@@ -6813,13 +6813,13 @@ pub fn Wrap(comptime bindings: anytype) type {
             x: f32,
         ) void {
             bindings.vertexAttrib1f(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
             );
         }
 
         pub fn vertexAttrib1fv(location: VertexAttribLocation, v: []const f32) void {
-            bindings.vertexAttrib1fv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib1fv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib1s(
@@ -6827,13 +6827,13 @@ pub fn Wrap(comptime bindings: anytype) type {
             x: i16,
         ) void {
             bindings.vertexAttrib1s(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
             );
         }
 
         pub fn vertexAttrib1sv(location: VertexAttribLocation, v: []const i16) void {
-            bindings.vertexAttrib1sv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib1sv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib2d(
@@ -6842,14 +6842,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             y: f64,
         ) void {
             bindings.vertexAttrib2d(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
                 y,
             );
         }
 
         pub fn vertexAttrib2dv(location: VertexAttribLocation, v: []const f64) void {
-            bindings.vertexAttrib2dv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib2dv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib2f(
@@ -6858,14 +6858,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             y: f32,
         ) void {
             bindings.vertexAttrib2f(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
                 y,
             );
         }
 
         pub fn vertexAttrib2fv(location: VertexAttribLocation, v: []const f32) void {
-            bindings.vertexAttrib2fv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib2fv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib2s(
@@ -6874,14 +6874,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             y: i16,
         ) void {
             bindings.vertexAttrib2s(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
                 y,
             );
         }
 
         pub fn vertexAttrib2sv(location: VertexAttribLocation, v: []const i16) void {
-            bindings.vertexAttrib2sv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib2sv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib3d(
@@ -6891,7 +6891,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             z: f64,
         ) void {
             bindings.vertexAttrib3d(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
                 y,
                 z,
@@ -6899,7 +6899,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn vertexAttrib3dv(location: VertexAttribLocation, v: []const f64) void {
-            bindings.vertexAttrib3dv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib3dv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib3f(
@@ -6909,7 +6909,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             z: f32,
         ) void {
             bindings.vertexAttrib3f(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
                 y,
                 z,
@@ -6917,7 +6917,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn vertexAttrib3fv(location: VertexAttribLocation, v: []const f32) void {
-            bindings.vertexAttrib3fv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib3fv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib3s(
@@ -6927,7 +6927,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             z: i16,
         ) void {
             bindings.vertexAttrib3s(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(x),
                 @bitCast(y),
                 @bitCast(z),
@@ -6935,19 +6935,19 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn vertexAttrib3sv(location: VertexAttribLocation, v: []const i16) void {
-            bindings.vertexAttrib3sv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib3sv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib4Nbv(location: VertexAttribLocation, v: []const i8) void {
-            bindings.vertexAttrib4Nbv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib4Nbv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib4Niv(location: VertexAttribLocation, v: []const i32) void {
-            bindings.vertexAttrib4Niv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib4Niv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib4Nsv(location: VertexAttribLocation, v: []const i16) void {
-            bindings.vertexAttrib4Nsv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib4Nsv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib4Nub(
@@ -6958,7 +6958,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             w: u8,
         ) void {
             bindings.vertexAttrib4Nub(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(x),
                 @bitCast(y),
                 @bitCast(z),
@@ -6967,19 +6967,19 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn vertexAttrib4Nubv(location: VertexAttribLocation, v: []const u8) void {
-            bindings.vertexAttrib4Nubv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib4Nubv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib4Nuiv(location: VertexAttribLocation, v: []const u32) void {
-            bindings.vertexAttrib4Nuiv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib4Nuiv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib4Nusv(location: VertexAttribLocation, v: []const u16) void {
-            bindings.vertexAttrib4Nusv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib4Nusv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib4bv(location: VertexAttribLocation, v: []const i8) void {
-            bindings.vertexAttrib4bv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib4bv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib4d(
@@ -6990,7 +6990,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             w: f64,
         ) void {
             bindings.vertexAttrib4d(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
                 y,
                 z,
@@ -6999,7 +6999,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn vertexAttrib4dv(location: VertexAttribLocation, v: []const f64) void {
-            bindings.vertexAttrib4dv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib4dv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib4f(
@@ -7010,7 +7010,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             w: f32,
         ) void {
             bindings.vertexAttrib4f(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
                 y,
                 z,
@@ -7019,11 +7019,11 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn vertexAttrib4fv(location: VertexAttribLocation, v: []const f32) void {
-            bindings.vertexAttrib4fv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib4fv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib4iv(location: VertexAttribLocation, v: []const i32) void {
-            bindings.vertexAttrib4iv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib4iv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib4s(
@@ -7034,7 +7034,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             w: i16,
         ) void {
             bindings.vertexAttrib4s(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(x),
                 @bitCast(y),
                 @bitCast(z),
@@ -7043,19 +7043,19 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn vertexAttrib4sv(location: VertexAttribLocation, v: []const i16) void {
-            bindings.vertexAttrib4sv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib4sv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib4ubv(location: VertexAttribLocation, v: []const u8) void {
-            bindings.vertexAttrib4ubv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib4ubv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib4uiv(location: VertexAttribLocation, v: []const u32) void {
-            bindings.vertexAttrib4uiv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib4uiv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttrib4usv(location: VertexAttribLocation, v: []const u16) void {
-            bindings.vertexAttrib4usv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttrib4usv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribPointer(
@@ -7067,9 +7067,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             offset: usize,
         ) void {
             bindings.vertexAttribPointer(
-                @intFromEnum(location),
-                @intFromEnum(size),
-                @intFromEnum(attrib_type),
+                @backingInt(location),
+                @backingInt(size),
+                @backingInt(attrib_type),
                 @intFromBool(normalised),
                 @bitCast(stride),
                 @ptrFromInt(offset),
@@ -7109,7 +7109,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix2x3fv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -7127,7 +7127,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix3x2fv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -7145,7 +7145,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix2x4fv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -7163,7 +7163,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix4x2fv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -7181,7 +7181,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix3x4fv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -7199,7 +7199,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix4x3fv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -7467,7 +7467,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []bool,
         ) void {
             bindings.getBooleani_v(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(index),
                 @ptrCast(data.ptr),
             );
@@ -7479,7 +7479,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []i32,
         ) void {
             bindings.getIntegeri_v(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(index),
                 @ptrCast(data.ptr),
             );
@@ -7487,27 +7487,27 @@ pub fn Wrap(comptime bindings: anytype) type {
 
         pub fn enablei(target: IndexedCapability, index: u32) void {
             bindings.enablei(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(index),
             );
         }
 
         pub fn disablei(target: IndexedCapability, index: u32) void {
             bindings.disablei(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(index),
             );
         }
 
         pub fn isEnabledi(target: IndexedCapability, index: u32) bool {
             return bindings.isEnabledi(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(index),
             ) == TRUE;
         }
 
         pub fn beginTransformFeedback(primitiveMode: PrimitiveTypeBasic) void {
-            bindings.beginTransformFeedback(@intFromEnum(primitiveMode));
+            bindings.beginTransformFeedback(@backingInt(primitiveMode));
         }
 
         pub fn endTransformFeedback() void {
@@ -7522,9 +7522,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             size: usize,
         ) void {
             bindings.bindBufferRange(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(index),
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @bitCast(offset),
                 @bitCast(size),
             );
@@ -7536,9 +7536,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             buffer: Buffer,
         ) void {
             bindings.bindBufferBase(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(index),
-                @intFromEnum(buffer),
+                @backingInt(buffer),
             );
         }
 
@@ -7549,10 +7549,10 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(program != .invalid);
             bindings.transformFeedbackVaryings(
-                @intFromEnum(program),
+                @backingInt(program),
                 @intCast(varyings.len),
                 @ptrCast(varyings.ptr),
-                @intFromEnum(bufferMode),
+                @backingInt(bufferMode),
             );
         }
 
@@ -7566,7 +7566,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             var length: i32 = -1;
             bindings.getTransformFeedbackVarying(
-                @intFromEnum(program),
+                @backingInt(program),
                 @bitCast(index),
                 // includes null terminator
                 @intCast(name_buf.len + 1),
@@ -7580,7 +7580,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn clampColor(target: ClampColorTarget, clamp: ClampColor) void {
-            bindings.clampColor(@intFromEnum(target), @intFromEnum(clamp));
+            bindings.clampColor(@backingInt(target), @backingInt(clamp));
         }
 
         pub fn beginConditionalRender(
@@ -7588,8 +7588,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             mode: ConditionalRenderMode,
         ) void {
             bindings.beginConditionalRender(
-                @intFromEnum(id),
-                @intFromEnum(mode),
+                @backingInt(id),
+                @backingInt(mode),
             );
         }
 
@@ -7605,9 +7605,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             offset: usize,
         ) void {
             bindings.vertexAttribIPointer(
-                @intFromEnum(location),
-                @intFromEnum(size),
-                @intFromEnum(attrib_type),
+                @backingInt(location),
+                @backingInt(size),
+                @backingInt(attrib_type),
                 @bitCast(stride),
                 @ptrFromInt(offset),
             );
@@ -7619,8 +7619,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getVertexAttribIiv(
-                @intFromEnum(location),
-                @intFromEnum(pname),
+                @backingInt(location),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -7631,8 +7631,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []u32,
         ) void {
             bindings.getVertexAttribIuiv(
-                @intFromEnum(location),
-                @intFromEnum(pname),
+                @backingInt(location),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -7642,7 +7642,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             x: i32,
         ) void {
             bindings.vertexAttribI1i(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(x),
             );
         }
@@ -7653,7 +7653,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             y: i32,
         ) void {
             bindings.vertexAttribI2i(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(x),
                 @bitCast(y),
             );
@@ -7666,7 +7666,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             z: i32,
         ) void {
             bindings.vertexAttribI3i(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(x),
                 @bitCast(y),
                 @bitCast(z),
@@ -7681,7 +7681,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             w: i32,
         ) void {
             bindings.vertexAttribI4i(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(x),
                 @bitCast(y),
                 @bitCast(z),
@@ -7694,7 +7694,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             x: u32,
         ) void {
             bindings.vertexAttribI1ui(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(x),
             );
         }
@@ -7705,7 +7705,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             y: u32,
         ) void {
             bindings.vertexAttribI2ui(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(x),
                 @bitCast(y),
             );
@@ -7718,7 +7718,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             z: u32,
         ) void {
             bindings.vertexAttribI3ui(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(x),
                 @bitCast(y),
                 @bitCast(z),
@@ -7733,7 +7733,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             w: u32,
         ) void {
             bindings.vertexAttribI4ui(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(x),
                 @bitCast(y),
                 @bitCast(z),
@@ -7742,51 +7742,51 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn vertexAttribI1iv(location: VertexAttribLocation, v: []const i32) void {
-            bindings.vertexAttribI1iv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribI1iv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribI2iv(location: VertexAttribLocation, v: []const i32) void {
-            bindings.vertexAttribI2iv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribI2iv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribI3iv(location: VertexAttribLocation, v: []const i32) void {
-            bindings.vertexAttribI3iv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribI3iv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribI4iv(location: VertexAttribLocation, v: []const i32) void {
-            bindings.vertexAttribI4iv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribI4iv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribI1uiv(location: VertexAttribLocation, v: []const u32) void {
-            bindings.vertexAttribI1uiv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribI1uiv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribI2uiv(location: VertexAttribLocation, v: []const u32) void {
-            bindings.vertexAttribI2uiv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribI2uiv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribI3uiv(location: VertexAttribLocation, v: []const u32) void {
-            bindings.vertexAttribI3uiv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribI3uiv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribI4uiv(location: VertexAttribLocation, v: []const u32) void {
-            bindings.vertexAttribI4uiv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribI4uiv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribI4bv(location: VertexAttribLocation, v: []const i8) void {
-            bindings.vertexAttribI4bv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribI4bv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribI4sv(location: VertexAttribLocation, v: []const i16) void {
-            bindings.vertexAttribI4sv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribI4sv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribI4ubv(location: VertexAttribLocation, v: []const u8) void {
-            bindings.vertexAttribI4ubv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribI4ubv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribI4usv(location: VertexAttribLocation, v: []const u16) void {
-            bindings.vertexAttribI4usv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribI4usv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn getUniformuiv(
@@ -7797,8 +7797,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.getUniformuiv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @ptrCast(params.ptr),
             );
         }
@@ -7808,7 +7808,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             // prefix 'gl_' is reserved and cannot be used
             assert(!std.mem.startsWith(u8, name, "gl_"));
             bindings.bindFragDataLocation(
-                @intFromEnum(program),
+                @backingInt(program),
                 @bitCast(color),
                 @ptrCast(name.ptr),
             );
@@ -7820,7 +7820,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             // * `name` parameter is not a varying out variable in provided `program`,
             // * an error has been generated.
             const location = bindings.getFragDataLocation(
-                @intFromEnum(program),
+                @backingInt(program),
                 @ptrCast(name.ptr),
             );
             return if (location != -1) @bitCast(location) else null;
@@ -7832,7 +7832,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(location != .invalid);
             bindings.uniform1ui(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(v0),
             );
         }
@@ -7844,7 +7844,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(location != .invalid);
             bindings.uniform2ui(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(v0),
                 @bitCast(v1),
             );
@@ -7858,7 +7858,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(location != .invalid);
             bindings.uniform3ui(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(v0),
                 @bitCast(v1),
                 @bitCast(v2),
@@ -7874,7 +7874,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(location != .invalid);
             bindings.uniform4ui(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(v0),
                 @bitCast(v1),
                 @bitCast(v2),
@@ -7886,7 +7886,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(location != .invalid);
             assert(value.len == count);
             bindings.uniform1uiv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -7898,7 +7898,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.uniform2uiv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -7910,7 +7910,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.uniform3uiv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -7922,7 +7922,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.uniform4uiv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -7934,8 +7934,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []const i32,
         ) void {
             bindings.texParameterIiv(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -7946,8 +7946,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []const u32,
         ) void {
             bindings.texParameterIuiv(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -7958,8 +7958,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getTexParameterIiv(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -7970,8 +7970,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []u32,
         ) void {
             bindings.getTexParameterIuiv(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -7982,7 +7982,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             value: []const i32,
         ) void {
             bindings.clearBufferiv(
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @bitCast(drawbuffer),
                 @ptrCast(value.ptr),
             );
@@ -7994,7 +7994,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             value: []const u32,
         ) void {
             bindings.clearBufferuiv(
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @bitCast(drawbuffer),
                 @ptrCast(value.ptr),
             );
@@ -8006,7 +8006,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             value: []const f32,
         ) void {
             bindings.clearBufferfv(
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @bitCast(drawbuffer),
                 @ptrCast(value.ptr),
             );
@@ -8019,7 +8019,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             stencil: i32,
         ) void {
             bindings.clearBufferfi(
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @bitCast(drawbuffer),
                 depth,
                 @bitCast(stencil),
@@ -8029,15 +8029,15 @@ pub fn Wrap(comptime bindings: anytype) type {
         // returns null if error is generated, which will happen when specified `index`
         // is equal to of exceeds the number of values provided by specified `name`
         pub fn getStringi(name: IndexedStringParameter, index: u32) ?[*:0]const u8 {
-            return bindings.getStringi(@intFromEnum(name), @bitCast(index));
+            return bindings.getStringi(@backingInt(name), @bitCast(index));
         }
 
         pub fn isRenderbuffer(renderbuffer: Renderbuffer) bool {
-            return bindings.isRenderbuffer(@intFromEnum(renderbuffer)) == TRUE;
+            return bindings.isRenderbuffer(@backingInt(renderbuffer)) == TRUE;
         }
 
         pub fn bindRenderbuffer(target: RenderbufferTarget, renderbuffer: Renderbuffer) void {
-            bindings.bindRenderbuffer(@intFromEnum(target), @intFromEnum(renderbuffer));
+            bindings.bindRenderbuffer(@backingInt(target), @backingInt(renderbuffer));
         }
 
         pub fn deleteRenderbuffer(ptr: *const Renderbuffer) void {
@@ -8067,8 +8067,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             height: u32,
         ) void {
             bindings.renderbufferStorage(
-                @intFromEnum(target),
-                @intFromEnum(internal_format),
+                @backingInt(target),
+                @backingInt(internal_format),
                 @bitCast(width),
                 @bitCast(height),
             );
@@ -8080,18 +8080,18 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getRenderbufferParameteriv(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
 
         pub fn isFramebuffer(framebuffer: Framebuffer) bool {
-            return bindings.isFramebuffer(@intFromEnum(framebuffer)) == TRUE;
+            return bindings.isFramebuffer(@backingInt(framebuffer)) == TRUE;
         }
 
         pub fn bindFramebuffer(target: FramebufferTarget, framebuffer: Framebuffer) void {
-            bindings.bindFramebuffer(@intFromEnum(target), @intFromEnum(framebuffer));
+            bindings.bindFramebuffer(@backingInt(target), @backingInt(framebuffer));
         }
 
         pub fn deleteFramebuffer(ptr: *const Framebuffer) void {
@@ -8112,7 +8112,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             target: FramebufferTarget,
         ) FramebufferStatusError!FramebufferStatus {
             const status = bindings.checkFramebufferStatus(
-                @intFromEnum(target),
+                @backingInt(target),
             );
             // zero is returned when error is generated
             if (status == 0) {
@@ -8129,10 +8129,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             level: u32,
         ) void {
             bindings.framebufferTexture1D(
-                @intFromEnum(target),
-                @intFromEnum(attachment),
-                @intFromEnum(textarget),
-                @intFromEnum(texture),
+                @backingInt(target),
+                @backingInt(attachment),
+                @backingInt(textarget),
+                @backingInt(texture),
                 @bitCast(level),
             );
         }
@@ -8145,10 +8145,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             level: u32,
         ) void {
             bindings.framebufferTexture2D(
-                @intFromEnum(target),
-                @intFromEnum(attachment),
-                @intFromEnum(textarget),
-                @intFromEnum(texture),
+                @backingInt(target),
+                @backingInt(attachment),
+                @backingInt(textarget),
+                @backingInt(texture),
                 @bitCast(level),
             );
         }
@@ -8162,10 +8162,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             zoffset: u32,
         ) void {
             bindings.framebufferTexture3D(
-                @intFromEnum(target),
-                @intFromEnum(attachment),
-                @intFromEnum(textarget),
-                @intFromEnum(texture),
+                @backingInt(target),
+                @backingInt(attachment),
+                @backingInt(textarget),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(zoffset),
             );
@@ -8178,10 +8178,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             renderbuffer: Renderbuffer,
         ) void {
             bindings.framebufferRenderbuffer(
-                @intFromEnum(target),
-                @intFromEnum(attachment),
-                @intFromEnum(renderbuffertarget),
-                @intFromEnum(renderbuffer),
+                @backingInt(target),
+                @backingInt(attachment),
+                @backingInt(renderbuffertarget),
+                @backingInt(renderbuffer),
             );
         }
 
@@ -8192,15 +8192,15 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getFramebufferAttachmentParameteriv(
-                @intFromEnum(target),
-                @intFromEnum(attachment),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(attachment),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
 
         pub fn generateMipmap(target: MipmapTarget) void {
-            bindings.generateMipmap(@intFromEnum(target));
+            bindings.generateMipmap(@backingInt(target));
         }
 
         pub fn blitFramebuffer(
@@ -8225,7 +8225,7 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(dstX1),
                 @bitCast(dstY1),
                 @bitCast(mask),
-                @intFromEnum(filter),
+                @backingInt(filter),
             );
         }
 
@@ -8237,9 +8237,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             height: u32,
         ) void {
             bindings.renderbufferStorageMultisample(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(samples),
-                @intFromEnum(internalformat),
+                @backingInt(internalformat),
                 @bitCast(width),
                 @bitCast(height),
             );
@@ -8253,9 +8253,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             layer: u32,
         ) void {
             bindings.framebufferTextureLayer(
-                @intFromEnum(target),
-                @intFromEnum(attachment),
-                @intFromEnum(texture),
+                @backingInt(target),
+                @backingInt(attachment),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(layer),
             );
@@ -8272,7 +8272,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(!(access.map_read and (access.map_invalidate_range or access.map_invalidate_buffer or access.map_unsynchronized)));
             assert(!(access.map_flush_explicit and !access.map_write));
             return @ptrCast(bindings.mapBufferRange(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(offset),
                 @bitCast(length),
                 @bitCast(access),
@@ -8285,14 +8285,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             length: usize,
         ) void {
             bindings.flushMappedBufferRange(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(offset),
                 @bitCast(length),
             );
         }
 
         pub fn bindVertexArray(array: VertexArray) void {
-            bindings.bindVertexArray(@intFromEnum(array));
+            bindings.bindVertexArray(@backingInt(array));
         }
 
         pub fn deleteVertexArray(ptr: *const VertexArray) void {
@@ -8310,7 +8310,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn isVertexArray(array: VertexArray) bool {
-            return bindings.isVertexArray(@intFromEnum(array)) == TRUE;
+            return bindings.isVertexArray(@backingInt(array)) == TRUE;
         }
 
         //------------------------------------------------------------------------------------------
@@ -8392,7 +8392,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             instancecount: u32,
         ) void {
             bindings.drawArraysInstanced(
-                @intFromEnum(mode),
+                @backingInt(mode),
                 @bitCast(first),
                 @bitCast(count),
                 @bitCast(instancecount),
@@ -8413,9 +8413,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             instancecount: u32,
         ) void {
             bindings.drawElementsInstanced(
-                @intFromEnum(mode),
+                @backingInt(mode),
                 @bitCast(count),
-                @intFromEnum(index_type),
+                @backingInt(index_type),
                 @ptrFromInt(element_array_buf_offset),
                 @bitCast(instancecount),
             );
@@ -8427,9 +8427,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             buffer: Buffer,
         ) void {
             bindings.texBuffer(
-                @intFromEnum(target),
-                @intFromEnum(internalformat),
-                @intFromEnum(buffer),
+                @backingInt(target),
+                @backingInt(internalformat),
+                @backingInt(buffer),
             );
         }
 
@@ -8445,8 +8445,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             size: usize,
         ) void {
             bindings.copyBufferSubData(
-                @intFromEnum(readTarget),
-                @intFromEnum(writeTarget),
+                @backingInt(readTarget),
+                @backingInt(writeTarget),
                 @bitCast(readOffset),
                 @bitCast(writeOffset),
                 @bitCast(size),
@@ -8461,7 +8461,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(uniformNames.len == uniformIndices.len);
             bindings.getUniformIndices(
-                @intFromEnum(program),
+                @backingInt(program),
                 @intCast(uniformNames.len),
                 @ptrCast(uniformNames.ptr),
                 @ptrCast(uniformIndices.ptr),
@@ -8477,10 +8477,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(uniform_indices.len == params.len);
             bindings.getActiveUniformsiv(
-                @intFromEnum(program),
+                @backingInt(program),
                 @intCast(uniform_indices.len),
                 @ptrCast(uniform_indices.ptr),
-                @intFromEnum(pname),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -8493,7 +8493,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             var length: i32 = -1;
             bindings.getActiveUniformName(
-                @intFromEnum(program),
+                @backingInt(program),
                 @bitCast(uniform_index),
                 // includes null terminator
                 @intCast(uniform_name_buf.len + 1),
@@ -8513,7 +8513,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             // * `name` parameter is not an active uniform block in provided `program`,
             // * an error has been generated.
             const index = bindings.getUniformBlockIndex(
-                @intFromEnum(program),
+                @backingInt(program),
                 @ptrCast(uniformBlockName.ptr),
             );
             return if (index != INVALID_INDEX) @bitCast(index) else null;
@@ -8527,9 +8527,9 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(program != .invalid);
             bindings.getActiveUniformBlockiv(
-                @intFromEnum(program),
+                @backingInt(program),
                 @bitCast(uniformBlockIndex),
-                @intFromEnum(pname),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -8542,7 +8542,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             var length: i32 = -1;
             bindings.getActiveUniformBlockName(
-                @intFromEnum(program),
+                @backingInt(program),
                 @bitCast(uniform_block_index),
                 // includes null terminator
                 @intCast(uniform_block_name_buf.len + 1),
@@ -8560,7 +8560,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(program != .invalid);
             bindings.uniformBlockBinding(
-                @intFromEnum(program),
+                @backingInt(program),
                 @bitCast(uniform_block_index),
                 @bitCast(uniform_block_binding),
             );
@@ -8655,9 +8655,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             basevertex: i32,
         ) void {
             bindings.drawElementsBaseVertex(
-                @intFromEnum(mode),
+                @backingInt(mode),
                 @bitCast(count),
-                @intFromEnum(index_type),
+                @backingInt(index_type),
                 @ptrFromInt(element_array_buf_offset),
                 @bitCast(basevertex),
             );
@@ -8683,11 +8683,11 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(start <= end);
             bindings.drawRangeElementsBaseVertex(
-                @intFromEnum(mode),
+                @backingInt(mode),
                 @bitCast(start),
                 @bitCast(end),
                 @bitCast(count),
-                @intFromEnum(index_type),
+                @backingInt(index_type),
                 @ptrFromInt(element_array_buf_offset),
                 @bitCast(basevertex),
             );
@@ -8711,9 +8711,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             basevertex: i32,
         ) void {
             bindings.drawElementsInstancedBaseVertex(
-                @intFromEnum(mode),
+                @backingInt(mode),
                 @bitCast(count),
-                @intFromEnum(index_type),
+                @backingInt(index_type),
                 @ptrFromInt(element_array_buf_offset),
                 @bitCast(instancecount),
                 @bitCast(basevertex),
@@ -8739,9 +8739,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(counts.len == element_array_buf_offsets.len);
             assert(counts.len == base_vertices.len);
             bindings.multiDrawElementsBaseVertex(
-                @intFromEnum(mode),
+                @backingInt(mode),
                 @ptrCast(counts.ptr),
-                @intFromEnum(index_type),
+                @backingInt(index_type),
                 @ptrCast(element_array_buf_offsets.ptr),
                 @intCast(counts.len),
                 @ptrCast(base_vertices.ptr),
@@ -8749,14 +8749,14 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn provokingVertex(mode: VertexProvokeMode) void {
-            bindings.provokingVertex(@intFromEnum(mode));
+            bindings.provokingVertex(@backingInt(mode));
         }
 
         pub fn fenceSync(
             condition: SyncCondition,
         ) Sync {
             return bindings.fenceSync(
-                @intFromEnum(condition),
+                @backingInt(condition),
                 // only valid `flags` parameter value is zero
                 0,
             );
@@ -8784,7 +8784,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             // we return it as an error
             if (wait_result == WAIT_FAILED)
                 return WaitSyncError.Failed;
-            return @enumFromInt(wait_result);
+            return @fromBackingInt(@intCast(wait_result));
         }
 
         pub fn waitSync(
@@ -8795,12 +8795,12 @@ pub fn Wrap(comptime bindings: anytype) type {
                 sync,
                 // only valid `flags` parameter value is zero
                 0,
-                @intFromEnum(timeout),
+                @backingInt(timeout),
             );
         }
 
         pub fn getInteger64v(pname: Integer64Parameter, data: []i64) void {
-            bindings.getInteger64v(@intFromEnum(pname), @ptrCast(data.ptr));
+            bindings.getInteger64v(@backingInt(pname), @ptrCast(data.ptr));
         }
 
         pub fn getSynciv(
@@ -8811,7 +8811,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             var length: i32 = -1;
             bindings.getSynciv(
                 sync,
-                @intFromEnum(pname),
+                @backingInt(pname),
                 @intCast(value_buf.len),
                 @ptrCast(&length),
                 @ptrCast(value_buf.ptr),
@@ -8825,7 +8825,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []i64,
         ) void {
             bindings.getInteger64i_v(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(index),
                 @ptrCast(data.ptr),
             );
@@ -8837,8 +8837,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i64,
         ) void {
             bindings.getBufferParameteri64v(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -8850,9 +8850,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             level: u32,
         ) void {
             bindings.framebufferTexture(
-                @intFromEnum(target),
-                @intFromEnum(attachment),
-                @intFromEnum(texture),
+                @backingInt(target),
+                @backingInt(attachment),
+                @backingInt(texture),
                 @bitCast(level),
             );
         }
@@ -8866,9 +8866,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             fixedsamplelocations: bool,
         ) void {
             bindings.texImage2DMultisample(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(samples),
-                @intFromEnum(internalformat),
+                @backingInt(internalformat),
                 @bitCast(width),
                 @bitCast(height),
                 @intFromBool(fixedsamplelocations),
@@ -8885,9 +8885,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             fixedsamplelocations: bool,
         ) void {
             bindings.texImage3DMultisample(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(samples),
-                @intFromEnum(internalformat),
+                @backingInt(internalformat),
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
@@ -8901,7 +8901,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             val: []f32,
         ) void {
             bindings.getMultisamplefv(
-                @intFromEnum(pname),
+                @backingInt(pname),
                 @bitCast(index),
                 @ptrCast(val.ptr),
             );
@@ -8948,7 +8948,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             // prefix 'gl_' is reserved and cannot be used
             assert(!std.mem.startsWith(u8, name, "gl_"));
             bindings.bindFragDataLocationIndexed(
-                @intFromEnum(program),
+                @backingInt(program),
                 @bitCast(colorNumber),
                 @bitCast(index),
                 @ptrCast(name.ptr),
@@ -8964,7 +8964,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             // * `name` parameter is not a varying out variable in provided `program`,
             // * an error has been generated.
             const frag_data_index = bindings.getFragDataIndex(
-                @intFromEnum(program),
+                @backingInt(program),
                 @ptrCast(name.ptr),
             );
             return if (frag_data_index != -1) @bitCast(frag_data_index) else null;
@@ -8985,13 +8985,13 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn isSampler(sampler: Sampler) bool {
-            return bindings.isSampler(@intFromEnum(sampler)) == TRUE;
+            return bindings.isSampler(@backingInt(sampler)) == TRUE;
         }
 
         pub fn bindSampler(unit: u32, sampler: Sampler) void {
             bindings.bindSampler(
                 @bitCast(unit),
-                @intFromEnum(sampler),
+                @backingInt(sampler),
             );
         }
 
@@ -9001,8 +9001,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: i32,
         ) void {
             bindings.samplerParameteri(
-                @intFromEnum(sampler),
-                @intFromEnum(pname),
+                @backingInt(sampler),
+                @backingInt(pname),
                 @bitCast(param),
             );
         }
@@ -9013,8 +9013,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: []const i32,
         ) void {
             bindings.samplerParameteriv(
-                @intFromEnum(sampler),
-                @intFromEnum(pname),
+                @backingInt(sampler),
+                @backingInt(pname),
                 @ptrCast(param.ptr),
             );
         }
@@ -9025,8 +9025,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: f32,
         ) void {
             bindings.samplerParameterf(
-                @intFromEnum(sampler),
-                @intFromEnum(pname),
+                @backingInt(sampler),
+                @backingInt(pname),
                 param,
             );
         }
@@ -9037,8 +9037,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: []const f32,
         ) void {
             bindings.samplerParameterfv(
-                @intFromEnum(sampler),
-                @intFromEnum(pname),
+                @backingInt(sampler),
+                @backingInt(pname),
                 @ptrCast(param.ptr),
             );
         }
@@ -9049,8 +9049,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: []const i32,
         ) void {
             bindings.samplerParameterIiv(
-                @intFromEnum(sampler),
-                @intFromEnum(pname),
+                @backingInt(sampler),
+                @backingInt(pname),
                 @ptrCast(param.ptr),
             );
         }
@@ -9061,8 +9061,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: []const u32,
         ) void {
             bindings.samplerParameterIuiv(
-                @intFromEnum(sampler),
-                @intFromEnum(pname),
+                @backingInt(sampler),
+                @backingInt(pname),
                 @ptrCast(param.ptr),
             );
         }
@@ -9073,8 +9073,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getSamplerParameteriv(
-                @intFromEnum(sampler),
-                @intFromEnum(pname),
+                @backingInt(sampler),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -9085,8 +9085,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getSamplerParameterIiv(
-                @intFromEnum(sampler),
-                @intFromEnum(pname),
+                @backingInt(sampler),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -9097,8 +9097,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []f32,
         ) void {
             bindings.getSamplerParameterfv(
-                @intFromEnum(sampler),
-                @intFromEnum(pname),
+                @backingInt(sampler),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -9109,16 +9109,16 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []u32,
         ) void {
             bindings.getSamplerParameterIuiv(
-                @intFromEnum(sampler),
-                @intFromEnum(pname),
+                @backingInt(sampler),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
 
         pub fn queryCounter(query: Query, target: QueryCounterTarget) void {
             bindings.queryCounter(
-                @intFromEnum(query),
-                @intFromEnum(target),
+                @backingInt(query),
+                @backingInt(target),
             );
         }
 
@@ -9128,8 +9128,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i64,
         ) void {
             bindings.getQueryObjecti64v(
-                @intFromEnum(query),
-                @intFromEnum(pname),
+                @backingInt(query),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -9140,8 +9140,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []u64,
         ) void {
             bindings.getQueryObjectui64v(
-                @intFromEnum(query),
-                @intFromEnum(pname),
+                @backingInt(query),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -9151,7 +9151,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             divisor: u32,
         ) void {
             bindings.vertexAttribDivisor(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(divisor),
             );
         }
@@ -9163,8 +9163,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             value: u32,
         ) void {
             bindings.vertexAttribP1ui(
-                @intFromEnum(location),
-                @intFromEnum(packed_type),
+                @backingInt(location),
+                @backingInt(packed_type),
                 @intFromBool(normalized),
                 @bitCast(value),
             );
@@ -9177,8 +9177,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             value: []const u32,
         ) void {
             bindings.vertexAttribP1uiv(
-                @intFromEnum(location),
-                @intFromEnum(packed_type),
+                @backingInt(location),
+                @backingInt(packed_type),
                 @intFromBool(normalized),
                 @ptrCast(value.ptr),
             );
@@ -9191,8 +9191,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             value: u32,
         ) void {
             bindings.vertexAttribP2ui(
-                @intFromEnum(location),
-                @intFromEnum(packed_type),
+                @backingInt(location),
+                @backingInt(packed_type),
                 @intFromBool(normalized),
                 @bitCast(value),
             );
@@ -9205,8 +9205,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             value: []const u32,
         ) void {
             bindings.vertexAttribP2uiv(
-                @intFromEnum(location),
-                @intFromEnum(packed_type),
+                @backingInt(location),
+                @backingInt(packed_type),
                 @intFromBool(normalized),
                 @ptrCast(value.ptr),
             );
@@ -9219,8 +9219,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             value: u32,
         ) void {
             bindings.vertexAttribP3ui(
-                @intFromEnum(location),
-                @intFromEnum(packed_type),
+                @backingInt(location),
+                @backingInt(packed_type),
                 @intFromBool(normalized),
                 @bitCast(value),
             );
@@ -9233,8 +9233,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             value: []const u32,
         ) void {
             bindings.vertexAttribP3uiv(
-                @intFromEnum(location),
-                @intFromEnum(packed_type),
+                @backingInt(location),
+                @backingInt(packed_type),
                 @intFromBool(normalized),
                 @ptrCast(value.ptr),
             );
@@ -9247,8 +9247,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             value: u32,
         ) void {
             bindings.vertexAttribP4ui(
-                @intFromEnum(location),
-                @intFromEnum(packed_type),
+                @backingInt(location),
+                @backingInt(packed_type),
                 @intFromBool(normalized),
                 @bitCast(value),
             );
@@ -9261,8 +9261,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             value: []const u32,
         ) void {
             bindings.vertexAttribP4uiv(
-                @intFromEnum(location),
-                @intFromEnum(packed_type),
+                @backingInt(location),
+                @backingInt(packed_type),
                 @intFromBool(normalized),
                 @ptrCast(value.ptr),
             );
@@ -9356,7 +9356,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn blendEquationi(buf: u32, mode: BlendEquation) void {
-            bindings.blendEquationi(@bitCast(buf), @intFromEnum(mode));
+            bindings.blendEquationi(@bitCast(buf), @backingInt(mode));
         }
 
         pub fn blendEquationSeparatei(
@@ -9366,8 +9366,8 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             bindings.blendEquationSeparatei(
                 @bitCast(buf),
-                @intFromEnum(modeRGB),
-                @intFromEnum(modeAlpha),
+                @backingInt(modeRGB),
+                @backingInt(modeAlpha),
             );
         }
 
@@ -9378,8 +9378,8 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             bindings.blendFunci(
                 @bitCast(buf),
-                @intFromEnum(src),
-                @intFromEnum(dst),
+                @backingInt(src),
+                @backingInt(dst),
             );
         }
 
@@ -9392,10 +9392,10 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             bindings.blendFuncSeparatei(
                 @bitCast(buf),
-                @intFromEnum(srcRGB),
-                @intFromEnum(dstRGB),
-                @intFromEnum(srcAlpha),
-                @intFromEnum(dstAlpha),
+                @backingInt(srcRGB),
+                @backingInt(dstRGB),
+                @backingInt(srcAlpha),
+                @backingInt(dstAlpha),
             );
         }
 
@@ -9408,7 +9408,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             draw_indirect_buf_offset: usize,
         ) void {
             bindings.drawArraysIndirect(
-                @intFromEnum(mode),
+                @backingInt(mode),
                 @ptrFromInt(draw_indirect_buf_offset),
             );
         }
@@ -9423,8 +9423,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             draw_indirect_buf_offset: usize,
         ) void {
             bindings.drawElementsIndirect(
-                @intFromEnum(mode),
-                @intFromEnum(index_type),
+                @backingInt(mode),
+                @backingInt(index_type),
                 @ptrFromInt(draw_indirect_buf_offset),
             );
         }
@@ -9435,7 +9435,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(location != .invalid);
             bindings.uniform1d(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
             );
         }
@@ -9447,7 +9447,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(location != .invalid);
             bindings.uniform2d(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
                 y,
             );
@@ -9461,7 +9461,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(location != .invalid);
             bindings.uniform3d(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
                 y,
                 z,
@@ -9477,7 +9477,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(location != .invalid);
             bindings.uniform4d(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
                 y,
                 z,
@@ -9489,7 +9489,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(location != .invalid);
             assert(value.len == count);
             bindings.uniform1dv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -9501,7 +9501,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.uniform2dv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -9513,7 +9513,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.uniform3dv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -9525,7 +9525,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.uniform4dv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -9542,7 +9542,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix2dv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -9560,7 +9560,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix3dv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -9578,7 +9578,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix4dv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -9596,7 +9596,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix2x3dv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -9614,7 +9614,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix2x4dv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -9632,7 +9632,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix3x2dv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -9650,7 +9650,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix3x4dv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -9668,7 +9668,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix4x2dv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -9686,7 +9686,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.uniformMatrix4x3dv(
-                @intFromEnum(location),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -9701,8 +9701,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.getUniformdv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @ptrCast(params.ptr),
             );
         }
@@ -9717,11 +9717,11 @@ pub fn Wrap(comptime bindings: anytype) type {
             // * `name` parameter is not an active subroutine uniform in provided `program`,
             // * an error has been generated.
             const location = bindings.getSubroutineUniformLocation(
-                @intFromEnum(program),
-                @intFromEnum(shadertype),
+                @backingInt(program),
+                @backingInt(shadertype),
                 @ptrCast(name.ptr),
             );
-            return if (location != -1) @enumFromInt(location) else null;
+            return if (location != -1) @fromBackingInt(@intCast(location)) else null;
         }
 
         pub fn getSubroutineIndex(
@@ -9734,8 +9734,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             // * `name` parameter is not an active subroutine in `shadertype` stage of provided `program`,
             // * an error has been generated.
             const index = bindings.getSubroutineIndex(
-                @intFromEnum(program),
-                @intFromEnum(shadertype),
+                @backingInt(program),
+                @backingInt(shadertype),
                 @ptrCast(name.ptr),
             );
             return if (index != INVALID_INDEX) @bitCast(index) else null;
@@ -9750,10 +9750,10 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(program != .invalid);
             bindings.getActiveSubroutineUniformiv(
-                @intFromEnum(program),
-                @intFromEnum(shadertype),
+                @backingInt(program),
+                @backingInt(shadertype),
                 @bitCast(index),
-                @intFromEnum(pname),
+                @backingInt(pname),
                 @ptrCast(values.ptr),
             );
         }
@@ -9767,8 +9767,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             var length: i32 = -1;
             bindings.getActiveSubroutineUniformName(
-                @intFromEnum(program),
-                @intFromEnum(shadertype),
+                @backingInt(program),
+                @backingInt(shadertype),
                 @bitCast(index),
                 // includes null terminator
                 @intCast(subroutine_uniform_name_buf.len + 1),
@@ -9788,8 +9788,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             var length: i32 = -1;
             bindings.getActiveSubroutineName(
-                @intFromEnum(program),
-                @intFromEnum(shadertype),
+                @backingInt(program),
+                @backingInt(shadertype),
                 @bitCast(index),
                 // includes null terminator
                 @intCast(subroutine_name_buf.len + 1),
@@ -9807,7 +9807,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             indices: []const u32,
         ) void {
             bindings.uniformSubroutinesuiv(
-                @intFromEnum(shadertype),
+                @backingInt(shadertype),
                 @intCast(indices.len),
                 @ptrCast(indices.ptr),
             );
@@ -9819,8 +9819,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []u32,
         ) void {
             bindings.getUniformSubroutineuiv(
-                @intFromEnum(shadertype),
-                @intFromEnum(location),
+                @backingInt(shadertype),
+                @backingInt(location),
                 @ptrCast(params.ptr),
             );
         }
@@ -9833,19 +9833,19 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(program != .invalid);
             bindings.getProgramStageiv(
-                @intFromEnum(program),
-                @intFromEnum(shadertype),
-                @intFromEnum(pname),
+                @backingInt(program),
+                @backingInt(shadertype),
+                @backingInt(pname),
                 @ptrCast(values.ptr),
             );
         }
 
         pub fn patchParameteri(pname: PatchIntegerParameter, value: i32) void {
-            bindings.patchParameteri(@intFromEnum(pname), @bitCast(value));
+            bindings.patchParameteri(@backingInt(pname), @bitCast(value));
         }
 
         pub fn patchParameterfv(pname: PatchFloatParameter, values: []const f32) void {
-            bindings.patchParameterfv(@intFromEnum(pname), @ptrCast(values.ptr));
+            bindings.patchParameterfv(@backingInt(pname), @ptrCast(values.ptr));
         }
 
         pub fn bindTransformFeedback(
@@ -9853,8 +9853,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             transform_feedback: TransformFeedback,
         ) void {
             bindings.bindTransformFeedback(
-                @intFromEnum(target),
-                @intFromEnum(transform_feedback),
+                @backingInt(target),
+                @backingInt(transform_feedback),
             );
         }
 
@@ -9879,7 +9879,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn isTransformFeedback(transform_feedback: TransformFeedback) bool {
-            return bindings.isTransformFeedback(@intFromEnum(transform_feedback)) == TRUE;
+            return bindings.isTransformFeedback(@backingInt(transform_feedback)) == TRUE;
         }
 
         pub fn pauseTransformFeedback() void {
@@ -9895,8 +9895,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             transform_feedback: TransformFeedback,
         ) void {
             bindings.drawTransformFeedback(
-                @intFromEnum(mode),
-                @intFromEnum(transform_feedback),
+                @backingInt(mode),
+                @backingInt(transform_feedback),
             );
         }
 
@@ -9906,8 +9906,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             stream: u32,
         ) void {
             bindings.drawTransformFeedbackStream(
-                @intFromEnum(mode),
-                @intFromEnum(transform_feedback),
+                @backingInt(mode),
+                @backingInt(transform_feedback),
                 @bitCast(stream),
             );
         }
@@ -9918,9 +9918,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             query: Query,
         ) void {
             bindings.beginQueryIndexed(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(index),
-                @intFromEnum(query),
+                @backingInt(query),
             );
         }
 
@@ -9929,7 +9929,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             index: u32,
         ) void {
             bindings.endQueryIndexed(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(index),
             );
         }
@@ -9941,9 +9941,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getQueryIndexediv(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(index),
-                @intFromEnum(pname),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -10001,7 +10001,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             bindings.shaderBinary(
                 @intCast(shaders.len),
                 @ptrCast(shaders.ptr),
-                @intFromEnum(binaryFormat),
+                @backingInt(binaryFormat),
                 @ptrCast(binary_buf.ptr),
                 @intCast(binary_buf.len),
             );
@@ -10014,8 +10014,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             precision: []i32,
         ) void {
             bindings.getShaderPrecisionFormat(
-                @intFromEnum(shadertype),
-                @intFromEnum(precisiontype),
+                @backingInt(shadertype),
+                @backingInt(precisiontype),
                 @ptrCast(range.ptr),
                 @ptrCast(precision.ptr),
             );
@@ -10033,7 +10033,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             var length: i32 = -1;
             bindings.getProgramBinary(
-                @intFromEnum(program),
+                @backingInt(program),
                 @intCast(binary_buf.len),
                 @ptrCast(&length),
                 @ptrCast(binaryFormat),
@@ -10049,8 +10049,8 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(program != .invalid);
             bindings.programBinary(
-                @intFromEnum(program),
-                @intFromEnum(binaryFormat),
+                @backingInt(program),
+                @backingInt(binaryFormat),
                 @ptrCast(binary_buf.ptr),
                 @intCast(binary_buf.len),
             );
@@ -10063,8 +10063,8 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(program != .invalid);
             bindings.programParameteri(
-                @intFromEnum(program),
-                @intFromEnum(pname),
+                @backingInt(program),
+                @backingInt(pname),
                 @bitCast(value),
             );
         }
@@ -10076,9 +10076,9 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(program != .invalid);
             bindings.useProgramStages(
-                @intFromEnum(pipeline),
+                @backingInt(pipeline),
                 @bitCast(stages),
-                @intFromEnum(program),
+                @backingInt(program),
             );
         }
 
@@ -10088,8 +10088,8 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(program != .invalid);
             bindings.activeShaderProgram(
-                @intFromEnum(pipeline),
-                @intFromEnum(program),
+                @backingInt(pipeline),
+                @backingInt(program),
             );
         }
 
@@ -10097,15 +10097,15 @@ pub fn Wrap(comptime bindings: anytype) type {
             shader_type: ShaderType,
             src_ptrs: []const [*:0]const u8,
         ) Program {
-            return @enumFromInt(bindings.createShaderProgramv(
-                @intFromEnum(shader_type),
+            return @fromBackingInt(@intCast(bindings.createShaderProgramv(
+                @backingInt(shader_type),
                 @intCast(src_ptrs.len),
                 @ptrCast(src_ptrs.ptr),
-            ));
+            )));
         }
 
         pub fn bindProgramPipeline(pipeline: ProgramPipeline) void {
-            bindings.bindProgramPipeline(@intFromEnum(pipeline));
+            bindings.bindProgramPipeline(@backingInt(pipeline));
         }
 
         pub fn deleteProgramPipeline(ptr: *const ProgramPipeline) void {
@@ -10129,7 +10129,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn isProgramPipeline(pipeline: ProgramPipeline) bool {
-            return bindings.isProgramPipeline(@intFromEnum(pipeline)) == TRUE;
+            return bindings.isProgramPipeline(@backingInt(pipeline)) == TRUE;
         }
 
         pub fn getProgramPipelineiv(
@@ -10138,8 +10138,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getProgramPipelineiv(
-                @intFromEnum(pipeline),
-                @intFromEnum(pname),
+                @backingInt(pipeline),
+                @backingInt(pname),
                 @ptrCast(params),
             );
         }
@@ -10152,8 +10152,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform1i(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(v0),
             );
         }
@@ -10167,8 +10167,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform2i(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(v0),
                 @bitCast(v1),
             );
@@ -10184,8 +10184,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform3i(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(v0),
                 @bitCast(v1),
                 @bitCast(v2),
@@ -10203,8 +10203,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform4i(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(v0),
                 @bitCast(v1),
                 @bitCast(v2),
@@ -10220,8 +10220,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform1ui(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(v0),
             );
         }
@@ -10235,8 +10235,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform2ui(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(v0),
                 @bitCast(v1),
             );
@@ -10252,8 +10252,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform3ui(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(v0),
                 @bitCast(v1),
                 @bitCast(v2),
@@ -10271,8 +10271,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform4ui(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(v0),
                 @bitCast(v1),
                 @bitCast(v2),
@@ -10288,8 +10288,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform1f(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 v0,
             );
         }
@@ -10303,8 +10303,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform2f(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 v0,
                 v1,
             );
@@ -10320,8 +10320,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform3f(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 v0,
                 v1,
                 v2,
@@ -10339,8 +10339,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform4f(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 v0,
                 v1,
                 v2,
@@ -10356,8 +10356,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform1d(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 v0,
             );
         }
@@ -10371,8 +10371,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform2d(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 v0,
                 v1,
             );
@@ -10388,8 +10388,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform3d(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 v0,
                 v1,
                 v2,
@@ -10407,8 +10407,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.programUniform4d(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 v0,
                 v1,
                 v2,
@@ -10426,8 +10426,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(location != .invalid);
             assert(value.len == count);
             bindings.programUniform1iv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10445,8 +10445,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.programUniform2iv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10464,8 +10464,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.programUniform3iv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10483,8 +10483,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.programUniform4iv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10500,8 +10500,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(location != .invalid);
             assert(value.len == count);
             bindings.programUniform1uiv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10519,8 +10519,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.programUniform2uiv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10538,8 +10538,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.programUniform3uiv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10557,8 +10557,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.programUniform4uiv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10574,8 +10574,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(location != .invalid);
             assert(value.len == count);
             bindings.programUniform1fv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10593,8 +10593,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.programUniform2fv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10612,8 +10612,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.programUniform3fv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10631,8 +10631,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.programUniform4fv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10648,8 +10648,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(location != .invalid);
             assert(value.len == count);
             bindings.programUniform1dv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10667,8 +10667,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.programUniform2dv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10686,8 +10686,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.programUniform3dv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10705,8 +10705,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % vec_size == 0);
             assert(value.len / vec_size == count);
             bindings.programUniform4dv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @ptrCast(value.ptr),
             );
@@ -10725,8 +10725,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix2fv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -10746,8 +10746,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix3fv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -10767,8 +10767,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix4fv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -10788,8 +10788,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix2dv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -10809,8 +10809,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix3dv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -10830,8 +10830,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix4dv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -10851,8 +10851,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix2x3fv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -10872,8 +10872,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix3x2fv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -10893,8 +10893,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix2x4fv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -10914,8 +10914,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix4x2fv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -10935,8 +10935,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix3x4fv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -10956,8 +10956,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix4x3fv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -10977,8 +10977,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix2x3dv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -10998,8 +10998,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix3x2dv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -11019,8 +11019,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix2x4dv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -11040,8 +11040,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix4x2dv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -11061,8 +11061,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix3x4dv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -11082,8 +11082,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(value.len % mat_size == 0);
             assert(value.len / mat_size == count);
             bindings.programUniformMatrix4x3dv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @bitCast(count),
                 @intFromBool(transpose),
                 @ptrCast(value.ptr),
@@ -11091,7 +11091,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn validateProgramPipeline(pipeline: ProgramPipeline) void {
-            bindings.validateProgramPipeline(@intFromEnum(pipeline));
+            bindings.validateProgramPipeline(@backingInt(pipeline));
         }
 
         pub fn getProgramPipelineInfoLog(
@@ -11100,7 +11100,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) ?[:0]const u8 {
             var length: i32 = -1;
             bindings.getProgramPipelineInfoLog(
-                @intFromEnum(pipeline),
+                @backingInt(pipeline),
                 // includes null terminator
                 @intCast(info_log_buf.len + 1),
                 // excludes null terminator
@@ -11115,7 +11115,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             x: f64,
         ) void {
             bindings.vertexAttribL1d(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
             );
         }
@@ -11126,7 +11126,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             y: f64,
         ) void {
             bindings.vertexAttribL2d(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
                 y,
             );
@@ -11139,7 +11139,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             z: f64,
         ) void {
             bindings.vertexAttribL3d(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
                 y,
                 z,
@@ -11154,7 +11154,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             w: f64,
         ) void {
             bindings.vertexAttribL4d(
-                @intFromEnum(location),
+                @backingInt(location),
                 x,
                 y,
                 z,
@@ -11163,19 +11163,19 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn vertexAttribL1dv(location: VertexAttribLocation, v: []const f64) void {
-            bindings.vertexAttribL1dv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribL1dv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribL2dv(location: VertexAttribLocation, v: []const f64) void {
-            bindings.vertexAttribL2dv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribL2dv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribL3dv(location: VertexAttribLocation, v: []const f64) void {
-            bindings.vertexAttribL3dv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribL3dv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribL4dv(location: VertexAttribLocation, v: []const f64) void {
-            bindings.vertexAttribL4dv(@intFromEnum(location), @ptrCast(v.ptr));
+            bindings.vertexAttribL4dv(@backingInt(location), @ptrCast(v.ptr));
         }
 
         pub fn vertexAttribLPointer(
@@ -11186,9 +11186,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             offset: usize,
         ) void {
             bindings.vertexAttribLPointer(
-                @intFromEnum(location),
-                @intFromEnum(size),
-                @intFromEnum(attrib_type),
+                @backingInt(location),
+                @backingInt(size),
+                @backingInt(attrib_type),
                 @bitCast(stride),
                 @ptrFromInt(offset),
             );
@@ -11200,8 +11200,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []f64,
         ) void {
             bindings.getVertexAttribLdv(
-                @intFromEnum(location),
-                @intFromEnum(pname),
+                @backingInt(location),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -11292,7 +11292,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []f32,
         ) void {
             bindings.getFloati_v(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(index),
                 @ptrCast(data.ptr),
             );
@@ -11304,7 +11304,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []f64,
         ) void {
             bindings.getDoublei_v(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(index),
                 @ptrCast(data.ptr),
             );
@@ -11443,7 +11443,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             baseinstance: u32,
         ) void {
             bindings.drawArraysInstancedBaseInstance(
-                @intFromEnum(mode),
+                @backingInt(mode),
                 @bitCast(first),
                 @bitCast(count),
                 @bitCast(instancecount),
@@ -11468,9 +11468,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             baseinstance: u32,
         ) void {
             bindings.drawElementsInstancedBaseInstance(
-                @intFromEnum(mode),
+                @backingInt(mode),
                 @bitCast(count),
-                @intFromEnum(index_type),
+                @backingInt(index_type),
                 @ptrFromInt(element_array_buf_offset),
                 @bitCast(instancecount),
                 @bitCast(baseinstance),
@@ -11498,9 +11498,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             baseinstance: u32,
         ) void {
             bindings.drawElementsInstancedBaseVertexBaseInstance(
-                @intFromEnum(mode),
+                @backingInt(mode),
                 @bitCast(count),
-                @intFromEnum(index_type),
+                @backingInt(index_type),
                 @ptrFromInt(element_array_buf_offset),
                 @bitCast(instancecount),
                 @bitCast(basevertex),
@@ -11515,9 +11515,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getInternalformativ(
-                @intFromEnum(target),
-                @intFromEnum(internalformat),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(internalformat),
+                @backingInt(pname),
                 @intCast(params.len),
                 @ptrCast(params.ptr),
             );
@@ -11531,9 +11531,9 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(program != .invalid);
             bindings.getActiveAtomicCounterBufferiv(
-                @intFromEnum(program),
+                @backingInt(program),
                 @bitCast(bufferIndex),
-                @intFromEnum(pname),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -11549,12 +11549,12 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             bindings.bindImageTexture(
                 @bitCast(unit),
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @intFromBool(layered),
                 @bitCast(layer),
-                @intFromEnum(access),
-                @intFromEnum(format),
+                @backingInt(access),
+                @backingInt(format),
             );
         }
 
@@ -11569,9 +11569,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             width: u32,
         ) void {
             bindings.texStorage1D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(levels),
-                @intFromEnum(internalformat),
+                @backingInt(internalformat),
                 @bitCast(width),
             );
         }
@@ -11584,9 +11584,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             height: u32,
         ) void {
             bindings.texStorage2D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(levels),
-                @intFromEnum(internalformat),
+                @backingInt(internalformat),
                 @bitCast(width),
                 @bitCast(height),
             );
@@ -11601,9 +11601,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             depth: u32,
         ) void {
             bindings.texStorage3D(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(levels),
-                @intFromEnum(internalformat),
+                @backingInt(internalformat),
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
@@ -11616,8 +11616,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             instancecount: u32,
         ) void {
             bindings.drawTransformFeedbackInstanced(
-                @intFromEnum(mode),
-                @intFromEnum(transform_feedback),
+                @backingInt(mode),
+                @backingInt(transform_feedback),
                 @bitCast(instancecount),
             );
         }
@@ -11629,8 +11629,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             instancecount: u32,
         ) void {
             bindings.drawTransformFeedbackStreamInstanced(
-                @intFromEnum(mode),
-                @intFromEnum(transform_feedback),
+                @backingInt(mode),
+                @backingInt(transform_feedback),
                 @bitCast(stream),
                 @bitCast(instancecount),
             );
@@ -11919,10 +11919,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: ?[]const u8,
         ) void {
             bindings.clearBufferData(
-                @intFromEnum(target),
-                @intFromEnum(internalformat),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(target),
+                @backingInt(internalformat),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 if (data) |d| @ptrCast(d.ptr) else null,
             );
         }
@@ -11938,12 +11938,12 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: ?[]const u8,
         ) void {
             bindings.clearBufferSubData(
-                @intFromEnum(target),
-                @intFromEnum(internalformat),
+                @backingInt(target),
+                @backingInt(internalformat),
                 @bitCast(offset),
                 @bitCast(size),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 if (data) |d| d.ptr else null,
             );
         }
@@ -11985,14 +11985,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             srcDepth: u32,
         ) void {
             bindings.copyImageSubData(
-                @intFromEnum(srcName),
-                @intFromEnum(srcTarget),
+                @backingInt(srcName),
+                @backingInt(srcTarget),
                 @bitCast(srcLevel),
                 @bitCast(srcX),
                 @bitCast(srcY),
                 @bitCast(srcZ),
-                @intFromEnum(dstName),
-                @intFromEnum(dstTarget),
+                @backingInt(dstName),
+                @backingInt(dstTarget),
                 @bitCast(dstLevel),
                 @bitCast(dstX),
                 @bitCast(dstY),
@@ -12020,14 +12020,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             srcDepth: u32,
         ) void {
             bindings.copyImageSubData(
-                @intFromEnum(srcName),
-                @intFromEnum(srcTarget),
+                @backingInt(srcName),
+                @backingInt(srcTarget),
                 @bitCast(srcLevel),
                 @bitCast(srcX),
                 @bitCast(srcY),
                 @bitCast(srcZ),
-                @intFromEnum(dstName),
-                @intFromEnum(dstTarget),
+                @backingInt(dstName),
+                @backingInt(dstTarget),
                 @bitCast(dstLevel),
                 @bitCast(dstX),
                 @bitCast(dstY),
@@ -12055,14 +12055,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             srcDepth: u32,
         ) void {
             bindings.copyImageSubData(
-                @intFromEnum(srcName),
-                @intFromEnum(srcTarget),
+                @backingInt(srcName),
+                @backingInt(srcTarget),
                 @bitCast(srcLevel),
                 @bitCast(srcX),
                 @bitCast(srcY),
                 @bitCast(srcZ),
-                @intFromEnum(dstName),
-                @intFromEnum(dstTarget),
+                @backingInt(dstName),
+                @backingInt(dstTarget),
                 @bitCast(dstLevel),
                 @bitCast(dstX),
                 @bitCast(dstY),
@@ -12090,14 +12090,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             srcDepth: u32,
         ) void {
             bindings.copyImageSubData(
-                @intFromEnum(srcName),
-                @intFromEnum(srcTarget),
+                @backingInt(srcName),
+                @backingInt(srcTarget),
                 @bitCast(srcLevel),
                 @bitCast(srcX),
                 @bitCast(srcY),
                 @bitCast(srcZ),
-                @intFromEnum(dstName),
-                @intFromEnum(dstTarget),
+                @backingInt(dstName),
+                @backingInt(dstTarget),
                 @bitCast(dstLevel),
                 @bitCast(dstX),
                 @bitCast(dstY),
@@ -12114,8 +12114,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: i32,
         ) void {
             bindings.framebufferParameteri(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @bitCast(param),
             );
         }
@@ -12126,8 +12126,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getFramebufferParameteriv(
-                @intFromEnum(target),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -12139,9 +12139,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i64,
         ) void {
             bindings.getInternalformati64v(
-                @intFromEnum(target),
-                @intFromEnum(internalformat),
-                @intFromEnum(pname),
+                @backingInt(target),
+                @backingInt(internalformat),
+                @backingInt(pname),
                 @intCast(params.len),
                 @ptrCast(params.ptr),
             );
@@ -12158,7 +12158,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             depth: u32,
         ) void {
             bindings.invalidateTexSubImage(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -12174,7 +12174,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             level: u32,
         ) void {
             bindings.invalidateTexImage(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
             );
         }
@@ -12185,14 +12185,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             length: usize,
         ) void {
             bindings.invalidateBufferSubData(
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @bitCast(offset),
                 @bitCast(length),
             );
         }
 
         pub fn invalidateBufferData(buffer: Buffer) void {
-            bindings.invalidateBufferData(@intFromEnum(buffer));
+            bindings.invalidateBufferData(@backingInt(buffer));
         }
 
         pub fn invalidateFramebuffer(
@@ -12200,7 +12200,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             attachments: []FramebufferAttachmentDefault,
         ) void {
             bindings.invalidateFramebuffer(
-                @intFromEnum(target),
+                @backingInt(target),
                 @intCast(attachments.len),
                 @ptrCast(attachments.ptr),
             );
@@ -12215,7 +12215,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             height: u32,
         ) void {
             bindings.invalidateSubFramebuffer(
-                @intFromEnum(target),
+                @backingInt(target),
                 @intCast(attachments.len),
                 @ptrCast(attachments.ptr),
                 @bitCast(x),
@@ -12238,7 +12238,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             stride: u32,
         ) void {
             bindings.multiDrawArraysIndirect(
-                @intFromEnum(mode),
+                @backingInt(mode),
                 @ptrFromInt(draw_indirect_buf_offset),
                 @bitCast(drawcount),
                 @bitCast(stride),
@@ -12259,8 +12259,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             stride: u32,
         ) void {
             bindings.multiDrawElementsIndirect(
-                @intFromEnum(mode),
-                @intFromEnum(index_type),
+                @backingInt(mode),
+                @backingInt(index_type),
                 @ptrFromInt(draw_indirect_buf_offset),
                 @bitCast(drawcount),
                 @bitCast(stride),
@@ -12275,9 +12275,9 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(program != .invalid);
             bindings.getProgramInterfaceiv(
-                @intFromEnum(program),
-                @intFromEnum(programInterface),
-                @intFromEnum(pname),
+                @backingInt(program),
+                @backingInt(programInterface),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -12292,8 +12292,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             // * `name` parameter is not an active resource of provided `program`,
             // * an error has been generated.
             const index = bindings.getProgramResourceIndex(
-                @intFromEnum(program),
-                @intFromEnum(programInterface),
+                @backingInt(program),
+                @backingInt(programInterface),
                 @ptrCast(name.ptr),
             );
             return if (index != INVALID_INDEX) @bitCast(index) else null;
@@ -12308,8 +12308,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             var length: i32 = -1;
             bindings.getProgramResourceName(
-                @intFromEnum(program),
-                @intFromEnum(programInterface),
+                @backingInt(program),
+                @backingInt(programInterface),
                 @bitCast(index),
                 // includes null terminator
                 @intCast(name_buf.len + 1),
@@ -12330,8 +12330,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             var length: i32 = -1;
             bindings.getProgramResourceiv(
-                @intFromEnum(program),
-                @intFromEnum(programInterface),
+                @backingInt(program),
+                @backingInt(programInterface),
                 @bitCast(index),
                 @intCast(props.len),
                 @ptrCast(props.ptr),
@@ -12354,8 +12354,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             // * `name` parameter is an active variable that is not assigned to a valid location in provided `program`,
             // * an error has been generated.
             const location = bindings.getProgramResourceLocation(
-                @intFromEnum(program),
-                @intFromEnum(programInterface),
+                @backingInt(program),
+                @backingInt(programInterface),
                 @ptrCast(name.ptr),
             );
             return if (location != -1) @bitCast(location) else null;
@@ -12372,8 +12372,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             // * `name` parameter is an active variable that is not assigned to a valid location in provided `program`,
             // * an error has been generated.
             const index = bindings.getProgramResourceLocationIndex(
-                @intFromEnum(program),
-                @intFromEnum(programInterface),
+                @backingInt(program),
+                @backingInt(programInterface),
                 @ptrCast(name.ptr),
             );
             return if (index != -1) @bitCast(index) else null;
@@ -12386,7 +12386,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(program != .invalid);
             bindings.shaderStorageBlockBinding(
-                @intFromEnum(program),
+                @backingInt(program),
                 @bitCast(storageBlockIndex),
                 @bitCast(storageBlockBinding),
             );
@@ -12400,9 +12400,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             size: usize,
         ) void {
             bindings.texBufferRange(
-                @intFromEnum(target),
-                @intFromEnum(internalformat),
-                @intFromEnum(buffer),
+                @backingInt(target),
+                @backingInt(internalformat),
+                @backingInt(buffer),
                 @bitCast(offset),
                 @bitCast(size),
             );
@@ -12417,9 +12417,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             fixedsamplelocations: bool,
         ) void {
             bindings.texStorage2DMultisample(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(samples),
-                @intFromEnum(internalformat),
+                @backingInt(internalformat),
                 @bitCast(width),
                 @bitCast(height),
                 @intFromBool(fixedsamplelocations),
@@ -12436,9 +12436,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             fixedsamplelocations: bool,
         ) void {
             bindings.texStorage3DMultisample(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(samples),
-                @intFromEnum(internalformat),
+                @backingInt(internalformat),
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
@@ -12458,10 +12458,10 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(texture != .invalid);
             bindings.textureView(
-                @intFromEnum(texture),
-                @intFromEnum(target),
-                @intFromEnum(origtexture),
-                @intFromEnum(internalformat),
+                @backingInt(texture),
+                @backingInt(target),
+                @backingInt(origtexture),
+                @backingInt(internalformat),
                 @bitCast(minlevel),
                 @bitCast(numlevels),
                 @bitCast(minlayer),
@@ -12477,7 +12477,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             bindings.bindVertexBuffer(
                 @bitCast(bindingindex),
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @bitCast(offset),
                 @bitCast(stride),
             );
@@ -12491,9 +12491,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             relativeoffset: u32,
         ) void {
             bindings.vertexAttribFormat(
-                @intFromEnum(attribindex),
-                @intFromEnum(size),
-                @intFromEnum(attrib_type),
+                @backingInt(attribindex),
+                @backingInt(size),
+                @backingInt(attrib_type),
                 @intFromBool(normalized),
                 @bitCast(relativeoffset),
             );
@@ -12506,9 +12506,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             relativeoffset: u32,
         ) void {
             bindings.vertexAttribIFormat(
-                @intFromEnum(attribindex),
-                @intFromEnum(size),
-                @intFromEnum(attrib_type),
+                @backingInt(attribindex),
+                @backingInt(size),
+                @backingInt(attrib_type),
                 @bitCast(relativeoffset),
             );
         }
@@ -12520,9 +12520,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             relativeoffset: u32,
         ) void {
             bindings.vertexAttribLFormat(
-                @intFromEnum(attribindex),
-                @intFromEnum(size),
-                @intFromEnum(attrib_type),
+                @backingInt(attribindex),
+                @backingInt(size),
+                @backingInt(attrib_type),
                 @bitCast(relativeoffset),
             );
         }
@@ -12532,7 +12532,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             bindingindex: u32,
         ) void {
             bindings.vertexAttribBinding(
-                @intFromEnum(attribindex),
+                @backingInt(attribindex),
                 @bitCast(bindingindex),
             );
         }
@@ -12562,9 +12562,9 @@ pub fn Wrap(comptime bindings: anytype) type {
                 assert(severity == .dont_care);
             }
             bindings.debugMessageControl(
-                @intFromEnum(source),
-                @intFromEnum(debug_type),
-                @intFromEnum(severity),
+                @backingInt(source),
+                @backingInt(debug_type),
+                @backingInt(severity),
                 @intCast(ids.len),
                 @ptrCast(ids.ptr),
                 @intFromBool(enabled),
@@ -12579,10 +12579,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             messsage: []const u8,
         ) void {
             bindings.debugMessageInsert(
-                @intFromEnum(source),
-                @intFromEnum(debug_type),
+                @backingInt(source),
+                @backingInt(debug_type),
                 @bitCast(id),
-                @intFromEnum(severity),
+                @backingInt(severity),
                 @intCast(messsage.len),
                 @ptrCast(messsage.ptr),
             );
@@ -12644,7 +12644,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             message: [:0]const u8,
         ) void {
             bindings.pushDebugGroup(
-                @intFromEnum(source),
+                @backingInt(source),
                 @bitCast(id),
                 @intCast(message.len),
                 @ptrCast(message.ptr),
@@ -12667,8 +12667,8 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             const namespace: DebugObjectNamespace = .fromType(NameType);
             bindings.objectLabel(
-                @intFromEnum(namespace),
-                @intFromEnum(name),
+                @backingInt(namespace),
+                @backingInt(name),
                 if (label) |l| @intCast(l.len) else 0,
                 if (label) |l| @ptrCast(l.ptr) else null,
             );
@@ -12686,8 +12686,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             const namespace: DebugObjectNamespace = .fromType(NameType);
             var length: i32 = -1;
             bindings.getObjectLabel(
-                @intFromEnum(namespace),
-                @intFromEnum(name),
+                @backingInt(namespace),
+                @backingInt(name),
                 // includes null terminator
                 @intCast(label_buf.len + 1),
                 // excludes null terminator
@@ -12729,7 +12729,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: *?*anyopaque,
         ) void {
             bindings.getPointerv(
-                @intFromEnum(pname),
+                @backingInt(pname),
                 @ptrCast(params),
             );
         }
@@ -12770,7 +12770,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             // MAP_READ_BIT and/or MAP_WRITE_BIT must also be set
             assert(!flags.map_persistent or (flags.map_read or flags.map_write));
             bindings.bufferStorage(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(data.len),
                 @ptrCast(data.ptr),
                 @bitCast(flags),
@@ -12788,7 +12788,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             // MAP_READ_BIT and/or MAP_WRITE_BIT must also be set
             assert(!flags.map_persistent or (flags.map_read or flags.map_write));
             bindings.bufferStorage(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(size),
                 null,
                 @bitCast(flags),
@@ -12805,10 +12805,10 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(texture != .invalid);
             bindings.clearTexImage(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 if (data) |d| @ptrCast(d.ptr) else null,
             );
         }
@@ -12829,7 +12829,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(texture != .invalid);
             bindings.clearTexSubImage(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -12837,8 +12837,8 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 if (data) |d| @ptrCast(d.ptr) else null,
             );
         }
@@ -12849,7 +12849,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             buffers: []const Buffer,
         ) void {
             bindings.bindBuffersBase(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(first),
                 @intCast(buffers.len),
                 @ptrCast(buffers.ptr),
@@ -12862,7 +12862,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             count: u32,
         ) void {
             bindings.bindBuffersBase(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(first),
                 @bitCast(count),
                 null,
@@ -12879,7 +12879,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(buffers.len == offsets.len);
             assert(buffers.len == sizes.len);
             bindings.bindBuffersRange(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(first),
                 @intCast(buffers.len),
                 @ptrCast(buffers.ptr),
@@ -12894,7 +12894,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             count: u32,
         ) void {
             bindings.bindBuffersRange(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(first),
                 @bitCast(count),
                 null,
@@ -13010,7 +13010,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         pub const CONTEXT_RELEASE_BEHAVIOR_FLUSH = bindings.CONTEXT_RELEASE_BEHAVIOR_FLUSH;
 
         pub fn clipControl(origin: ClipOrigin, depth: ClipDepth) void {
-            bindings.clipControl(@intFromEnum(origin), @intFromEnum(depth));
+            bindings.clipControl(@backingInt(origin), @backingInt(depth));
         }
 
         pub fn createTransformFeedback(ptr: *TransformFeedback) void {
@@ -13029,9 +13029,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             buffer: Buffer,
         ) void {
             bindings.transformFeedbackBufferBase(
-                @intFromEnum(transform_feedback),
+                @backingInt(transform_feedback),
                 @bitCast(index),
-                @intFromEnum(buffer),
+                @backingInt(buffer),
             );
         }
 
@@ -13043,9 +13043,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             size: usize,
         ) void {
             bindings.transformFeedbackBufferRange(
-                @intFromEnum(transform_feedback),
+                @backingInt(transform_feedback),
                 @bitCast(index),
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @bitCast(offset),
                 @bitCast(size),
             );
@@ -13057,8 +13057,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: []i32,
         ) void {
             bindings.getTransformFeedbackiv(
-                @intFromEnum(transform_feedback),
-                @intFromEnum(pname),
+                @backingInt(transform_feedback),
+                @backingInt(pname),
                 @ptrCast(param.ptr),
             );
         }
@@ -13070,8 +13070,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: []i32,
         ) void {
             bindings.getTransformFeedbacki_v(
-                @intFromEnum(transform_feedback),
-                @intFromEnum(pname),
+                @backingInt(transform_feedback),
+                @backingInt(pname),
                 @bitCast(index),
                 @ptrCast(param.ptr),
             );
@@ -13084,8 +13084,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: []i64,
         ) void {
             bindings.getTransformFeedbacki64_v(
-                @intFromEnum(transform_feedback),
-                @intFromEnum(pname),
+                @backingInt(transform_feedback),
+                @backingInt(pname),
                 @bitCast(index),
                 @ptrCast(param.ptr),
             );
@@ -13109,7 +13109,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             // MAP_READ_BIT and/or MAP_WRITE_BIT must also be set
             assert(!flags.map_persistent or (flags.map_read or flags.map_write));
             bindings.namedBufferStorage(
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @bitCast(data.len),
                 @ptrCast(data.ptr),
                 @bitCast(flags),
@@ -13127,7 +13127,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             // MAP_READ_BIT and/or MAP_WRITE_BIT must also be set
             assert(!flags.map_persistent or (flags.map_read or flags.map_write));
             bindings.namedBufferStorage(
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @bitCast(size),
                 null,
                 @bitCast(flags),
@@ -13140,10 +13140,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             usage: BufferUsage,
         ) void {
             bindings.namedBufferData(
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @intCast(data.len),
                 @ptrCast(data.ptr),
-                @intFromEnum(usage),
+                @backingInt(usage),
             );
         }
         /// buffer will be allocated, but its contents are undefined
@@ -13153,10 +13153,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             usage: BufferUsage,
         ) void {
             bindings.namedBufferData(
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @intCast(size),
                 null,
-                @intFromEnum(usage),
+                @backingInt(usage),
             );
         }
 
@@ -13166,7 +13166,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []const u8,
         ) void {
             bindings.namedBufferSubData(
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @bitCast(offset),
                 @bitCast(data.len),
                 @ptrCast(data.ptr),
@@ -13181,8 +13181,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             size: usize,
         ) void {
             bindings.copyNamedBufferSubData(
-                @intFromEnum(read_buffer),
-                @intFromEnum(write_buffer),
+                @backingInt(read_buffer),
+                @backingInt(write_buffer),
                 @bitCast(readOffset),
                 @bitCast(writeOffset),
                 @bitCast(size),
@@ -13198,10 +13198,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: ?[]const u8,
         ) void {
             bindings.clearNamedBufferData(
-                @intFromEnum(buffer),
-                @intFromEnum(internalformat),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(buffer),
+                @backingInt(internalformat),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 if (data) |d| @ptrCast(d.ptr) else null,
             );
         }
@@ -13217,20 +13217,20 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: ?[]const u8,
         ) void {
             bindings.clearNamedBufferSubData(
-                @intFromEnum(buffer),
-                @intFromEnum(internalformat),
+                @backingInt(buffer),
+                @backingInt(internalformat),
                 @bitCast(offset),
                 @bitCast(size),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 if (data) |d| @ptrCast(d.ptr) else null,
             );
         }
 
         pub fn mapNamedBuffer(buffer: Buffer, access: Access) ?[*]u8 {
             return @ptrCast(bindings.mapNamedBuffer(
-                @intFromEnum(buffer),
-                @intFromEnum(access),
+                @backingInt(buffer),
+                @backingInt(access),
             ));
         }
 
@@ -13241,7 +13241,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             access: MappedBufferAccess,
         ) ?[*]u8 {
             return @ptrCast(bindings.mapNamedBufferRange(
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @bitCast(offset),
                 @bitCast(length),
                 @bitCast(access),
@@ -13249,7 +13249,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn unmapNamedBuffer(buffer: Buffer) bool {
-            return bindings.unmapNamedBuffer(@intFromEnum(buffer)) == TRUE;
+            return bindings.unmapNamedBuffer(@backingInt(buffer)) == TRUE;
         }
 
         pub fn flushMappedNamedBufferRange(
@@ -13258,7 +13258,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             length: usize,
         ) void {
             bindings.flushMappedNamedBufferRange(
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @bitCast(offset),
                 @bitCast(length),
             );
@@ -13270,8 +13270,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getNamedBufferParameteriv(
-                @intFromEnum(buffer),
-                @intFromEnum(pname),
+                @backingInt(buffer),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -13282,8 +13282,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i64,
         ) void {
             bindings.getNamedBufferParameteri64v(
-                @intFromEnum(buffer),
-                @intFromEnum(pname),
+                @backingInt(buffer),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -13294,8 +13294,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: *?[*]u8,
         ) void {
             bindings.getNamedBufferPointerv(
-                @intFromEnum(buffer),
-                @intFromEnum(pname),
+                @backingInt(buffer),
+                @backingInt(pname),
                 @ptrCast(params),
             );
         }
@@ -13306,7 +13306,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []u8,
         ) void {
             bindings.getNamedBufferSubData(
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @bitCast(offset),
                 @bitCast(data.len),
                 @ptrCast(data.ptr),
@@ -13330,10 +13330,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             renderbuffer: Renderbuffer,
         ) void {
             bindings.namedFramebufferRenderbuffer(
-                @intFromEnum(framebuffer),
-                @intFromEnum(attachment),
-                @intFromEnum(renderbuffertarget),
-                @intFromEnum(renderbuffer),
+                @backingInt(framebuffer),
+                @backingInt(attachment),
+                @backingInt(renderbuffertarget),
+                @backingInt(renderbuffer),
             );
         }
 
@@ -13343,8 +13343,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: i32,
         ) void {
             bindings.namedFramebufferParameteri(
-                @intFromEnum(framebuffer),
-                @intFromEnum(pname),
+                @backingInt(framebuffer),
+                @backingInt(pname),
                 @bitCast(param),
             );
         }
@@ -13356,9 +13356,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             level: u32,
         ) void {
             bindings.namedFramebufferTexture(
-                @intFromEnum(framebuffer),
-                @intFromEnum(attachment),
-                @intFromEnum(texture),
+                @backingInt(framebuffer),
+                @backingInt(attachment),
+                @backingInt(texture),
                 @bitCast(level),
             );
         }
@@ -13371,9 +13371,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             layer: u32,
         ) void {
             bindings.namedFramebufferTextureLayer(
-                @intFromEnum(framebuffer),
-                @intFromEnum(attachment),
-                @intFromEnum(texture),
+                @backingInt(framebuffer),
+                @backingInt(attachment),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(layer),
             );
@@ -13384,8 +13384,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             buf: ColorBuffer,
         ) void {
             bindings.namedFramebufferDrawBuffer(
-                @intFromEnum(framebuffer),
-                @intFromEnum(buf),
+                @backingInt(framebuffer),
+                @backingInt(buf),
             );
         }
 
@@ -13394,7 +13394,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             bufs: []const ColorBufferSingle,
         ) void {
             bindings.namedFramebufferDrawBuffers(
-                @intFromEnum(framebuffer),
+                @backingInt(framebuffer),
                 @intCast(bufs.len),
                 @ptrCast(bufs.ptr),
             );
@@ -13405,8 +13405,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             src: ColorBuffer,
         ) void {
             bindings.namedFramebufferReadBuffer(
-                @intFromEnum(framebuffer),
-                @intFromEnum(src),
+                @backingInt(framebuffer),
+                @backingInt(src),
             );
         }
 
@@ -13415,7 +13415,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             attachments: []FramebufferAttachmentDefault,
         ) void {
             bindings.invalidateNamedFramebufferData(
-                @intFromEnum(framebuffer),
+                @backingInt(framebuffer),
                 @intCast(attachments.len),
                 @ptrCast(attachments.ptr),
             );
@@ -13430,7 +13430,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             height: u32,
         ) void {
             bindings.invalidateNamedFramebufferSubData(
-                @intFromEnum(framebuffer),
+                @backingInt(framebuffer),
                 @intCast(attachments.len),
                 @ptrCast(attachments.ptr),
                 @bitCast(x),
@@ -13447,8 +13447,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             value: []const i32,
         ) void {
             bindings.clearNamedFramebufferiv(
-                @intFromEnum(framebuffer),
-                @intFromEnum(buffer),
+                @backingInt(framebuffer),
+                @backingInt(buffer),
                 @bitCast(drawbuffer),
                 @ptrCast(value.ptr),
             );
@@ -13461,8 +13461,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             value: []const u32,
         ) void {
             bindings.clearNamedFramebufferuiv(
-                @intFromEnum(framebuffer),
-                @intFromEnum(buffer),
+                @backingInt(framebuffer),
+                @backingInt(buffer),
                 @bitCast(drawbuffer),
                 @ptrCast(value.ptr),
             );
@@ -13475,8 +13475,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             value: []const f32,
         ) void {
             bindings.clearNamedFramebufferfv(
-                @intFromEnum(framebuffer),
-                @intFromEnum(buffer),
+                @backingInt(framebuffer),
+                @backingInt(buffer),
                 @bitCast(drawbuffer),
                 @ptrCast(value.ptr),
             );
@@ -13490,8 +13490,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             stencil: i32,
         ) void {
             bindings.clearNamedFramebufferfi(
-                @intFromEnum(framebuffer),
-                @intFromEnum(buffer),
+                @backingInt(framebuffer),
+                @backingInt(buffer),
                 @bitCast(drawbuffer),
                 depth,
                 @bitCast(stencil),
@@ -13513,8 +13513,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             filter: Filter,
         ) void {
             bindings.blitNamedFramebuffer(
-                @intFromEnum(readFramebuffer),
-                @intFromEnum(drawFramebuffer),
+                @backingInt(readFramebuffer),
+                @backingInt(drawFramebuffer),
                 @bitCast(srcX0),
                 @bitCast(srcY0),
                 @bitCast(srcX1),
@@ -13524,7 +13524,7 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(dstX1),
                 @bitCast(dstY1),
                 @bitCast(mask),
-                @intFromEnum(filter),
+                @backingInt(filter),
             );
         }
 
@@ -13533,8 +13533,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             target: FramebufferTarget,
         ) FramebufferStatusError!FramebufferStatus {
             const status = bindings.checkNamedFramebufferStatus(
-                @intFromEnum(framebuffer),
-                @intFromEnum(target),
+                @backingInt(framebuffer),
+                @backingInt(target),
             );
             // zero is returned when error is generated
             if (status == 0) {
@@ -13549,8 +13549,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getNamedFramebufferParameteriv(
-                @intFromEnum(framebuffer),
-                @intFromEnum(pname),
+                @backingInt(framebuffer),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -13562,9 +13562,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getNamedFramebufferAttachmentParameteriv(
-                @intFromEnum(framebuffer),
-                @intFromEnum(attachment),
-                @intFromEnum(pname),
+                @backingInt(framebuffer),
+                @backingInt(attachment),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -13586,8 +13586,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             height: u32,
         ) void {
             bindings.namedRenderbufferStorage(
-                @intFromEnum(renderbuffer),
-                @intFromEnum(internal_format),
+                @backingInt(renderbuffer),
+                @backingInt(internal_format),
                 @bitCast(width),
                 @bitCast(height),
             );
@@ -13601,9 +13601,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             height: u32,
         ) void {
             bindings.namedRenderbufferStorageMultisample(
-                @intFromEnum(renderbuffer),
+                @backingInt(renderbuffer),
                 @bitCast(samples),
-                @intFromEnum(internalformat),
+                @backingInt(internalformat),
                 @bitCast(width),
                 @bitCast(height),
             );
@@ -13615,18 +13615,18 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getNamedRenderbufferParameteriv(
-                @intFromEnum(renderbuffer),
-                @intFromEnum(pname),
+                @backingInt(renderbuffer),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
 
         pub fn createTexture(target: TextureTargetWithTextureBuffer, ptr: *Texture) void {
-            bindings.createTextures(@intFromEnum(target), 1, @ptrCast(ptr));
+            bindings.createTextures(@backingInt(target), 1, @ptrCast(ptr));
         }
         pub fn createTextures(target: TextureTargetWithTextureBuffer, textures: []Texture) void {
             bindings.createTextures(
-                @intFromEnum(target),
+                @backingInt(target),
                 @intCast(textures.len),
                 @ptrCast(textures.ptr),
             );
@@ -13638,9 +13638,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             buffer: Buffer,
         ) void {
             bindings.textureBuffer(
-                @intFromEnum(texture),
-                @intFromEnum(internalformat),
-                @intFromEnum(buffer),
+                @backingInt(texture),
+                @backingInt(internalformat),
+                @backingInt(buffer),
             );
         }
 
@@ -13652,9 +13652,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             size: usize,
         ) void {
             bindings.textureBufferRange(
-                @intFromEnum(texture),
-                @intFromEnum(internalformat),
-                @intFromEnum(buffer),
+                @backingInt(texture),
+                @backingInt(internalformat),
+                @backingInt(buffer),
                 @bitCast(offset),
                 @bitCast(size),
             );
@@ -13667,9 +13667,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             width: u32,
         ) void {
             bindings.textureStorage1D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(levels),
-                @intFromEnum(internalformat),
+                @backingInt(internalformat),
                 @bitCast(width),
             );
         }
@@ -13682,9 +13682,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             height: u32,
         ) void {
             bindings.textureStorage2D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @intCast(levels),
-                @intFromEnum(internal_format),
+                @backingInt(internal_format),
                 @bitCast(width),
                 @bitCast(height),
             );
@@ -13699,9 +13699,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             depth: u32,
         ) void {
             bindings.textureStorage3D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(levels),
-                @intFromEnum(internalformat),
+                @backingInt(internalformat),
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
@@ -13717,9 +13717,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             fixedsamplelocations: bool,
         ) void {
             bindings.textureStorage2DMultisample(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(samples),
-                @intFromEnum(internalformat),
+                @backingInt(internalformat),
                 @bitCast(width),
                 @bitCast(height),
                 @intFromBool(fixedsamplelocations),
@@ -13736,9 +13736,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             fixedsamplelocations: bool,
         ) void {
             bindings.textureStorage3DMultisample(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(samples),
-                @intFromEnum(internalformat),
+                @backingInt(internalformat),
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
@@ -13760,12 +13760,12 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.textureSubImage1D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(width),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrFromInt(pixel_unpack_buf_offset),
             );
         }
@@ -13783,12 +13783,12 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: [*]const u8,
         ) void {
             bindings.textureSubImage1D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(width),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrCast(pixels),
             );
         }
@@ -13809,14 +13809,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.textureSubImage2D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
                 @bitCast(width),
                 @bitCast(height),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrFromInt(pixel_unpack_buf_offset),
             );
         }
@@ -13836,14 +13836,14 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: [*]const u8,
         ) void {
             bindings.textureSubImage2D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
                 @bitCast(width),
                 @bitCast(height),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrCast(pixels),
             );
         }
@@ -13866,7 +13866,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.textureSubImage3D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -13874,8 +13874,8 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrFromInt(pixel_unpack_buf_offset),
             );
         }
@@ -13897,7 +13897,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: [*]const u8,
         ) void {
             bindings.textureSubImage3D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -13905,8 +13905,8 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @ptrCast(pixels),
             );
         }
@@ -13925,11 +13925,11 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.compressedTextureSubImage1D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(width),
-                @intFromEnum(format),
+                @backingInt(format),
                 @intCast(compressed_size),
                 @ptrFromInt(pixel_unpack_buf_offset),
             );
@@ -13946,11 +13946,11 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []const u8,
         ) void {
             bindings.compressedTextureSubImage1D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(width),
-                @intFromEnum(format),
+                @backingInt(format),
                 @intCast(data.len),
                 @ptrCast(data.ptr),
             );
@@ -13972,13 +13972,13 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.compressedTextureSubImage2D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
                 @bitCast(width),
                 @bitCast(height),
-                @intFromEnum(format),
+                @backingInt(format),
                 @intCast(compressed_size),
                 @ptrFromInt(pixel_unpack_buf_offset),
             );
@@ -13997,13 +13997,13 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []const u8,
         ) void {
             bindings.compressedTextureSubImage2D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
                 @bitCast(width),
                 @bitCast(height),
-                @intFromEnum(format),
+                @backingInt(format),
                 @intCast(data.len),
                 @ptrCast(data.ptr),
             );
@@ -14027,7 +14027,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_unpack_buf_offset: usize,
         ) void {
             bindings.compressedTextureSubImage3D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -14035,7 +14035,7 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
-                @intFromEnum(format),
+                @backingInt(format),
                 @intCast(compressed_size),
                 @ptrFromInt(pixel_unpack_buf_offset),
             );
@@ -14056,7 +14056,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             data: []const u8,
         ) void {
             bindings.compressedTextureSubImage3D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -14064,7 +14064,7 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
-                @intFromEnum(format),
+                @backingInt(format),
                 @intCast(data.len),
                 @ptrCast(data.ptr),
             );
@@ -14079,7 +14079,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             width: u32,
         ) void {
             bindings.copyTextureSubImage1D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(x),
@@ -14099,7 +14099,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             height: u32,
         ) void {
             bindings.copyTextureSubImage2D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -14122,7 +14122,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             height: u32,
         ) void {
             bindings.copyTextureSubImage3D(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -14140,8 +14140,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: f32,
         ) void {
             bindings.textureParameterf(
-                @intFromEnum(texture),
-                @intFromEnum(pname),
+                @backingInt(texture),
+                @backingInt(pname),
                 param,
             );
         }
@@ -14152,8 +14152,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []const f32,
         ) void {
             bindings.textureParameterfv(
-                @intFromEnum(texture),
-                @intFromEnum(pname),
+                @backingInt(texture),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -14164,8 +14164,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: i32,
         ) void {
             bindings.textureParameteri(
-                @intFromEnum(texture),
-                @intFromEnum(pname),
+                @backingInt(texture),
+                @backingInt(pname),
                 @bitCast(param),
             );
         }
@@ -14176,8 +14176,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []const i32,
         ) void {
             bindings.textureParameterIiv(
-                @intFromEnum(texture),
-                @intFromEnum(pname),
+                @backingInt(texture),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -14188,8 +14188,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []const u32,
         ) void {
             bindings.textureParameterIuiv(
-                @intFromEnum(texture),
-                @intFromEnum(pname),
+                @backingInt(texture),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -14200,18 +14200,18 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []const i32,
         ) void {
             bindings.textureParameteriv(
-                @intFromEnum(texture),
-                @intFromEnum(pname),
+                @backingInt(texture),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
 
         pub fn generateTextureMipmap(texture: Texture) void {
-            bindings.generateTextureMipmap(@intFromEnum(texture));
+            bindings.generateTextureMipmap(@backingInt(texture));
         }
 
         pub fn bindTextureUnit(unit: u32, texture: Texture) void {
-            bindings.bindTextureUnit(@bitCast(unit), @intFromEnum(texture));
+            bindings.bindTextureUnit(@bitCast(unit), @backingInt(texture));
         }
 
         /// parameter `pixel_pack_buf_offset` specifies the byte offset into
@@ -14226,10 +14226,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_pack_buf_offset: usize,
         ) void {
             bindings.getTextureImage(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @intCast(max_size),
                 @ptrFromInt(pixel_pack_buf_offset),
             );
@@ -14245,10 +14245,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: []u8,
         ) void {
             bindings.getTextureImage(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @intCast(pixels.len),
                 @ptrCast(pixels.ptr),
             );
@@ -14264,7 +14264,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_pack_buf_offset: usize,
         ) void {
             bindings.getCompressedTextureImage(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @intCast(max_size),
                 @ptrFromInt(pixel_pack_buf_offset),
@@ -14279,7 +14279,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: []u8,
         ) void {
             bindings.getCompressedTextureImage(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @intCast(pixels.len),
                 @ptrCast(pixels.ptr),
@@ -14293,9 +14293,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []f32,
         ) void {
             bindings.getTextureLevelParameterfv(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
-                @intFromEnum(pname),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -14307,9 +14307,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getTextureLevelParameteriv(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
-                @intFromEnum(pname),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -14320,8 +14320,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []f32,
         ) void {
             bindings.getTextureParameterfv(
-                @intFromEnum(texture),
-                @intFromEnum(pname),
+                @backingInt(texture),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -14332,8 +14332,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getTextureParameterIiv(
-                @intFromEnum(texture),
-                @intFromEnum(pname),
+                @backingInt(texture),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -14344,8 +14344,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []u32,
         ) void {
             bindings.getTextureParameterIuiv(
-                @intFromEnum(texture),
-                @intFromEnum(pname),
+                @backingInt(texture),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -14356,8 +14356,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             params: []i32,
         ) void {
             bindings.getTextureParameteriv(
-                @intFromEnum(texture),
-                @intFromEnum(pname),
+                @backingInt(texture),
+                @backingInt(pname),
                 @ptrCast(params.ptr),
             );
         }
@@ -14377,8 +14377,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             location: VertexAttribLocation,
         ) void {
             bindings.disableVertexArrayAttrib(
-                @intFromEnum(vaobj),
-                @intFromEnum(location),
+                @backingInt(vaobj),
+                @backingInt(location),
             );
         }
 
@@ -14387,8 +14387,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             location: VertexAttribLocation,
         ) void {
             bindings.enableVertexArrayAttrib(
-                @intFromEnum(vaobj),
-                @intFromEnum(location),
+                @backingInt(vaobj),
+                @backingInt(location),
             );
         }
 
@@ -14397,8 +14397,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             buffer: Buffer,
         ) void {
             bindings.vertexArrayElementBuffer(
-                @intFromEnum(vaobj),
-                @intFromEnum(buffer),
+                @backingInt(vaobj),
+                @backingInt(buffer),
             );
         }
 
@@ -14410,9 +14410,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             stride: u32,
         ) void {
             bindings.vertexArrayVertexBuffer(
-                @intFromEnum(vaobj),
+                @backingInt(vaobj),
                 @bitCast(bindingindex),
-                @intFromEnum(buffer),
+                @backingInt(buffer),
                 @bitCast(offset),
                 @bitCast(stride),
             );
@@ -14428,7 +14428,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(buffers.len == offsets.len);
             assert(buffers.len == strides.len);
             bindings.vertexArrayVertexBuffers(
-                @intFromEnum(vaobj),
+                @backingInt(vaobj),
                 @bitCast(first),
                 @intCast(buffers.len),
                 @ptrCast(buffers.ptr),
@@ -14443,7 +14443,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             count: u32,
         ) void {
             bindings.vertexArrayVertexBuffers(
-                @intFromEnum(vaobj),
+                @backingInt(vaobj),
                 @bitCast(first),
                 @bitCast(count),
                 null,
@@ -14458,8 +14458,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             bindingindex: u32,
         ) void {
             bindings.vertexArrayAttribBinding(
-                @intFromEnum(vaobj),
-                @intFromEnum(location),
+                @backingInt(vaobj),
+                @backingInt(location),
                 @bitCast(bindingindex),
             );
         }
@@ -14473,10 +14473,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             relativeoffset: u32,
         ) void {
             bindings.vertexArrayAttribFormat(
-                @intFromEnum(vaobj),
-                @intFromEnum(attribindex),
-                @intFromEnum(size),
-                @intFromEnum(attrib_type),
+                @backingInt(vaobj),
+                @backingInt(attribindex),
+                @backingInt(size),
+                @backingInt(attrib_type),
                 @intFromBool(normalized),
                 @bitCast(relativeoffset),
             );
@@ -14490,10 +14490,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             relativeoffset: u32,
         ) void {
             bindings.vertexArrayAttribIFormat(
-                @intFromEnum(vaobj),
-                @intFromEnum(attribindex),
-                @intFromEnum(size),
-                @intFromEnum(attrib_type),
+                @backingInt(vaobj),
+                @backingInt(attribindex),
+                @backingInt(size),
+                @backingInt(attrib_type),
                 @bitCast(relativeoffset),
             );
         }
@@ -14506,10 +14506,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             relativeoffset: u32,
         ) void {
             bindings.vertexArrayAttribLFormat(
-                @intFromEnum(vaobj),
-                @intFromEnum(attribindex),
-                @intFromEnum(size),
-                @intFromEnum(attrib_type),
+                @backingInt(vaobj),
+                @backingInt(attribindex),
+                @backingInt(size),
+                @backingInt(attrib_type),
                 @bitCast(relativeoffset),
             );
         }
@@ -14520,7 +14520,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             divisor: u32,
         ) void {
             bindings.vertexArrayBindingDivisor(
-                @intFromEnum(vaobj),
+                @backingInt(vaobj),
                 @bitCast(bindingindex),
                 @bitCast(divisor),
             );
@@ -14532,8 +14532,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: []i32,
         ) void {
             bindings.getVertexArrayiv(
-                @intFromEnum(vaobj),
-                @intFromEnum(pname),
+                @backingInt(vaobj),
+                @backingInt(pname),
                 @ptrCast(param.ptr),
             );
         }
@@ -14545,9 +14545,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: []i32,
         ) void {
             bindings.getVertexArrayIndexediv(
-                @intFromEnum(vaobj),
+                @backingInt(vaobj),
                 @bitCast(index),
-                @intFromEnum(pname),
+                @backingInt(pname),
                 @ptrCast(param.ptr),
             );
         }
@@ -14559,9 +14559,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             param: []i64,
         ) void {
             bindings.getVertexArrayIndexed64iv(
-                @intFromEnum(vaobj),
+                @backingInt(vaobj),
                 @bitCast(index),
-                @intFromEnum(pname),
+                @backingInt(pname),
                 @ptrCast(param.ptr),
             );
         }
@@ -14591,7 +14591,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             ptr: *Query,
         ) void {
             bindings.createQueries(
-                @intFromEnum(target),
+                @backingInt(target),
                 1,
                 @ptrCast(ptr),
             );
@@ -14601,7 +14601,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             queries: []Query,
         ) void {
             bindings.createQueries(
-                @intFromEnum(target),
+                @backingInt(target),
                 @intCast(queries.len),
                 @ptrCast(queries.ptr),
             );
@@ -14614,9 +14614,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             offset: usize,
         ) void {
             bindings.getQueryBufferObjecti64v(
-                @intFromEnum(query),
-                @intFromEnum(buffer),
-                @intFromEnum(pname),
+                @backingInt(query),
+                @backingInt(buffer),
+                @backingInt(pname),
                 @bitCast(offset),
             );
         }
@@ -14628,9 +14628,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             offset: usize,
         ) void {
             bindings.getQueryBufferObjectiv(
-                @intFromEnum(query),
-                @intFromEnum(buffer),
-                @intFromEnum(pname),
+                @backingInt(query),
+                @backingInt(buffer),
+                @backingInt(pname),
                 @bitCast(offset),
             );
         }
@@ -14642,9 +14642,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             offset: usize,
         ) void {
             bindings.getQueryBufferObjectui64v(
-                @intFromEnum(query),
-                @intFromEnum(buffer),
-                @intFromEnum(pname),
+                @backingInt(query),
+                @backingInt(buffer),
+                @backingInt(pname),
                 @bitCast(offset),
             );
         }
@@ -14656,9 +14656,9 @@ pub fn Wrap(comptime bindings: anytype) type {
             offset: usize,
         ) void {
             bindings.getQueryBufferObjectuiv(
-                @intFromEnum(query),
-                @intFromEnum(buffer),
-                @intFromEnum(pname),
+                @backingInt(query),
+                @backingInt(buffer),
+                @backingInt(pname),
                 @bitCast(offset),
             );
         }
@@ -14685,7 +14685,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_pack_buf_offset: usize,
         ) void {
             bindings.getTextureSubImage(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -14693,8 +14693,8 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @intCast(max_size),
                 @ptrFromInt(pixel_pack_buf_offset),
             );
@@ -14716,7 +14716,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: []u8,
         ) void {
             bindings.getTextureSubImage(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -14724,8 +14724,8 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(width),
                 @bitCast(height),
                 @bitCast(depth),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @intCast(pixels.len),
                 @ptrCast(pixels.ptr),
             );
@@ -14747,7 +14747,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_pack_buf_offset: usize,
         ) void {
             bindings.getCompressedTextureSubImage(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -14775,7 +14775,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: []u8,
         ) void {
             bindings.getCompressedTextureSubImage(
-                @intFromEnum(texture),
+                @backingInt(texture),
                 @bitCast(level),
                 @bitCast(xoffset),
                 @bitCast(yoffset),
@@ -14789,7 +14789,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         }
 
         pub fn getGraphicsResetStatus() GraphicsResetStatus {
-            return @enumFromInt(bindings.getGraphicsResetStatus());
+            return @fromBackingInt(@intCast(bindings.getGraphicsResetStatus()));
         }
 
         /// parameter `pixel_pack_buf_offset` specifies the byte offset into
@@ -14802,7 +14802,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_pack_buf_offset: usize,
         ) void {
             bindings.getnCompressedTexImage(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(lod),
                 @intCast(max_size),
                 @ptrFromInt(pixel_pack_buf_offset),
@@ -14818,7 +14818,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: []u8,
         ) void {
             bindings.getnCompressedTexImage(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(lod),
                 @intCast(pixels.len),
                 @ptrCast(pixels.ptr),
@@ -14837,10 +14837,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixel_pack_buf_offset: usize,
         ) void {
             bindings.getnTexImage(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @intCast(max_size),
                 @ptrFromInt(pixel_pack_buf_offset),
             );
@@ -14856,10 +14856,10 @@ pub fn Wrap(comptime bindings: anytype) type {
             pixels: []u8,
         ) void {
             bindings.getnTexImage(
-                @intFromEnum(target),
+                @backingInt(target),
                 @bitCast(level),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @intCast(pixels.len),
                 @ptrCast(pixels.ptr),
             );
@@ -14873,8 +14873,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.getnUniformdv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @intCast(params.len),
                 @ptrCast(params.ptr),
             );
@@ -14888,8 +14888,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.getnUniformfv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @intCast(params.len),
                 @ptrCast(params.ptr),
             );
@@ -14903,8 +14903,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.getnUniformiv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @intCast(params.len),
                 @ptrCast(params.ptr),
             );
@@ -14918,8 +14918,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             assert(program != .invalid);
             assert(location != .invalid);
             bindings.getnUniformuiv(
-                @intFromEnum(program),
-                @intFromEnum(location),
+                @backingInt(program),
+                @backingInt(location),
                 @intCast(params.len),
                 @ptrCast(params.ptr),
             );
@@ -14943,8 +14943,8 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(y),
                 @bitCast(width),
                 @bitCast(height),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @intCast(max_size),
                 @ptrFromInt(pixel_pack_buf_offset),
             );
@@ -14966,8 +14966,8 @@ pub fn Wrap(comptime bindings: anytype) type {
                 @bitCast(y),
                 @bitCast(width),
                 @bitCast(height),
-                @intFromEnum(format),
-                @intFromEnum(pixel_type),
+                @backingInt(format),
+                @backingInt(pixel_type),
                 @intCast(pixels.len),
                 @ptrCast(pixels.ptr),
             );
@@ -15021,7 +15021,7 @@ pub fn Wrap(comptime bindings: anytype) type {
             stride: u32,
         ) void {
             bindings.multiDrawArraysIndirectCount(
-                @intFromEnum(mode),
+                @backingInt(mode),
                 @ptrFromInt(draw_indirect_buf_offset),
                 @bitCast(parameter_buf_offset),
                 @bitCast(maxdrawcount),
@@ -15046,8 +15046,8 @@ pub fn Wrap(comptime bindings: anytype) type {
             stride: u32,
         ) void {
             bindings.multiDrawElementsIndirectCount(
-                @intFromEnum(mode),
-                @intFromEnum(index_type),
+                @backingInt(mode),
+                @backingInt(index_type),
                 @ptrFromInt(draw_indirect_buf_offset),
                 @bitCast(parameter_buf_offset),
                 @bitCast(maxdrawcount),
@@ -15067,7 +15067,7 @@ pub fn Wrap(comptime bindings: anytype) type {
         ) void {
             assert(constant_indices.len == constant_values.len);
             bindings.specializeShader(
-                @intFromEnum(shader),
+                @backingInt(shader),
                 @ptrCast(entry_point.ptr),
                 @intCast(constant_indices.len),
                 @ptrCast(constant_indices.ptr),
